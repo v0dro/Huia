@@ -12,7 +12,9 @@ guard :rspec do
   watch('spec/spec_helper.rb')  { "spec" }
 end
 
-guard 'rake', :task => 'lexer' do
+guard 'rake', task: 'parser' do
   watch(%r{^lib/huia/lexer\.rex$})
   watch(%r{^lib/huia/lexer\.rb$})
+  watch(%r{^lib/huia/parser\.y\.rb$})
 end
+
