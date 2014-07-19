@@ -2,6 +2,8 @@ require 'huia/lexer.rex'
 
 class Huia::Lexer
 
+  attr_accessor :indent_level
+
   def initialize
     super
     @indent_level = 0

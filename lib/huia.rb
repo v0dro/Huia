@@ -1,6 +1,6 @@
 require "huia/version"
-require 'huia/lexer'
 
 module Huia
-  # Your code goes here...
+  autoload :Lexer,  'huia/lexer'
+  autoload :Parser, 'huia/parser'
 end
