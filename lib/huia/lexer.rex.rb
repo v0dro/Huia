@@ -33,14 +33,6 @@ class Huia::Lexer
     yield
   end
 
-  def do_parse
-    while token = next_token do
-      type, *vals = token
-
-      send "lex_#{type}", *vals
-    end
-  end
-
   def scanner_class
     StringScanner
   end unless instance_methods(false).map(&:to_s).include?("scanner_class")
@@ -74,27 +66,27 @@ class Huia::Lexer
           when text = ss.scan(/"/) then
             [:state, :DOUBLE_TICK_STRING]
           when text = ss.scan(/#{INT}\.[0-9]+/) then
-            action { [ :float, text ] }
+            action { [ :FLOAT, text ] }
           when text = ss.scan(/0x[0-9a-fA-F]+/) then
-            action { [ :integer, text.to_i(16) ] }
+            action { [ :INTEGER, text.to_i(16) ] }
           when text = ss.scan(/0b[01]+/) then
-            action { [ :integer, text.to_i(2) ] }
+            action { [ :INTEGER, text.to_i(2) ] }
           when text = ss.scan(/#{INT}/) then
-            action { [ :integer, text ] }
+            action { [ :INTEGER, text ] }
           when text = ss.scan(/\s*(\#.*)/) then
-            action { [ :comment,     text ] }
+            action { [ :COMMENT,     text ] }
           when text = ss.scan(/#{IDENTIFIER}/) then
-            action { [ :identifier,  text ] }
+            action { [ :IDENTIFIER,  text ] }
           when text = ss.scan(/\./) then
-            action { [ :dot, text ] }
+            action { [ :DOT, text ] }
           when text = ss.scan(/\:/) then
-            action { [ :colon, text ] }
+            action { [ :COLON, text ] }
           when text = ss.scan(/\=/) then
-            action { [ :equal, text ] }
+            action { [ :EQUAL, text ] }
           when text = ss.scan(/\n[\ \t]*/) then
             in_or_out_dent text
-          when text = ss.scan(/\s+/) then
-            # do nothing
+          when text = ss.scan(/\s/) then
+            action { [ :WS, text ] }
           else
             text = ss.string[ss.pos .. -1]
             raise ScanError, "can not match (#{state.inspect}): '#{text}'"
@@ -102,7 +94,7 @@ class Huia::Lexer
         when :SINGLE_TICK_STRING then
           case
           when text = ss.scan(/[^']+/) then
-            action { [ :string, text ] }
+            action { [ :STRING, text ] }
           when text = ss.scan(/'/) then
             [:state, nil]
           else
@@ -112,7 +104,7 @@ class Huia::Lexer
         when :DOUBLE_TICK_STRING then
           case
           when text = ss.scan(/[^"]+/) then
-            action { [ :string, text ] }
+            action { [ :STRING, text ] }
           when text = ss.scan(/"/) then
             [:state, nil]
           else

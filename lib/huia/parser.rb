@@ -7,47 +7,95 @@
 require 'racc/parser.rb'
 module Huia
   class Parser < Racc::Parser
+
+module_eval(<<'...end parser.y.rb/module_eval...', 'parser.y.rb', 18)
+
+attr_accessor :lexer, :result, :state
+
+def initialize lexer
+  self.lexer  = lexer
+  self.result = []
+  self.state  = []
+  do_parse
+end
+
+def next_token
+  nt = lexer.next_token
+  # just use a state stack for now, we'll have to do something
+  # more sophisticated soon.
+  if nt && nt.first == :state
+    if nt.last
+      state.push << nt.last
+    else
+      state.pop
+    end
+    next_token
+  else
+    nt
+  end
+end
+
+def node type, *args
+  result << Huia::AST.const_get(type).new(*args)
+end
+alias n node
+...end parser.y.rb/module_eval...
 ##### State transition tables begin ###
 
 racc_action_table = [
-     2,     3,     4,     5 ]
+     8,    12,     9,    10,    11,    13,    14 ]
 
 racc_action_check = [
-     0,     1,     2,     3 ]
+     0,     1,     0,     0,     0,     8,    12 ]
 
 racc_action_pointer = [
-    -2,     1,    -1,     3,   nil,   nil ]
+    -2,     1,   nil,   nil,   nil,   nil,   nil,   nil,     2,   nil,
+   nil,   nil,     6,   nil,   nil ]
 
 racc_action_default = [
-    -2,    -2,    -2,    -2,    -1,     6 ]
+    -2,   -12,    -1,    -3,    -4,    -5,    -6,    -7,   -12,    -9,
+   -10,   -11,   -12,    -8,    15 ]
 
 racc_goto_table = [
-     1 ]
+     1,     2,     3,     4,     5,     6,     7 ]
 
 racc_goto_check = [
-     1 ]
+     1,     2,     3,     4,     5,     6,     7 ]
 
 racc_goto_pointer = [
-   nil,     0 ]
+   nil,     0,     1,     2,     3,     4,     5,     6 ]
 
 racc_goto_default = [
-   nil,   nil ]
+   nil,   nil,   nil,   nil,   nil,   nil,   nil,   nil ]
 
 racc_reduce_table = [
   0, 0, :racc_error,
-  2, 5, :_reduce_none ]
+  1, 8, :_reduce_none,
+  0, 8, :_reduce_none,
+  1, 9, :_reduce_none,
+  1, 10, :_reduce_none,
+  1, 10, :_reduce_none,
+  1, 10, :_reduce_none,
+  1, 10, :_reduce_none,
+  2, 14, :_reduce_8,
+  1, 12, :_reduce_9,
+  1, 11, :_reduce_10,
+  1, 13, :_reduce_11 ]
 
-racc_reduce_n = 2
+racc_reduce_n = 12
 
-racc_shift_n = 6
+racc_shift_n = 15
 
 racc_token_table = {
   false => 0,
   :error => 1,
-  "identifier" => 2,
-  :WORD => 3 }
+  :COLON => 2,
+  :IDENTIFIER => 3,
+  :FLOAT => 4,
+  :INTEGER => 5,
+  :STRING => 6 }
 
-racc_nt_base = 4
+racc_nt_base = 7
 
 racc_use_result_var = true
 
@@ -70,10 +118,19 @@ Racc_arg = [
 Racc_token_to_s_table = [
   "$end",
   "error",
-  "\"identifier\"",
-  "WORD",
+  "COLON",
+  "IDENTIFIER",
+  "FLOAT",
+  "INTEGER",
+  "STRING",
   "$start",
-  "identifier" ]
+  "statement",
+  "expr",
+  "literal",
+  "integer",
+  "float",
+  "string",
+  "symbol" ]
 
 Racc_debug_parser = false
 
@@ -82,6 +139,46 @@ Racc_debug_parser = false
 # reduce 0 omitted
 
 # reduce 1 omitted
+
+# reduce 2 omitted
+
+# reduce 3 omitted
+
+# reduce 4 omitted
+
+# reduce 5 omitted
+
+# reduce 6 omitted
+
+# reduce 7 omitted
+
+module_eval(<<'.,.,', 'parser.y.rb', 9)
+  def _reduce_8(val, _values, result)
+     n :Symbol, val 
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'parser.y.rb', 10)
+  def _reduce_9(val, _values, result)
+     n :Float,   val 
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'parser.y.rb', 11)
+  def _reduce_10(val, _values, result)
+     n :Integer, val 
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'parser.y.rb', 12)
+  def _reduce_11(val, _values, result)
+     n :String,  val 
+    result
+  end
+.,.,
 
 def _reduce_none(val, _values, result)
   val[0]
