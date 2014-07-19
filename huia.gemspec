@@ -20,7 +20,10 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.6"
 
-  %w| rake pry rspec rspec-its rspec-mocks oedipus_lex |.each do |gem|
+  %w|
+      rake pry rspec rspec-its rspec-mocks oedipus_lex guard
+      guard-rspec guard-rake guard-bundler
+    |.each do |gem|
     spec.add_development_dependency gem
   end
 
