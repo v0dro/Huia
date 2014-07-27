@@ -6,6 +6,8 @@ module Huia
   autoload :AST,         'huia/ast'
   autoload :Bootstrap,   'huia/bootstrap'
 
+  SyntaxError = Class.new(RuntimeError)
+
   module_function
 
   def lex string_or_io

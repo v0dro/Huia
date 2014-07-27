@@ -10,8 +10,8 @@ module Huia
       end
 
       def concat_signature other
-        raise RuntimeError, "Signature #{signature} is already final." unless takes_argument?
-        raise RuntimeError, "Signature #{other.signature} cannot be appended to #{signature}." unless other.takes_argument?
+        raise SyntaxError, "Signature #{signature} is already final." unless takes_argument?
+        raise SyntaxError, "Signature #{other.signature} cannot be appended to #{signature}." unless other.takes_argument?
         @signature = signature + other.signature
         @arguments = arguments + other.arguments
 

@@ -103,7 +103,7 @@ describe Huia::Lexer do
 
     describe :SYMBOL do
       %w| lower snake_case camelCase UpperCamelCase UPPERCASE |.each do |value|
-        it_behaves_like :token, ":#{value}", :SYMBOL, value
+        it_behaves_like :token, ":#{value}", :SYMBOL, ":#{value}"
       end
     end
 

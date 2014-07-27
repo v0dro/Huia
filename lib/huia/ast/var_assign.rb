@@ -2,7 +2,7 @@ module Huia
   module AST
     class VarAssign < BinaryOp
       def initialize left, right
-        raise RuntimeError, "LHS must be a Variable" unless left.is_a? Variable
+        raise SyntaxError, "LHS must be a Variable" unless left.is_a? Variable
         super
       end
 
