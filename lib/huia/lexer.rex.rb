@@ -9,9 +9,6 @@ class Huia::Lexer
   require 'strscan'
 
   IDENTIFIER = /[a-zA-Z_][a-zA-Z_0-9]*/
-  METHOD_SIG = /[a-z][a-zA-Z0-9_]*/
-  W          = /\s+/
-  NL         = /\\n/
   INT        = /(0|[1-9][0-9]*)/
 
   class ScanError < StandardError ; end
@@ -65,6 +62,8 @@ class Huia::Lexer
             [:state, :SINGLE_TICK_STRING]
           when text = ss.scan(/"/) then
             [:state, :DOUBLE_TICK_STRING]
+          when text = ss.scan(/def/) then
+            action { [ :DEF, text ] }
           when text = ss.scan(/#{INT}\.[0-9]+/) then
             action { [ :FLOAT, text ] }
           when text = ss.scan(/0x[0-9a-fA-F]+/) then
@@ -72,9 +71,13 @@ class Huia::Lexer
           when text = ss.scan(/0b[01]+/) then
             action { [ :INTEGER, text.to_i(2) ] }
           when text = ss.scan(/#{INT}/) then
-            action { [ :INTEGER, text ] }
+            action { [ :INTEGER, text.to_i ] }
           when text = ss.scan(/\s*(\#.*)/) then
             action { [ :COMMENT,     text ] }
+          when text = ss.scan(/:#{IDENTIFIER}/) then
+            action { [ :SYMBOL, text ] }
+          when text = ss.scan(/#{IDENTIFIER}\:/) then
+            action { [ :SIGNATURE,  text ] }
           when text = ss.scan(/#{IDENTIFIER}/) then
             action { [ :IDENTIFIER,  text ] }
           when text = ss.scan(/\./) then
@@ -83,10 +86,26 @@ class Huia::Lexer
             action { [ :COLON, text ] }
           when text = ss.scan(/\=/) then
             action { [ :EQUAL, text ] }
-          when text = ss.scan(/\n[\ \t]*/) then
+          when text = ss.scan(/\+/) then
+            action { [ :PLUS, text ] }
+          when text = ss.scan(/\-/) then
+            action { [ :MINUS, text ] }
+          when text = ss.scan(/\*\*/) then
+            action { [ :EXPO, text ] }
+          when text = ss.scan(/\*/) then
+            action { [ :ASTERISK, text ] }
+          when text = ss.scan(/\//) then
+            action { [ :FWD_SLASH, text ] }
+          when text = ss.scan(/%/) then
+            action { [ :PERCENT, text ] }
+          when text = ss.scan(/\(/) then
+            action { [ :OPAREN, text ] }
+          when text = ss.scan(/\)/) then
+            action { [ :CPAREN, text ] }
+          when text = ss.scan(/\n+[\ \t]+/) then
             in_or_out_dent text
-          when text = ss.scan(/\s/) then
-            action { [ :WS, text ] }
+          when text = ss.scan(/\s+/) then
+            # do nothing
           else
             text = ss.string[ss.pos .. -1]
             raise ScanError, "can not match (#{state.inspect}): '#{text}'"

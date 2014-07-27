@@ -1,6 +1,6 @@
 module Huia
   module AST
-    class Float < Numeric
+    class Expression < Literal
 
     end
   end

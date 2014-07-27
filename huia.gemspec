@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
 
   %w|
       rake pry rspec rspec-its rspec-mocks oedipus_lex guard
-      guard-rspec guard-rake guard-bundler racc
+      guard-rspec guard-rake guard-bundler racc byebug
     |.each do |gem|
     spec.add_development_dependency gem
   end

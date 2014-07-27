@@ -1,6 +1,6 @@
 module Huia
   module AST
-    class Integer < Literal
+    class Integer < Numeric
 
     end
   end

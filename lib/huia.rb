@@ -1,14 +1,15 @@
 require "huia/version"
 
 module Huia
-  autoload :Lexer,  'huia/lexer'
-  autoload :Parser, 'huia/parser'
-  autoload :AST,    'huia/ast'
+  autoload :Lexer,       'huia/lexer'
+  autoload :Parser,      'huia/parser'
+  autoload :AST,         'huia/ast'
+  autoload :Bootstrap,   'huia/bootstrap'
 
   module_function
 
   def lex string_or_io
-    str = if string_or_io.is_a? IO
+    str = if string_or_io.respond_to? :read
             string_or_io.read
           else
             string_or_io
