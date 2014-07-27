@@ -10,6 +10,7 @@ module Huia
     autoload :Expression,     'huia/ast/expression'
     autoload :CallSignature,  'huia/ast/call_signature'
     autoload :MethodCall,     'huia/ast/method_call'
+    autoload :Scope,          'huia/ast/scope'
 
     # Literals
     autoload :Integer,        'huia/ast/integer'
