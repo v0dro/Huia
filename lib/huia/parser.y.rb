@@ -1,6 +1,6 @@
 class Huia::Parser
 
-  token IDENTIFIER EQUAL PLUS MINUS ASTERISK FWD_SLASH COLON FLOAT INTEGER STRING EXPO INDENT OUTDENT OPAREN CPAREN DOT SIGNATURE
+  token IDENTIFIER EQUAL PLUS MINUS ASTERISK FWD_SLASH COLON FLOAT INTEGER STRING EXPO INDENT OUTDENT OPAREN CPAREN DOT SIGNATURE SYMBOL
 
   prechigh
     left EXPO
@@ -55,7 +55,7 @@ class Huia::Parser
                | string
                | symbol
 
-    symbol:         COLON IDENTIFIER            { return n :Symbol,  val[0] }
+    symbol:         SYMBOL                      { return n :Symbol,  val[0] }
     float:          FLOAT                       { return n :Float,   val[0] }
     integer:        INTEGER                     { return n :Integer, val[0] }
     string:         STRING                      { return n :String,  val[0] }
