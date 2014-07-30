@@ -9,11 +9,11 @@ describe Huia::Lexer do
 
     context "When sent #{n} tabs" do
       let(:text) { "\t" * n }
-      it { should eq x.times.map { outdent_token } }
+      it { should eq [ :OUTDENT, x ] }
     end
     context "When sent #{n * 2} spaces" do
       let(:text) { " " * n * 2 }
-      it { should eq x.times.map { outdent_token } }
+      it { should eq [ :OUTDENT, x ] }
     end
   end
 
@@ -22,11 +22,11 @@ describe Huia::Lexer do
 
     context "When sent #{n} tabs" do
       let(:text) { "\t" * n }
-      it { should eq x.times.map { indent_token } }
+      it { should eq [ :INDENT, x ] }
     end
     context "When sent #{n * 2} spaces" do
       let(:text) { " " * n * 2 }
-      it { should eq x.times.map { indent_token } }
+      it { should eq [ :INDENT, x ] }
     end
   end
 
@@ -41,7 +41,7 @@ describe Huia::Lexer do
       0.upto(2).each do |i|
         it_behaves_like :outdent, i, 3 - i
       end
-      3.upto(10).each do |i|
+      4.upto(10).each do |i|
         it_behaves_like :indent, i, i - 3
       end
     end

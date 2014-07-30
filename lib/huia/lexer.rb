@@ -30,9 +30,13 @@ class Huia::Lexer
     raise "Invalid indent level of #{text.size} spaces" unless text.size % 2 == 0
     depth = text.size / 2
     if depth > @indent_level
-      (depth - @indent_level).times.map { [ :INDENT, '  ' ] }
+      dents = depth - @indent_level
+      @indent_level = depth
+      [ :INDENT, dents ]
     elsif depth < @indent_level
-      (@indent_level - depth).times.map { [ :OUTDENT, '  ' ] }
+      dents = @indent_level - depth
+      @indent_level = depth
+      [ :OUTDENT, dents ]
     else
       []
     end
