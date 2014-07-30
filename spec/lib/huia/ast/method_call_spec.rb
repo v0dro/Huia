@@ -15,6 +15,24 @@ describe Huia::AST::MethodCall do
     end
   end
 
+  context "When passed a block" do
+    subject     { described_class.new left, right, block }
+
+    context "When the block is not a Scope object" do
+      let(:block) { :block }
+
+      it 'raises an error' do
+        expect { subject }.to raise_error
+      end
+    end
+
+    context "When the block is a Scope object" do
+      let(:block) { Huia::AST::Scope.new }
+
+      its(:block) { should eq block }
+    end
+  end
+
   describe '#reduce' do
     it 'debugs' do
       expect(subject).to receive(:puts)

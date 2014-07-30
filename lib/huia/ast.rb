@@ -11,6 +11,7 @@ module Huia
     autoload :CallSignature,  'huia/ast/call_signature'
     autoload :MethodCall,     'huia/ast/method_call'
     autoload :Scope,          'huia/ast/scope'
+    autoload :DefSignature,   'huia/ast/def_signature'
 
     # Literals
     autoload :Integer,        'huia/ast/integer'
