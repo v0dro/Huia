@@ -1,4 +1,4 @@
-class Huia::RawLexer
+class Huia::Lexer
 
 macros
   IDENTIFIER      /[a-zA-Z_][a-zA-Z_0-9]*/

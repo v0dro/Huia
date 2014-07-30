@@ -1,30 +1,12 @@
-require 'huia/raw_lexer.rex'
+require 'huia/lexer.rex'
 
-class Huia::Lexer < Huia::RawLexer
+class Huia::Lexer
   attr_accessor :indent_level
 
   def initialize str
     super()
     @indent_level = 0
-    @queue        = []
     parse str
-  end
-
-  def next_token
-    if @queue.empty?
-      tokens = super
-
-      if tokens
-        if tokens.first.is_a? Array
-          @queue.concat tokens
-        else
-          @queue << tokens
-        end
-        @queue.shift
-      end
-    else
-      @queue.shift
-    end
   end
 
   def each
