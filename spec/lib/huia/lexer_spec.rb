@@ -51,7 +51,7 @@ describe Huia::Lexer do
 
     shared_examples_for :token do |source,token,value=nil|
       describe source.inspect do
-        let(:result) { Huia::Lexer.new(source).tokens.reject { |t| t.first == :state }.last }
+        let(:result) { Huia::Lexer.new(source).tokens.reject { |t| [:state, :EOF].member? t.first }.last }
 
         it "returns the #{token.inspect} token" do
           expect(result.size).to eq 2
@@ -125,7 +125,7 @@ describe Huia::Lexer do
     describe 'whitespace' do
       it 'is ignored' do
         source = "  "
-        expect(Huia::Lexer.new(source).tokens).to be_empty
+        expect(Huia::Lexer.new(source).tokens.reject { |t| t[0] == :EOF }).to be_empty
       end
     end
 

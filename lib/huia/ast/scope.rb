@@ -2,11 +2,12 @@ module Huia
   module AST
     class Scope < Node
 
-      attr_reader :variables, :children
+      attr_reader :variables, :children, :parent
 
-      def initialize
+      def initialize parent
         @variables = {}
         @children  = []
+        @parent    = parent
       end
 
       def allocate variable_name

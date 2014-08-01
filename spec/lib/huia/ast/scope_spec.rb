@@ -1,11 +1,13 @@
 require 'spec_helper'
 
 describe Huia::AST::Scope do
-  subject { described_class.new }
+  let(:parent)    { double :parent }
+  subject         { described_class.new parent }
 
   it { should be_a Huia::AST::Node }
   its(:variables) { should be_empty }
   its(:children)  { should be_empty }
+  its(:parent)    { should eq parent }
 
   describe '#allocate' do
     it 'returns a new Variable' do

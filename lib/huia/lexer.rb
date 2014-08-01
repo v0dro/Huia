@@ -6,14 +6,50 @@ class Huia::Lexer
   def initialize str
     super()
     @indent_level = 0
+    @token_stack  = []
+    @eof_sent     = false
     parse str
   end
 
   def each
     Enumerator.new do |y|
-      while token = next_token
+      while token = next_computed_token
         y << token
       end
+    end
+  end
+
+  def next_computed_token
+    push_more_tokens if @token_stack.empty?
+    @token_stack.shift
+  end
+
+  def push_more_tokens
+    token = next_token
+    if token
+      case token.first
+
+      when :INDENT
+        token.last.times do
+          @token_stack << [ :INDENT, '  ' ]
+        end
+
+      when :OUTDENT
+        token.last.times do
+          @token_stack << [ :OUTDENT, '  ' ]
+        end
+
+      else
+        @token_stack << token
+
+      end
+    else
+      @indent_level.times do
+        @token_stack << [ :OUTDENT, '  ' ]
+      end
+      @indent_level = 0
+      @token_stack << [ :EOF, '' ] unless @eof_sent
+      @eof_sent = true
     end
   end
 
@@ -38,7 +74,7 @@ class Huia::Lexer
       @indent_level = depth
       [ :OUTDENT, dents ]
     else
-      []
+      nil
     end
   end
 

@@ -37,5 +37,5 @@ rules
                           /\(/                   { [ :OPAREN, text ] }
                           /\)/                   { [ :CPAREN, text ] }
                           /\n+[\ \t]+/           in_or_out_dent
+                          /\n+/                  { [ :NL, text ] }
                           /\s+/
-

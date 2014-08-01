@@ -104,6 +104,8 @@ class Huia::Lexer
             action { [ :CPAREN, text ] }
           when text = ss.scan(/\n+[\ \t]+/) then
             in_or_out_dent text
+          when text = ss.scan(/\n+/) then
+            action { [ :NL, text ] }
           when text = ss.scan(/\s+/) then
             # do nothing
           else

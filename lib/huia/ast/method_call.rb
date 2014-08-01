@@ -5,7 +5,6 @@ module Huia
 
       def initialize left, right, block=nil
         raise SyntaxError, "RHS must be a call signature." unless right.is_a? Huia::AST::CallSignature
-        raise RuntimeError, "Block must be a Scope." if block && !(block.is_a? Huia::AST::Scope)
         @left  = left
         @right = right
       end
