@@ -62,18 +62,28 @@ class Huia::Lexer
   end
 
   def in_or_out_dent text
-    text = text.gsub("\t", '  ').gsub("\n", '')
-    raise "Invalid indent level of #{text.size} spaces" unless text.size % 2 == 0
-    depth = text.size / 2
+    text = text.reverse.gsub("\t", '  ')
+    depth = text.index(/[^ ]/) || text.size
+    raise "Invalid depth level of #{depth} spaces" unless depth % 2 == 0
+
+    depth = depth / 2
+
     if depth > @indent_level
       dents = depth - @indent_level
       @indent_level = depth
       [ :INDENT, dents ]
+
     elsif depth < @indent_level
       dents = @indent_level - depth
       @indent_level = depth
       [ :OUTDENT, dents ]
+
+    elsif depth == @indent_level
+
+      [ :NL, '' ]
+
     else
+
       nil
     end
   end

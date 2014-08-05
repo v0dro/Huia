@@ -107,12 +107,6 @@ describe Huia::Lexer do
       end
     end
 
-    describe 'keywords' do
-      %w| def |.each do |keyword|
-        it_behaves_like :token, keyword, keyword.upcase.to_sym
-      end
-    end
-
     describe 'in and outdent' do
       it 'calls the in_or_out_dent action method' do
         source = "\n  "

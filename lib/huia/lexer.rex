@@ -13,8 +13,6 @@ rules
   :DOUBLE_TICK_STRING     /[^"]+/                { [ :STRING, text ] }
   :DOUBLE_TICK_STRING     /"/                    nil
 
-                          /def/                  { [ :DEF, text ] }
-
                           /#{INT}\.[0-9]+/       { [ :FLOAT, text ] }
                           /0x[0-9a-fA-F]+/       { [ :INTEGER, text.to_i(16) ] }
                           /0b[01]+/              { [ :INTEGER, text.to_i(2) ] }
@@ -29,6 +27,9 @@ rules
                           /\:/                   { [ :COLON, text ] }
                           /\=/                   { [ :EQUAL, text ] }
                           /\+/                   { [ :PLUS, text ] }
+                          /,/                    { [ :COMMA, text ] }
+                          /\|/                   { [ :PIPE, text ] }
+                          /\->/                  { [ :STABBY, text ] }
                           /\-/                   { [ :MINUS, text ] }
                           /\*\*/                 { [ :EXPO, text ] }
                           /\*/                   { [ :ASTERISK, text ] }
@@ -36,6 +37,5 @@ rules
                           /%/                    { [ :PERCENT, text ] }
                           /\(/                   { [ :OPAREN, text ] }
                           /\)/                   { [ :CPAREN, text ] }
-                          /\n+[\ \t]+/           in_or_out_dent
-                          /\n+/                  { [ :NL, text ] }
+                          /[\n\r][\n\t\r ]*/     in_or_out_dent
                           /\s+/

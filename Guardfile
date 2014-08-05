@@ -19,6 +19,6 @@ end
 
 guard 'rake', task: 'parser' do
   watch(%r{^lib/huia/lexer\.rex\.rb$})
-  watch(%r{^lib/huia/parser\.y\.rb$})
+  watch(%r{^lib/huia/parser\.racc$})
 end
 

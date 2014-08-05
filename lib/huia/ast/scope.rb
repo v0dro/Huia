@@ -17,6 +17,7 @@ module Huia
       def append node
         raise RuntimeError, "Cannot append a non-Node" unless node.is_a? Huia::AST::Node
         @children.push node
+        self
       end
 
       def reduce

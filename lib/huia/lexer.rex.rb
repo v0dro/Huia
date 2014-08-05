@@ -62,8 +62,6 @@ class Huia::Lexer
             [:state, :SINGLE_TICK_STRING]
           when text = ss.scan(/"/) then
             [:state, :DOUBLE_TICK_STRING]
-          when text = ss.scan(/def/) then
-            action { [ :DEF, text ] }
           when text = ss.scan(/#{INT}\.[0-9]+/) then
             action { [ :FLOAT, text ] }
           when text = ss.scan(/0x[0-9a-fA-F]+/) then
@@ -88,6 +86,12 @@ class Huia::Lexer
             action { [ :EQUAL, text ] }
           when text = ss.scan(/\+/) then
             action { [ :PLUS, text ] }
+          when text = ss.scan(/,/) then
+            action { [ :COMMA, text ] }
+          when text = ss.scan(/\|/) then
+            action { [ :PIPE, text ] }
+          when text = ss.scan(/\->/) then
+            action { [ :STABBY, text ] }
           when text = ss.scan(/\-/) then
             action { [ :MINUS, text ] }
           when text = ss.scan(/\*\*/) then
@@ -102,10 +106,8 @@ class Huia::Lexer
             action { [ :OPAREN, text ] }
           when text = ss.scan(/\)/) then
             action { [ :CPAREN, text ] }
-          when text = ss.scan(/\n+[\ \t]+/) then
+          when text = ss.scan(/[\n\r][\n\t\r ]*/) then
             in_or_out_dent text
-          when text = ss.scan(/\n+/) then
-            action { [ :NL, text ] }
           when text = ss.scan(/\s+/) then
             # do nothing
           else

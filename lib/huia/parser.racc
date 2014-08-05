@@ -1,6 +1,6 @@
 class Huia::Parser
 
-  token IDENTIFIER EQUAL PLUS MINUS ASTERISK FWD_SLASH COLON FLOAT INTEGER STRING EXPO INDENT OUTDENT OPAREN CPAREN DOT SIGNATURE SYMBOL DEF NL EOF
+  token IDENTIFIER EQUAL PLUS MINUS ASTERISK FWD_SLASH COLON FLOAT INTEGER STRING EXPO INDENT OUTDENT OPAREN CPAREN DOT SIGNATURE SYMBOL NL EOF PIPE COMMA
 
   prechigh
     left EXPO
@@ -20,33 +20,41 @@ class Huia::Parser
     expr:        callable
                | binary_op
                | method_call
-               | def_method
 
-    callable:  literal | variable | grouped_expr
+    callable:          literal | variable | grouped_expr
 
-    indent:           INDENT  { return push_scope }
-    outdent:          OUTDENT { return pop_scope }
-    closure:          closure_w_stmts | closure_wo_stmts { return val[0]}
-    closure_w_stmts:  indent statements outdent          { return val[0] }
-    closure_wo_stmts: indent outdent                     { return val[0] }
+    indented:          indented_w_stmts
+                     | indented_w_expr
+                     | indented_wo_stmts
+    indented_w_stmts:  indent statements outdent        { return val[0] }
+    indented_w_expr:   indent expr outdent              { return val[0].append(val[1]) }
+    indented_wo_stmts: indent outdent                   { return val[0] }
+    outdent:           OUTDENT { return pop_scope }
 
-    method_call:            callable DOT call_signature     { return n :MethodCall, val[0], val[2] }
 
-    call_signature:         call_arguments | call_simple_name
+    indent_w_args:     indent_pipe indent_args PIPE INDENT { return val[0] }
+    indent_pipe:       PIPE   { return push_scope }
+    indent_wo_args:    INDENT { return push_scope }
+    indent:            indent_w_args
+                     | indent_wo_args
+
+    indent_args:       indent_arg
+                     | indent_args COMMA indent_arg
+    indent_arg:        variable                             { return val[0] }
+                     | variable EQUAL callable              { val[0].value = val[2]; return val[0] }
+
+    method_call:            method_call_on_object
+                          | method_call_on_self
+    method_call_on_object:  callable DOT call_signature    { return n :MethodCall, val[0], val[2] }
+    method_call_on_self:    call_signature                 { return n :MethodCall, scope, val[0] }
+
+    call_signature:         call_arguments
+                          | call_simple_name
     call_simple_name:       IDENTIFIER                     { return n :CallSignature, val[0] }
     call_argument:          SIGNATURE call_passed_arg      { return n :CallSignature, val[0], [val[1]] }
-    call_passed_arg:        callable | closure
+    call_passed_arg:        indented | callable
     call_arguments:         call_argument
                           | call_arguments call_argument   { return val[0].concat_signature val[1] }
-
-    def_method: def_method_sans_block | def_method_with_block
-    def_method_sans_block: DEF def_method_sig
-    def_method_with_block: DEF def_method_sig INDENT statements OUTDENT
-    def_method_sig: def_method_arguments | def_method_simple_name
-    def_method_simple_name: IDENTIFIER                     { return n :DefSignature, val[0] }
-    def_method_argument:    SIGNATURE assignment           { return n :DefSignature, val[0], [val[1]] }
-    def_method_arguments:   def_method_argument
-                            | def_method_arguments def_method_argument { return val[0].concat_signature val[1] }
 
     grouped_expr: OPAREN expr CPAREN            { return n :Expression, val[1] }
 
