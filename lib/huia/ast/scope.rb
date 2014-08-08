@@ -2,11 +2,12 @@ module Huia
   module AST
     class Scope < Node
 
-      attr_reader :variables, :children, :parent
+      attr_reader :variables, :children, :parent, :arguments
 
       def initialize parent
         @variables = {}
         @children  = []
+        @arguments = []
         @parent    = parent
       end
 
@@ -14,9 +15,14 @@ module Huia
         @variables[variable_name] = Huia::AST::Variable.new variable_name
       end
 
+      def add_argument variable
+        @arguments << variable
+        append variable
+      end
+
       def append node
         raise RuntimeError, "Cannot append a non-Node" unless node.is_a? Huia::AST::Node
-        @children.push node
+        @children << node
         self
       end
 

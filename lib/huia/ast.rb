@@ -20,6 +20,9 @@ module Huia
     autoload :String,         'huia/ast/string'
     autoload :Symbol,         'huia/ast/symbol'
     autoload :Variable,       'huia/ast/variable'
+    autoload :Nil,            'huia/ast/nil'
+    autoload :True,           'huia/ast/true'
+    autoload :False,          'huia/ast/false'
 
     # Binary operations
     autoload :VarAssign,      'huia/ast/var_assign'

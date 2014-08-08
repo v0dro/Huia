@@ -70,7 +70,13 @@ class Huia::Lexer
             action { [ :INTEGER, text.to_i(2) ] }
           when text = ss.scan(/#{INT}/) then
             action { [ :INTEGER, text.to_i ] }
-          when text = ss.scan(/\s*(\#.*)/) then
+          when text = ss.scan(/true/) then
+            action { [ :TRUE, text ] }
+          when text = ss.scan(/false/) then
+            action { [ :FALSE, text ] }
+          when text = ss.scan(/nil/) then
+            action { [ :NIL, text ] }
+          when text = ss.scan(/#.*/) then
             action { [ :COMMENT,     text ] }
           when text = ss.scan(/:#{IDENTIFIER}/) then
             action { [ :SYMBOL, text ] }

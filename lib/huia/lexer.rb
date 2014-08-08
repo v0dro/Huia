@@ -2,6 +2,7 @@ require 'huia/lexer.rex'
 
 class Huia::Lexer
   attr_accessor :indent_level
+  attr_reader   :lineno
 
   def initialize str
     super()
@@ -38,6 +39,9 @@ class Huia::Lexer
         token.last.times do
           @token_stack << [ :OUTDENT, '  ' ]
         end
+
+      when :COMMENT
+        push_more_tokens
 
       else
         @token_stack << token

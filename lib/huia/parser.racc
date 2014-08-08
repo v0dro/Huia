@@ -1,6 +1,6 @@
 class Huia::Parser
 
-  token IDENTIFIER EQUAL PLUS MINUS ASTERISK FWD_SLASH COLON FLOAT INTEGER STRING EXPO INDENT OUTDENT OPAREN CPAREN DOT SIGNATURE SYMBOL NL EOF PIPE COMMA
+  token IDENTIFIER EQUAL PLUS MINUS ASTERISK FWD_SLASH COLON FLOAT INTEGER STRING EXPO INDENT OUTDENT OPAREN CPAREN DOT SIGNATURE SYMBOL NL EOF PIPE COMMA NIL TRUE FALSE
 
   prechigh
     left EXPO
@@ -15,7 +15,11 @@ class Huia::Parser
                 | statements statement             { return scope }
 
     statement:  expr eol                           { return scope.append val[0] }
+              | expr                               { return scope.append val[0] }
+              | eol                                { return scope }
+
     eol:        NL | EOF
+    nlq:        NL |
 
     expr:        callable
                | binary_op
@@ -32,7 +36,7 @@ class Huia::Parser
     outdent:           OUTDENT { return pop_scope }
 
 
-    indent_w_args:     indent_pipe indent_args PIPE INDENT { return val[0] }
+    indent_w_args:     indent_pipe indent_args PIPE nlq INDENT { return val[0] }
     indent_pipe:       PIPE   { return push_scope }
     indent_wo_args:    INDENT { return push_scope }
     indent:            indent_w_args
@@ -40,8 +44,9 @@ class Huia::Parser
 
     indent_args:       indent_arg
                      | indent_args COMMA indent_arg
-    indent_arg:        variable                             { return val[0] }
-                     | variable EQUAL callable              { val[0].value = val[2]; return val[0] }
+    indent_arg:        arg_var                             { return scope.add_argument val[0] }
+                     | arg_var EQUAL callable              { val[0].value = val[2]; return val[0] }
+    arg_var:           IDENTIFIER                          { return n :Variable, val[0] }
 
     method_call:            method_call_on_object
                           | method_call_on_self
@@ -52,8 +57,10 @@ class Huia::Parser
                           | call_simple_name
     call_simple_name:       IDENTIFIER                     { return n :CallSignature, val[0] }
     call_argument:          SIGNATURE call_passed_arg      { return n :CallSignature, val[0], [val[1]] }
-    call_passed_arg:        indented | callable
-    call_arguments:         call_argument
+    call_passed_arg:        callable | call_passed_indented
+    call_passed_indented:   indented
+                          | indented NL
+    call_arguments:         call_argument                  { return val[0] }
                           | call_arguments call_argument   { return val[0].concat_signature val[1] }
 
     grouped_expr: OPAREN expr CPAREN            { return n :Expression, val[1] }
@@ -80,11 +87,17 @@ class Huia::Parser
                | float
                | string
                | symbol
+               | nil
+               | true
+               | false
 
     symbol:         SYMBOL                      { return n :Symbol,  val[0] }
     float:          FLOAT                       { return n :Float,   val[0] }
     integer:        INTEGER                     { return n :Integer, val[0] }
     string:         STRING                      { return n :String,  val[0] }
+    nil:            NIL                         { return n :Nil }
+    true:           TRUE                        { return n :True }
+    false:          FALSE                       { return n :False }
 
 end
 
@@ -96,6 +109,7 @@ def initialize lexer
   @lexer  = lexer
   @state  = []
   @scopes = []
+  @yydebug = true
   push_scope
 end
 
@@ -103,6 +117,16 @@ def ast
   @ast ||= do_parse
   @scopes.first
 end
+
+#def do_parse
+#super
+#rescue ParseError => e
+#  raise SyntaxError, "#{e.message} on line #{@lexer.lineno}"
+#end
+
+#def on_error t, val, vstack
+#  binding.pry
+#end
 
 def next_token
   nt = lexer.next_computed_token

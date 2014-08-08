@@ -1,20 +1,14 @@
-require 'huia/bootstrap/ivar_table'
-require 'huia/bootstrap/object_object'
+require 'huia/bootstrap/base_object'
 require 'huia/bootstrap/class_object'
-require 'huia/bootstrap/method_class'
-require 'huia/bootstrap/default_responder'
-require 'huia/bootstrap/initialize'
+require 'huia/bootstrap/class_instance'
 
 module Huia
   module Bootstrap
 
-    module_function
-
-    def object_object
-      @object_object ||= ObjectObject.new.tap do |o|
-        o.add_method { |binding| DefaultResponder.new binding }
-      end
+    def singleton_object
+      @object ||= BaseObject.new
     end
+    module_function :singleton_object
 
   end
 end

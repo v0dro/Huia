@@ -18,7 +18,11 @@ rules
                           /0b[01]+/              { [ :INTEGER, text.to_i(2) ] }
                           /#{INT}/               { [ :INTEGER, text.to_i ] }
 
-                          /\s*(\#.*)/            { [ :COMMENT,     text ] }
+                          /true/                 { [ :TRUE, text ] }
+                          /false/                { [ :FALSE, text ] }
+                          /nil/                  { [ :NIL, text ] }
+
+                          /#.*/                  { [ :COMMENT,     text ] }
                           /:#{IDENTIFIER}/       { [ :SYMBOL, text ] }
                           /#{IDENTIFIER}\:/      { [ :SIGNATURE,  text ] }
                           /#{IDENTIFIER}/        { [ :IDENTIFIER,  text ] }
