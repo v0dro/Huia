@@ -16,7 +16,6 @@ def initialize lexer
   @lexer  = lexer
   @state  = []
   @scopes = []
-  @yydebug = true
   push_scope
 end
 
@@ -407,7 +406,7 @@ Racc_token_to_s_table = [
   "true",
   "false" ]
 
-Racc_debug_parser = true
+Racc_debug_parser = false
 
 ##### State transition tables end #####
 

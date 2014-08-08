@@ -109,7 +109,6 @@ def initialize lexer
   @lexer  = lexer
   @state  = []
   @scopes = []
-  @yydebug = true
   push_scope
 end
 
