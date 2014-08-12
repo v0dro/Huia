@@ -30,15 +30,8 @@ class Huia::Lexer
     if token
       case token.first
 
-      when :INDENT
-        token.last.times do
-          @token_stack << [ :INDENT, '  ' ]
-        end
-
-      when :OUTDENT
-        token.last.times do
-          @token_stack << [ :OUTDENT, '  ' ]
-        end
+      when :COMPOSITE
+        @token_stack = @token_stack.concat(token.last)
 
       when :COMMENT
         push_more_tokens
@@ -66,30 +59,30 @@ class Huia::Lexer
   end
 
   def in_or_out_dent text
-    text = text.reverse.gsub("\t", '  ')
+    text  = text.reverse.gsub("\t", '  ').gsub("\r\n", "\n")
+    nls   = text.count("\n")
     depth = text.index(/[^ ]/) || text.size
     raise "Invalid depth level of #{depth} spaces" unless depth % 2 == 0
 
     depth = depth / 2
+    tokens = []
 
     if depth > @indent_level
       dents = depth - @indent_level
       @indent_level = depth
-      [ :INDENT, dents ]
+      dents.times { tokens << [ :INDENT, '  ' ] }
 
     elsif depth < @indent_level
       dents = @indent_level - depth
       @indent_level = depth
       [ :OUTDENT, dents ]
+      dents.times { tokens << [ :OUTDENT, '  ' ] }
 
-    elsif depth == @indent_level
-
-      [ :NL, '' ]
-
-    else
-
-      nil
     end
+
+    nls.times { tokens << [ :NL, "\n" ] }
+
+    [ :COMPOSITE, tokens ]
   end
 
 end

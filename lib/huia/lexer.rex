@@ -25,10 +25,12 @@ rules
                           /#.*/                  { [ :COMMENT,     text ] }
                           /:#{IDENTIFIER}/       { [ :SYMBOL, text ] }
                           /#{IDENTIFIER}\:/      { [ :SIGNATURE,  text ] }
+                          /#{IDENTIFIER}?!/      { [ :CALL, text ] }
                           /#{IDENTIFIER}/        { [ :IDENTIFIER,  text ] }
 
                           /\./                   { [ :DOT, text ] }
                           /\:/                   { [ :COLON, text ] }
+                          /\==/                  { [ :EQUALITY, text ] }
                           /\=/                   { [ :EQUAL, text ] }
                           /\+/                   { [ :PLUS, text ] }
                           /,/                    { [ :COMMA, text ] }

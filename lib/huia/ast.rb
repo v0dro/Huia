@@ -32,5 +32,6 @@ module Huia
     autoload :Division,       'huia/ast/division'
     autoload :Exponentiation, 'huia/ast/exponentiation'
     autoload :Modulo,         'huia/ast/modulo'
+    autoload :Equality,       'huia/ast/equality'
   end
 end

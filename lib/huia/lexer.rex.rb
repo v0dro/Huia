@@ -82,12 +82,16 @@ class Huia::Lexer
             action { [ :SYMBOL, text ] }
           when text = ss.scan(/#{IDENTIFIER}\:/) then
             action { [ :SIGNATURE,  text ] }
+          when text = ss.scan(/#{IDENTIFIER}?!/) then
+            action { [ :CALL, text ] }
           when text = ss.scan(/#{IDENTIFIER}/) then
             action { [ :IDENTIFIER,  text ] }
           when text = ss.scan(/\./) then
             action { [ :DOT, text ] }
           when text = ss.scan(/\:/) then
             action { [ :COLON, text ] }
+          when text = ss.scan(/\==/) then
+            action { [ :EQUALITY, text ] }
           when text = ss.scan(/\=/) then
             action { [ :EQUAL, text ] }
           when text = ss.scan(/\+/) then
