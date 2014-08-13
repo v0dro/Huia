@@ -3,6 +3,7 @@ module Huia
     class Scope < Node
 
       attr_reader :variables, :children, :parent, :arguments
+      attr_accessor :file
 
       def initialize parent
         @variables = {}

@@ -27,7 +27,7 @@ Gem::Specification.new do |spec|
     spec.add_development_dependency gem
   end
 
-  %w| rubinius-compiler |.each do |gem|
+  %w| rubinius-compiler rubinius-ast |.each do |gem|
     spec.add_dependency gem
   end
 end

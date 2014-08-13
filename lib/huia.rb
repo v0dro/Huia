@@ -4,11 +4,16 @@ module Huia
   autoload :Lexer,       'huia/lexer'
   autoload :Parser,      'huia/parser'
   autoload :AST,         'huia/ast'
-  autoload :Bootstrap,   'huia/bootstrap'
+  autoload :CodeLoader,  'huia/code_loader'
+  autoload :Compiler,    'huia/compiler'
 
   SyntaxError = Class.new(RuntimeError)
 
   module_function
+
+  def load file, wd=Dir.getwd
+    Huia::CodeLoader.new(file, wd).load
+  end
 
   def lex string_or_io
     lexer(string_or_io).tokens
