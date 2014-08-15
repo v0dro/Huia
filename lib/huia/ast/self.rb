@@ -1,11 +1,11 @@
 module Huia
   module AST
-    class Symbol < Literal
+    class Self < Node
 
       def bytecode g
         pos g
 
-        g.push_literal value[1..-1].to_sym
+        g.push :self
       end
 
     end

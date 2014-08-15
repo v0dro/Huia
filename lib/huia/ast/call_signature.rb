@@ -1,6 +1,6 @@
 module Huia
   module AST
-    class CallSignature < Reducible
+    class CallSignature < Node
 
       attr_reader :signature, :arguments
 

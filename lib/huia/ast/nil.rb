@@ -6,6 +6,12 @@ module Huia
         super nil
       end
 
+      def bytecode g
+        pos g
+
+        g.push :nil
+      end
+
     end
   end
 end

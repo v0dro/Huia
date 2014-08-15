@@ -8,10 +8,6 @@ module Huia
         @left  = left
         @right = right
       end
-
-      def reduce
-        puts "Asked to call #{right.signature} on #{left}#{"with block #{block.inspect}" if block}."
-      end
     end
   end
 end

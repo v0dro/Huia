@@ -1,6 +1,8 @@
 require "huia/version"
 
 module Huia
+  autoload :Core,        'huia/core'
+  autoload :ToolSet,     'huia/tool_set'
   autoload :Lexer,       'huia/lexer'
   autoload :Parser,      'huia/parser'
   autoload :AST,         'huia/ast'
@@ -13,6 +15,10 @@ module Huia
 
   def load file, wd=Dir.getwd
     Huia::CodeLoader.new(file, wd).load
+  end
+
+  def eval string
+    Huia::Compiler.eval_from string
   end
 
   def lex string_or_io

@@ -21,6 +21,7 @@ rules
                           /true/                 { [ :TRUE, text ] }
                           /false/                { [ :FALSE, text ] }
                           /nil/                  { [ :NIL, text ] }
+                          /self/                 { [ :SELF, text ] }
 
                           /#.*/                  { [ :COMMENT,     text ] }
                           /:#{IDENTIFIER}/       { [ :SYMBOL, text ] }

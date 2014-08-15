@@ -76,6 +76,8 @@ class Huia::Lexer
             action { [ :FALSE, text ] }
           when text = ss.scan(/nil/) then
             action { [ :NIL, text ] }
+          when text = ss.scan(/self/) then
+            action { [ :SELF, text ] }
           when text = ss.scan(/#.*/) then
             action { [ :COMMENT,     text ] }
           when text = ss.scan(/:#{IDENTIFIER}/) then

@@ -3,48 +3,37 @@ require 'rubinius/compiler'
 require 'rubinius/ast'
 
 module Huia
-  class Compiler < CodeTools::Compiler
+  class Compiler < ToolSet::Compiler
 
     def self.compile_from source, opts={}
       raise ArgumentError, "must provide compiler destination" unless opts[:to]
 
-      compiler = new :huia_file, :compiled_file
-
-      parser = compiler.parser
-      # parser.root CodeTools::AST::Script
-      parser.input source
-
-      if @print
-        parser.print
-        printer = compiler.packager.print
-        printer.bytecode = true
-      end
-
-      writer = compiler.writer
-      writer.name = opts[:to]
-
-      compiler.run
+      new(:huia_file, :compiled_file).tap do |c|
+        c.parser.input source
+        c.writer.name = opts[:to]
+      end.run
     end
 
-    # Compiler Stages
+    def self.eval_from source
+      new(:huia_string, :compiled_method).tap do |c|
+        c.parser.input source
+      end.run
+    end
 
-    class HuiaGenerator < CodeTools::Compiler::Stage
-      stage      :huia_bytecode
-      next_stage CodeTools::Compiler::Encoder
-
-      attr_reader :variable_scope
+    class HuiaGenerator < ToolSet::Compiler::Bytecode
+      stage      :huia_generator
+      next_stage ToolSet::Compiler::Encoder
 
       def initialize compiler, last
         super
-        @variable_scope = nil
         compiler.generator = self
       end
 
       def run
-        @output               = Rubinius::Generator.new
-        @input.variable_scope = @variable_scope
-        @input.bytecode       = @output
+        @output = ToolSet::Generator.new
+        @input.bytecode @output
         @output.close
+
         run_next
       end
 
@@ -53,40 +42,41 @@ module Huia
       end
     end
 
-    # Huia File -> AST
-    class HuiaParser < CodeTools::Compiler::Stage
-      stage      :huia_file
-      next_stage HuiaGenerator
-
+    class HuiaParser < ToolSet::Compiler::Stage
       def initialize compiler, last
         super
         compiler.parser = self
       end
 
-      def root(root)
-        @root = root
-      end
-
-      def print
-        @print = true
-      end
-
-      def input(filename, line=1)
-        @filename = filename
-        @line     = line
-      end
-
       def run
-        lexer = Huia::Lexer.new(File.read(@filename))
+        lexer = Huia::Lexer.new(@source)
         ast   = Huia::Parser.new(lexer).ast
-
-        if @print
-          puts ast.to_yaml
-        end
 
         @output = ast
         @output.file = @filename
         run_next
+      end
+    end
+
+    class HuiaFileParser < HuiaParser
+      stage :huia_file
+      next_stage HuiaGenerator
+
+      def input(filename, line=1)
+        @filename = filename
+        @line     = line
+        @source   = File.read(@filename)
+      end
+    end
+
+    class HuiaStringParser < HuiaParser
+      stage :huia_string
+      next_stage HuiaGenerator
+
+      def input source, line=1
+        @filename = '(eval)'
+        @line     = line
+        @source   = source
       end
     end
 

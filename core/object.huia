@@ -6,13 +6,11 @@
 #   - `defineMethod:as:` defines a methods on the receiver.
 #   - `definePrivateMethod:as` defines a a private method on the receiver.
 #   - `defaultResponderFor:` finds the requested method and returns it.
+#   - `sendMessage:withArgs:` calls `defaultResponderFor:` then executes the
+#      closure in the receiver's scope (after a privacy check).
 #   - `if:then:` executes the `then` if the `if` argument is truthy.
 #
 #   Note that you can override any of these methods in your subclass.
-
-defineMethod: 'sendMessage:withArgs:' as: |signature,arguments|
-  method = defaultResponderFor: signature
-  method.callWithArgs: arguments
 
 definePrivateMethod: 'if:then:else' as: |test,positive,negative|
   result  = nil

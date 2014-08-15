@@ -1,6 +1,6 @@
 class Huia::Parser
 
-  token IDENTIFIER EQUAL PLUS MINUS ASTERISK FWD_SLASH COLON FLOAT INTEGER STRING EXPO INDENT OUTDENT OPAREN CPAREN DOT SIGNATURE SYMBOL NL EOF PIPE COMMA NIL TRUE FALSE EQUALITY CALL
+  token IDENTIFIER EQUAL PLUS MINUS ASTERISK FWD_SLASH COLON FLOAT INTEGER STRING EXPO INDENT OUTDENT OPAREN CPAREN DOT SIGNATURE SYMBOL NL EOF PIPE COMMA NIL TRUE FALSE EQUALITY CALL SELF
 
   prechigh
     left EXPO
@@ -68,7 +68,7 @@ class Huia::Parser
 
     grouped_expr: OPAREN expr CPAREN            { return n :Expression, val[1] }
 
-    variable:  IDENTIFIER                       { return scope.allocate val[0] }
+    variable:  IDENTIFIER                       { return allocate_local val[0] }
 
     binary_op: assignment
              | addition
@@ -79,14 +79,14 @@ class Huia::Parser
              | modulo
              | equality
 
-    assignment:     variable EQUAL expr   { return n :VarAssign, val[0], val[2] }
-    addition:       expr PLUS expr        { return n :Addition, val[0], val[2] }
-    subtraction:    expr MINUS expr       { return n :Subtraction, val[0], val[2] }
-    multiplication: expr ASTERISK expr    { return n :Multiplication, val[0], val[2] }
-    division:       expr FWD_SLASH expr   { return n :Division, val[0], val[2]}
-    exponentiation: expr EXPO expr        { return n :Exponentiation, val[0], val[2] }
-    modulo:         expr PERCENT expr     { return n :Modulo, val[0], val[2] }
-    equality:       expr EQUALITY expr    { return n :Equality, val[0], val[2] }
+    assignment:     IDENTIFIER EQUAL expr { return allocate_local_assignment val[0], val[2] }
+    addition:       expr PLUS expr        { return binary val[0], val[2], 'add:' }
+    subtraction:    expr MINUS expr       { return binary val[0], val[2], 'subtract:' }
+    multiplication: expr ASTERISK expr    { return binary val[0], val[2], 'multiplyBy:' }
+    division:       expr FWD_SLASH expr   { return binary val[0], val[2], 'divideBy:' }
+    exponentiation: expr EXPO expr        { return binary val[0], val[2], 'toThePowerOf:' }
+    modulo:         expr PERCENT expr     { return binary val[0], val[2], 'moduloOf:' }
+    equality:       expr EQUALITY expr    { return binary val[0], val[2], 'isEqualTo:' }
 
     literal:   integer
              | float
@@ -95,6 +95,7 @@ class Huia::Parser
              | nil
              | true
              | false
+             | self
 
     symbol:         SYMBOL                      { return n :Symbol,  val[0] }
     float:          FLOAT                       { return n :Float,   val[0] }
@@ -103,6 +104,7 @@ class Huia::Parser
     nil:            NIL                         { return n :Nil }
     true:           TRUE                        { return n :True }
     false:          FALSE                       { return n :False }
+    self:           SELF                        { return n :Self }
 
 end
 
@@ -150,6 +152,7 @@ end
 
 def push_scope
   new_scope = Huia::AST::Scope.new scope
+  new_scope.line = lexer.lineno
   scopes.push new_scope
   new_scope
 end
@@ -162,7 +165,25 @@ def scope
   scopes.last
 end
 
+def binary left, right, method
+  node(:MethodCall, left, node(:CallSignature, method, right))
+end
+
 def node type, *args
-  Huia::AST.const_get(type).new(*args)
+  Huia::AST.const_get(type).new(*args).tap do |n|
+    n.line = lexer.lineno
+  end
 end
 alias n node
+
+def allocate_local name
+  v = node(:Variable, name)
+  scope.allocate_local(v)
+  v
+end
+
+def allocate_local_assignment name, value
+  v = node(:Assignment, name, value)
+  scope.allocate_local(v)
+  v
+end

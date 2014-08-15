@@ -1,11 +1,18 @@
 module Huia
   module AST
-    class Variable < Literal
+    class Variable < Node
       attr_reader :name
+      attr_accessor :index
 
-      def initialize name, value=nil
+      def initialize name
         @name = name
-        super value
+        @variable = nil
+      end
+
+      def bytecode g
+        pos g
+
+        g.push_local index
       end
     end
   end
