@@ -10,11 +10,6 @@ module Huia
       def pos g
         g.set_line line
       end
-
-      def call_method method, *args
-        puts "#{self.inspect} asked to call #{method} with args: #{args.inspect}"
-      end
-
     end
   end
 end

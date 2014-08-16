@@ -1,15 +1,19 @@
 module Huia
   module Core
-    class Closure < Object
+    Closure = Object.__huia__send('extend:', proc do
+      attr_accessor :block
 
-      def initialize
-        super
-      end
+      # Create the base `callWithSelf:andArgs` method of Closure.
+      __huia__send('def:as:', 'callWithSelf:andArgs:', proc do |_self, *args|
+        __huia__call block, _self, *args
+      end)
 
-      huia_method "callWithSelf:andArgs:" do |_self,args|
-        @block.instance_exec _self, *args
-      end
-
-    end
+      # Create the `create:` constructor which takes a block.
+      __huia__send('defineMethod:as:', 'create:', proc do |block|
+        __huia__send('create').tap do |o|
+          o.block = block
+        end
+      end)
+    end)
   end
 end

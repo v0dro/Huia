@@ -1,6 +1,7 @@
 require "huia/version"
 
 module Huia
+  autoload :Boot,        'huia/boot'
   autoload :Core,        'huia/core'
   autoload :ToolSet,     'huia/tool_set'
   autoload :Lexer,       'huia/lexer'

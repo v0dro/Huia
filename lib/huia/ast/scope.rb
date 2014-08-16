@@ -38,43 +38,54 @@ module Huia
       def bytecode g
         pos g
 
-        blk = generate_block g
-        compile_body blk
-
-        g.create_block blk
+        g.push_rubinius
+        g.create_block block_from_children g
+        g.send_stack_with_block :lambda, 0
       end
 
       private
 
-      def compile_body g
-        g.push_state self
-        g.definition_line line
-        pos g
-        g.state.push_block
-        g.push_modifiers
-        g.break = nil
-        g.next  = nil
-        g.redo  = nil
+      def block_from_children g
+        blk = g.class.new
+        blk.file = g.file
+        blk.for_block = true
 
-        @children.each do |child|
-          child.bytecode g
+        blk.arity = arity
+        blk.definition_line line
+        pos blk
+
+        arguments.each do |argument|
+          argument.bytecode g
         end
 
-        g.pop_modifiers
-        g.state.pop_block
-        g.ret
-        g.close
-        g.pop_state
+        blk.push_modifiers
+        blk.break = nil
+        blk.next = nil
+        blk.redo = blk.new_label
+        blk.redo.set!
+
+        children.each do |child|
+          child.bytecode(blk)
+        end
+
+        blk.pop_modifiers
+        blk.ret
+        blk.close
+        # blk.pop_state
+
+        blk.local_count = local_count blk
+        blk.local_names = local_names blk
       end
 
-      def generate_block g
-        blk               = g.class.new
-        blk.file          = g.file
-        blk.for_block     = true
-        blk.required_args = arity
-        blk.total_args    = arity
+      def local_count g
+        g.push_int @locals.size
+      end
 
-        blk
+      def local_names g
+        @locals.map do |name|
+          g.push_literal name.to_sym
+        end
+        g.make_array @locals.size
       end
     end
   end
