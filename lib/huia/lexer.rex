@@ -18,6 +18,9 @@ rules
                           /0b[01]+/              { [ :INTEGER, text.to_i(2) ] }
                           /#{INT}/               { [ :INTEGER, text.to_i ] }
 
+                          /Object/               { [ :CONSTANT, text ] }
+                          /Closure/              { [ :CONSTANT, text ] }
+
                           /true/                 { [ :TRUE, text ] }
                           /false/                { [ :FALSE, text ] }
                           /nil/                  { [ :NIL, text ] }

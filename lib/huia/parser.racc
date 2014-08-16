@@ -1,6 +1,6 @@
 class Huia::Parser
 
-  token IDENTIFIER EQUAL PLUS MINUS ASTERISK FWD_SLASH COLON FLOAT INTEGER STRING EXPO INDENT OUTDENT OPAREN CPAREN DOT SIGNATURE SYMBOL NL EOF PIPE COMMA NIL TRUE FALSE EQUALITY CALL SELF
+  token IDENTIFIER EQUAL PLUS MINUS ASTERISK FWD_SLASH COLON FLOAT INTEGER STRING EXPO INDENT OUTDENT OPAREN CPAREN DOT SIGNATURE SYMBOL NL EOF PIPE COMMA NIL TRUE FALSE EQUALITY CALL SELF CONSTANT
 
   prechigh
     left EXPO
@@ -26,6 +26,9 @@ class Huia::Parser
                | grouped_expr
                | binary_op
                | method_call
+               | constant
+
+    constant:          CONSTANT                         { return n :Constant, val[0] }
 
     indented:          indented_w_stmts
                      | indented_w_expr
@@ -166,7 +169,7 @@ def scope
 end
 
 def binary left, right, method
-  node(:MethodCall, left, node(:CallSignature, method, right))
+  node(:MethodCall, left, node(:CallSignature, method, [right]))
 end
 
 def node type, *args

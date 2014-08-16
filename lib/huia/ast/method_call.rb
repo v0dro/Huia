@@ -16,7 +16,7 @@ module Huia
         left.bytecode g
 
         # huia method name argument
-        push_string right.signature
+        g.push_literal right.signature
 
         # arguments
         right.arguments.each do |argument|

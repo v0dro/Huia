@@ -9,17 +9,20 @@ module Huia
   autoload :AST,         'huia/ast'
   autoload :CodeLoader,  'huia/code_loader'
   autoload :Compiler,    'huia/compiler'
+  autoload :Script,      'huia/script'
 
   SyntaxError = Class.new(RuntimeError)
 
   module_function
 
   def load file, wd=Dir.getwd
-    Huia::CodeLoader.new(file, wd).load
+    cm = Huia::CodeLoader.new(file, wd).load
+    Huia::Script.new(cm).invoke file
   end
 
   def eval string
-    Huia::Compiler.eval_from string
+    cm = Huia::Compiler.eval_from string
+    Huia::Script.new(cm).invoke '(eval)'
   end
 
   def lex string_or_io

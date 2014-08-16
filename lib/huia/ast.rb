@@ -22,5 +22,6 @@ module Huia
     autoload :True,           'huia/ast/true'
     autoload :False,          'huia/ast/false'
     autoload :Self,           'huia/ast/self'
+    autoload :Constant,       'huia/ast/constant'
   end
 end

@@ -38,9 +38,15 @@ module Huia
       def bytecode g
         pos g
 
-        g.push_rubinius
-        g.create_block block_from_children g
-        g.send_stack_with_block :lambda, 0
+        # g.push_rubinius
+        # g.create_block block_from_children g
+        # g.send_stack_with_block :lambda, 0
+
+        children.each do |child|
+          child.bytecode g
+        end
+
+        g.ret
       end
 
       private
