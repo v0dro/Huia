@@ -5,7 +5,7 @@ module Huia
       def bytecode g
         pos g
 
-        g.push :self
+        g.push_self
       end
 
     end

@@ -9,6 +9,7 @@ module Huia
     autoload :CallSignature,  'huia/ast/call_signature'
     autoload :MethodCall,     'huia/ast/method_call'
     autoload :Scope,          'huia/ast/scope'
+    autoload :ScopeInstance,  'huia/ast/scope_instance'
 
     autoload :Assignment,     'huia/ast/assignment'
 

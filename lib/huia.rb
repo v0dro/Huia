@@ -17,12 +17,12 @@ module Huia
 
   def load file, wd=Dir.getwd
     cm = Huia::CodeLoader.new(file, wd).load
-    Huia::Script.new(cm).invoke file
+    Huia::Script.new(cm, file)
   end
 
   def eval string
     cm = Huia::Compiler.eval_from string
-    Huia::Script.new(cm).invoke '(eval)'
+    Huia::Script.new(cm, '(eval)')
   end
 
   def lex string_or_io

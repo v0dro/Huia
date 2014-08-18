@@ -20,6 +20,7 @@ module Huia
           o.instance_variable_set '@methods', methods
           o.instance_variable_set '@privateMethods', privateMethods
           o.instance_variable_set '@class', klass
+          o.send :__huia__init
         end
       end)
 
@@ -66,6 +67,7 @@ module Huia
       __huia__define_private_method('defineInstanceMethod:as:', define_instance_method)
       __huia__define_private_method('pdef:as:', define_private_instance_method)
       __huia__define_private_method('definePrivateInstanceMethod:as:', define_private_instance_method)
+
     end
   end
 end

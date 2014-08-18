@@ -10,6 +10,12 @@ module Huia
       def pos g
         g.set_line line
       end
+
+      private
+
+      def push_huia_const g, const
+        g.push_literal Huia::Core.const_get(const.to_sym)
+      end
     end
   end
 end

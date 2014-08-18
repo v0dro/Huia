@@ -1,8 +1,9 @@
 module Huia
   module AST
     class Variable < Node
+
       attr_reader :name
-      attr_accessor :index
+      attr_accessor :scope, :variable
 
       def initialize name
         @name = name
@@ -12,7 +13,8 @@ module Huia
       def bytecode g
         pos g
 
-        g.push_local index
+        g.state.scope.assign_local_reference self unless @variable
+        @variable.get_bytecode g
       end
     end
   end

@@ -2,7 +2,7 @@ module Huia
   module AST
     class Assignment < Node
 
-      attr_accessor :value, :index
+      attr_accessor :value, :scope, :variable
       attr_reader :name
 
       def initialize name, value
@@ -10,11 +10,17 @@ module Huia
         @value = value
       end
 
+
       def bytecode g
         pos g
 
-        value.bytecode g
-        g.set_local index
+        g.state.scope.assign_local_reference self unless @variable
+
+        @value.bytecode g if @value
+
+        pos g
+
+        @variable.set_bytecode(g)
       end
     end
   end

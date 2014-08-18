@@ -9,7 +9,8 @@ module Huia
       def bytecode g
         pos g
 
-        g.push :nil
+        push_huia_const g, :Nil
+        g.send :new, 0
       end
 
     end

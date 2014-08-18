@@ -1,6 +1,8 @@
 module Huia
   module Boot
     module Alpha
+      def __huia__init; end
+
       def __huia__bootstrap_ivars
         @methods        = {}
         @privateMethods = {}

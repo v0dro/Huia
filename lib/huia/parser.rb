@@ -87,6 +87,15 @@ def allocate_local_assignment name, value
   scope.allocate_local(v)
   v
 end
+
+def scope_instance
+  node(:ScopeInstance, scope)
+end
+
+def constant name
+  return scope_instance if name == 'self'
+  node(:Constant, name)
+end
 ...end parser.racc/module_eval...
 ##### State transition tables begin ###
 
@@ -545,7 +554,7 @@ module_eval(<<'.,.,', 'parser.racc', 18)
 
 module_eval(<<'.,.,', 'parser.racc', 30)
   def _reduce_16(val, _values, result)
-     return n :Constant, val[0] 
+     constant val[0] 
     result
   end
 .,.,
@@ -647,7 +656,7 @@ module_eval(<<'.,.,', 'parser.racc', 55)
 
 module_eval(<<'.,.,', 'parser.racc', 56)
   def _reduce_37(val, _values, result)
-     return n :MethodCall, scope, val[0] 
+     return n :MethodCall, scope_instance, val[0] 
     result
   end
 .,.,

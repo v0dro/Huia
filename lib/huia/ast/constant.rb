@@ -5,10 +5,7 @@ module Huia
       def bytecode g
         pos g
 
-        g.push_cpath_top
-        g.push_const :Huia
-        g.push_const :Core
-        g.push_const value.to_sym
+        push_huia_const g, value
       end
 
     end

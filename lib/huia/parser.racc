@@ -28,7 +28,7 @@ class Huia::Parser
                | method_call
                | constant
 
-    constant:          CONSTANT                         { return n :Constant, val[0] }
+    constant:          CONSTANT                         { constant val[0] }
 
     indented:          indented_w_stmts
                      | indented_w_expr
@@ -48,13 +48,13 @@ class Huia::Parser
     indent_args:       indent_arg
                      | indent_args COMMA indent_arg
     indent_arg:        arg_var                             { return scope.add_argument val[0] }
-                     | arg_var EQUAL expr              { val[0].value = val[2]; return val[0] }
+                     | arg_var EQUAL expr                  { return n :Assignment, val[0], val[2] }
     arg_var:           IDENTIFIER                          { return n :Variable, val[0] }
 
     method_call:            method_call_on_object
                           | method_call_on_self
-    method_call_on_object:  expr DOT call_signature    { return n :MethodCall, val[0], val[2] }
-    method_call_on_self:    call_signature                 { return n :MethodCall, scope, val[0] }
+    method_call_on_object:  expr DOT call_signature        { return n :MethodCall, val[0], val[2] }
+    method_call_on_self:    call_signature                 { return n :MethodCall, scope_instance, val[0] }
 
     call_signature:         call_arguments
                           | call_simple_name
@@ -180,13 +180,18 @@ end
 alias n node
 
 def allocate_local name
-  v = node(:Variable, name)
-  scope.allocate_local(v)
-  v
+  scope.allocate_local node(:Variable, name)
 end
 
 def allocate_local_assignment name, value
-  v = node(:Assignment, name, value)
-  scope.allocate_local(v)
-  v
+  scope.allocate_local node(:Assignment, name, value)
+end
+
+def scope_instance
+  node(:ScopeInstance, scope)
+end
+
+def constant name
+  return scope_instance if name == 'self'
+  node(:Constant, name)
 end
