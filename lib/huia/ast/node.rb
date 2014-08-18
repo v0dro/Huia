@@ -14,7 +14,11 @@ module Huia
       private
 
       def push_huia_const g, const
-        g.push_literal Huia::Core.const_get(const.to_sym)
+        # g.push_literal Huia::Core.const_get(const.to_sym)
+        g.push_cpath_top
+        g.find_const :Huia
+        g.find_const :Core
+        g.find_const const.to_sym
       end
     end
   end
