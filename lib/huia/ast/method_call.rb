@@ -17,6 +17,7 @@ module Huia
 
         # huia method name argument
         g.push_literal right.signature
+        g.string_dup
 
         # arguments
         right.arguments.each do |argument|

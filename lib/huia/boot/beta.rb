@@ -19,18 +19,24 @@ module Huia
         base.__huia__bootstrap_ivars
 
         base.__huia__define_private_method('get:', proc do |name|
+          name = name.value if name.respond_to? :value
           instance_variable_get "@#{name}"
         end)
 
         base.__huia__define_private_method('set:to:', proc do |name, value|
+          name = name.value if name.respond_to? :value
           instance_variable_set "@#{name}", value
         end)
 
         base.__huia__define_private_method('definePrivateMethod:as:', proc do |signature,closure|
+          signature = signature.value if signature.respond_to? :value
+          puts "defining private method #{signature.inspect} on #{self.inspect}"
           @privateMethods[signature] = closure
         end)
 
         base.__huia__define_private_method('defineMethod:as:', proc do |signature,closure|
+          signature = signature.value if signature.respond_to? :value
+          puts "defining method #{signature.inspect} on #{self.inspect}"
           @methods[signature] = closure
         end)
 
@@ -39,10 +45,12 @@ module Huia
           # that if there is one defined in the superclass it'll be blocked.
           # If the user wants to simply remove the local version and use the super
           # version then they can remove it from the methods hash.
+          signature = signature.value if signature.respond_to? :value
           @privateMethods[signature] = nil
         end)
 
         base.__huia__define_private_method('defaultResponderFor:', proc do |signature|
+          signature = signature.value if signature.respond_to? :value
           @methods.fetch(signature, @privateMethods[signature])
         end)
 
@@ -55,6 +63,18 @@ module Huia
             __huia__call closure, self, result
           end
         end)
+
+        base.instance_eval do
+          def __huia__send signature, *args
+            puts "Trying to send #{signature.inspect}\n\tto #{self.to_s}\n\tvia DRF\n\twith args: #{args.inspect}"
+            drf = @privateMethods['defaultResponderFor:']
+            closure = self.instance_exec(signature, &drf.block)
+
+            raise NoMethodError, "Unable to find method #{signature.inspect} on #{self.inspect}" unless closure
+
+            __huia__call closure, self, *args
+          end
+        end
       end
     end
   end

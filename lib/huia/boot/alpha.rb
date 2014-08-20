@@ -30,6 +30,7 @@ module Huia
       # Also note that at this stage we don't care about public vs private
       # methods.
       def __huia__send signature, *args
+        puts "Trying to send #{signature.inspect}\n\tto #{self.inspect}\n\twith args #{args.inspect}"
         closure = @methods.fetch(signature, @privateMethods[signature])
 
         raise NoMethodError, "Unable to find method #{signature.inspect} on #{self.inspect}" unless closure
@@ -38,8 +39,10 @@ module Huia
       end
 
       def __huia__call closure, _self, *args
+        raise ArgumentError, "__huia__call takes a closure" unless closure.respond_to? :block
+        puts "Calling #{closure.inspect}\n\twith self: #{_self.inspect}"
         # Handle bootstrapped methods which are defined as procs.
-        return self.instance_exec(*args, &closure) if Proc === closure
+        return _self.instance_exec(*args, &closure) unless closure.respond_to? :__huia__send
 
         # Otherwise dispatch via Huia's own method calling.
         closure.__huia__send('callWithSelf:andArgs:', _self, *args)

@@ -4,5 +4,6 @@ module Huia
     autoload :Alpha,               'huia/boot/alpha'
     autoload :Beta,                'huia/boot/beta'
     autoload :Gamma,               'huia/boot/gamma'
+    autoload :Delta,               'huia/boot/delta'
   end
 end

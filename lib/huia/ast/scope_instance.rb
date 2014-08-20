@@ -10,6 +10,8 @@ module Huia
 
       def bytecode g
         pos g
+
+        g.push_self
       end
 
     end

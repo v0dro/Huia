@@ -1,5 +1,5 @@
 # These are the basic methods defined on Object.
-# There are five magically defined in the runtime:
+# There are seven magically defined in the runtime:
 #
 #   - `get:` retrieves an instance variable.
 #   - `set:to:` sets an instance variable to a value.
@@ -14,18 +14,16 @@
 
 definePrivateMethod: 'if:then:else' as: |test,positive,negative|
   result  = nil
-  wasTrue = false
+  wasFalse = true
 
   if: test then: |_result|
     result = _result
     positive.callWithArg: _result
-    wasTrue = true
+    wasFalse = false
 
-  if: wasTrue then:
+  if: wasFalse then:
     negative.callWithArg: _result
 
 definePrivateMethod: 'unless:then:' as: |test,positive|
-  if: test then:
-    nil
-  else: |result|
+  if: !test then:
     positive.callWithArg: result

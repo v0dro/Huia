@@ -77,15 +77,15 @@ end
 alias n node
 
 def allocate_local name
-  v = node(:Variable, name)
-  scope.allocate_local(v)
-  v
+  node(:Variable, name).tap do |n|
+    scope.allocate_local n
+  end
 end
 
 def allocate_local_assignment name, value
-  v = node(:Assignment, name, value)
-  scope.allocate_local(v)
-  v
+  node(:Assignment, name, value).tap do |n|
+    scope.allocate_local n
+  end
 end
 
 def scope_instance
@@ -554,7 +554,7 @@ module_eval(<<'.,.,', 'parser.racc', 18)
 
 module_eval(<<'.,.,', 'parser.racc', 30)
   def _reduce_16(val, _values, result)
-     constant val[0] 
+     return constant val[0] 
     result
   end
 .,.,
@@ -631,7 +631,7 @@ module_eval(<<'.,.,', 'parser.racc', 49)
 
 module_eval(<<'.,.,', 'parser.racc', 50)
   def _reduce_32(val, _values, result)
-     val[0].value = val[2]; return val[0] 
+     return n :Assignment, val[0], val[2] 
     result
   end
 .,.,

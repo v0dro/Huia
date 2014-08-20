@@ -17,7 +17,11 @@ module Huia
       end
 
       def name
-        'Roger Rabbit'.to_sym
+        if @parent
+          "__closure__#{arguments.map(&:name).join("__")}".to_sym
+        else
+          :__root__scope__
+        end
       end
 
       def add_argument variable
@@ -40,6 +44,7 @@ module Huia
       end
 
       def append node
+        puts "attempting to append #{node.inspect}"
         raise RuntimeError, "Cannot append a non-Node" unless node.is_a? Huia::AST::Node
         @children << node
         self
@@ -50,12 +55,25 @@ module Huia
 
         push_huia_const g, :Closure
         g.push_literal 'create:'
+        g.string_dup
 
         g.push_rubinius
         g.create_block block_from_children g
         g.send_with_block :lambda, 0, false
 
         g.send :__huia__send, 2
+
+        if arity > 0
+          g.dup
+          g.push_literal :@argument_names
+          arguments.each do |argument|
+            g.push_literal argument.name
+            g.string_dup
+          end
+          g.make_array arity
+          g.send :instance_variable_set, 2
+          g.pop
+        end
 
         g.ret
       end

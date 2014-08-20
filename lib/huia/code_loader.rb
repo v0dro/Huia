@@ -43,11 +43,9 @@ module Huia
 
     def load_compiled_file
       optional_recompile
-      cl = Rubinius::CodeLoader.new(@path)
-      cm = cl.load_compiled_file(@path, 0, 0)
-      script = cm.create_script(false)
-      script.file_path = absolute_path_for @file, @wd
-      MAIN.__send__ :__script__
+      puts "attempting to load #{compiled_filename}"
+      cl = Rubinius::CodeLoader.new(compiled_filename)
+      cl.load_compiled_file(compiled_filename, 0, 0)
     end
 
     def compile_and_load_file

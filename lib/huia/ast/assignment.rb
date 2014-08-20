@@ -14,7 +14,7 @@ module Huia
       def bytecode g
         pos g
 
-        g.state.scope.assign_local_reference self unless @variable
+        g.state.scope.allocate_local self unless @variable
 
         @value.bytecode g if @value
 

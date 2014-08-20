@@ -28,7 +28,7 @@ class Huia::Parser
                | method_call
                | constant
 
-    constant:          CONSTANT                         { constant val[0] }
+    constant:          CONSTANT                         { return constant val[0] }
 
     indented:          indented_w_stmts
                      | indented_w_expr
@@ -180,11 +180,15 @@ end
 alias n node
 
 def allocate_local name
-  scope.allocate_local node(:Variable, name)
+  node(:Variable, name).tap do |n|
+    scope.allocate_local n
+  end
 end
 
 def allocate_local_assignment name, value
-  scope.allocate_local node(:Assignment, name, value)
+  node(:Assignment, name, value).tap do |n|
+    scope.allocate_local n
+  end
 end
 
 def scope_instance
