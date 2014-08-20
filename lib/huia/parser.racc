@@ -22,11 +22,11 @@ class Huia::Parser
     nlq:        NL |
 
     expr:        literal
-               | variable
                | grouped_expr
                | binary_op
                | method_call
                | constant
+               | variable
 
     constant:          CONSTANT                         { return constant val[0] }
 
@@ -54,6 +54,7 @@ class Huia::Parser
     method_call:            method_call_on_object
                           | method_call_on_self
     method_call_on_object:  expr DOT call_signature        { return n :MethodCall, val[0], val[2] }
+                          | expr DOT IDENTIFIER            { return n :MethodCall, val[0], n(:CallSignature, val[2]) }
     method_call_on_self:    call_signature                 { return n :MethodCall, scope_instance, val[0] }
 
     call_signature:         call_arguments
