@@ -2,21 +2,24 @@ module Huia
   class Script
 
     attr_reader :compiled_method
+    attr_accessor :debug
 
     def initialize compiled_method, filename, scope=MAIN
       @compiled_method = compiled_method
       @filename        = filename
       @scope           = scope
-
-      debug_bytecode
     end
 
     def invoke main = new_object_instance
+      debug_bytecode if debug
+
       # closure.__huia__send 'callWithSelf:andArgs:', main, []
       main.instance_exec([], &closure.block)
     end
 
     def closure
+      debug_bytecode if debug
+
       script = @compiled_method.create_script false
       script.file_path = @filename
       MAIN.__send__ :__script__

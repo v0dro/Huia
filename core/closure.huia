@@ -1,2 +1,13 @@
 defineInstanceMethod: 'argumentNames' as:
   get: 'argument_names'
+
+defineInstanceMethod: 'takesArguments?' as:
+  argumentNames = get: 'argument_names'
+
+  r = Ruby.createFromObject: argumentNames
+  bool = r.sendMessage: 'any?'
+
+  if: bool then:
+    true
+  else:
+    false

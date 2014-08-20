@@ -20,6 +20,8 @@ rules
 
                           /Object/               { [ :CONSTANT, text ] }
                           /Closure/              { [ :CONSTANT, text ] }
+                          /Huia/                 { [ :CONSTANT, text ]}
+                          /Ruby/                 { [ :CONSTANT, text ]}
 
                           /true/                 { [ :TRUE, text ] }
                           /false/                { [ :FALSE, text ] }

@@ -1,0 +1,6 @@
+Object.extend:
+  def: 'helloWhom:' as: |whom|
+    r = Ruby.createFromConstant: 'Object'
+
+    r = r.sendMessage: 'new'
+    r = r.sendMessage: 'puts' withArgs: 'whom'

@@ -74,6 +74,10 @@ class Huia::Lexer
             action { [ :CONSTANT, text ] }
           when text = ss.scan(/Closure/) then
             action { [ :CONSTANT, text ] }
+          when text = ss.scan(/Huia/) then
+            action { [ :CONSTANT, text ]}
+          when text = ss.scan(/Ruby/) then
+            action { [ :CONSTANT, text ]}
           when text = ss.scan(/true/) then
             action { [ :TRUE, text ] }
           when text = ss.scan(/false/) then

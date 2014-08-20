@@ -3,20 +3,20 @@
 module Huia
   module Core
     class Object < ::Object
-      include Huia::Boot::Alpha
-      extend  Huia::Boot::Alpha
+      include ::Huia::Boot::Alpha
+      extend  ::Huia::Boot::Alpha
 
-      extend  Huia::Boot::Beta
-      include Huia::Boot::Beta
+      extend  ::Huia::Boot::Beta
+      include ::Huia::Boot::Beta
 
-      extend  Huia::Boot::Gamma
-      include Huia::Boot::Gamma
+      extend  ::Huia::Boot::Gamma
+      include ::Huia::Boot::Gamma
 
-      extend  Huia::Boot::Delta
+      extend  ::Huia::Boot::Delta
 
       __huia__define_method('create', proc do
-        methods = Huia::Boot::HashWithSuperAccess.new @instanceMethods
-        privateMethods = Huia::Boot::HashWithSuperAccess.new @privateInstanceMethods
+        methods = ::Huia::Boot::HashWithSuperAccess.new @instanceMethods
+        privateMethods = ::Huia::Boot::HashWithSuperAccess.new @privateInstanceMethods
         klass = self
         new.tap do |o|
           o.instance_variable_set '@methods', methods
@@ -41,10 +41,10 @@ module Huia
       #       set: 'name' to: name
       # ```
       __huia__define_method('extend:', proc do |closure|
-        methods                = Huia::Boot::HashWithSuperAccess.new @methods
-        privateMethods         = Huia::Boot::HashWithSuperAccess.new @privateMethods
-        instanceMethods        = Huia::Boot::HashWithSuperAccess.new @instanceMethods
-        privateInstanceMethods = Huia::Boot::HashWithSuperAccess.new @privateInstanceMethods
+        methods                = ::Huia::Boot::HashWithSuperAccess.new @methods
+        privateMethods         = ::Huia::Boot::HashWithSuperAccess.new @privateMethods
+        instanceMethods        = ::Huia::Boot::HashWithSuperAccess.new @instanceMethods
+        privateInstanceMethods = ::Huia::Boot::HashWithSuperAccess.new @privateInstanceMethods
         klass                  = self
         Class.new klass do
           @methods                = methods
@@ -53,7 +53,7 @@ module Huia
           @privateInstanceMethods = privateInstanceMethods
           @superclass             = klass
 
-          __huia__call closure, self
+          self.instance_eval(&closure.block)
         end
       end)
 

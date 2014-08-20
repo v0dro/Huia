@@ -1,7 +1,7 @@
 module Huia
   module Core
 
-    core_classes = %w| Object Closure Literal Numeric Integer Float String Symbol Nil True False |
+    core_classes = %w| Object Closure Huia Ruby Literal Numeric Integer Float String Symbol Nil True False |
 
     core_classes.each do |name|
       require "huia/core/#{name.downcase}"

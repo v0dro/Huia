@@ -15,14 +15,14 @@ module Huia
 
   module_function
 
-  def load file, wd=Dir.getwd
+  def load file, wd=Dir.getwd, debug=false
     cm = Huia::CodeLoader.new(file, wd).load
-    Huia::Script.new(cm, file)
+    Huia::Script.new(cm, file).tap { |s| s.debug = debug }
   end
 
-  def eval string
+  def eval string, debug=false
     cm = Huia::Compiler.eval_from string
-    Huia::Script.new(cm, '(eval)')
+    Huia::Script.new(cm, '(eval)').tap { |s| s.debug = debug }
   end
 
   def lex string_or_io
