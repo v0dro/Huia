@@ -3,15 +3,8 @@ module Huia
     module Beta
       def self.included base
         base.instance_eval do
-          extend Huia::Boot::Beta
-
-          @methods.each do |signature, closure|
-            @instanceMethods[signature] = closure
-          end
-
-          @privateMethods.each do |signature, closure|
-            @privateInstanceMethods[signature] = closure
-          end
+          @instanceMethods = HashWithSuperAccess.new @methods
+          @privateInstanceMethods  = HashWithSuperAccess.new @privateMethods
         end
       end
 
@@ -19,22 +12,22 @@ module Huia
         base.__huia__bootstrap_ivars
 
         base.__huia__define_private_method('get:', proc do |name|
-          name = name.value if name.respond_to? :value
+          name = name.to_ruby if name.respond_to? :to_ruby
           instance_variable_get "@#{name}"
         end)
 
-        base.__huia__define_private_method('set:to:', proc do |name, value|
-          name = name.value if name.respond_to? :value
-          instance_variable_set "@#{name}", value
+        base.__huia__define_private_method('set:to:', proc do |name, to_ruby|
+          name = name.to_ruby if name.respond_to? :to_ruby
+          instance_variable_set "@#{name}", to_ruby
         end)
 
         base.__huia__define_private_method('definePrivateMethod:as:', proc do |signature,closure|
-          signature = signature.value if signature.respond_to? :value
+          signature = signature.to_ruby if signature.respond_to? :to_ruby
           @privateMethods[signature] = closure
         end)
 
         base.__huia__define_private_method('defineMethod:as:', proc do |signature,closure|
-          signature = signature.value if signature.respond_to? :value
+          signature = signature.to_ruby if signature.respond_to? :to_ruby
           @methods[signature] = closure
         end)
 
@@ -43,16 +36,16 @@ module Huia
           # that if there is one defined in the superclass it'll be blocked.
           # If the user wants to simply remove the local version and use the super
           # version then they can remove it from the methods hash.
-          signature = signature.value if signature.respond_to? :value
+          signature = signature.to_ruby if signature.respond_to? :to_ruby
           @privateMethods[signature] = nil
         end)
 
         base.__huia__define_private_method('defaultResponderFor:', proc do |signature|
-          signature = signature.value if signature.respond_to? :value
+          signature = signature.to_ruby if signature.respond_to? :to_ruby
           @methods.fetch(signature, @privateMethods[signature])
         end)
 
-        base.__huia__define_method('sendMessage:withArgs:', proc do |signature, *args|
+        base.__huia__define_method('sendMessage:withArgs:', proc do |signature, args|
           __huia__send signature, *args
         end)
 

@@ -15,16 +15,32 @@ module Huia
         # receiver
         left.bytecode g
 
+        # sendMessage:withArgs
+        g.push_literal 'sendMessage:withArgs:'
+        g.string_dup
+
         # huia method name argument
         g.push_literal right.signature
         g.string_dup
 
-        # arguments
-        right.arguments.each do |argument|
+        arguments.each do |argument|
           argument.bytecode g
         end
+        g.make_array argument_count
 
-        g.send :__huia__send, right.arguments.size + 1, true
+        g.send :__huia__send, 3
+      end
+
+      def has_arguments?
+        argument_count > 0
+      end
+
+      def arguments
+        right.arguments
+      end
+
+      def argument_count
+        arguments.size
       end
     end
   end

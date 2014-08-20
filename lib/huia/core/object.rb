@@ -58,10 +58,12 @@ module Huia
       end)
 
       define_instance_method = proc do |signature, closure|
+        signature = signature.to_ruby if signature.respond_to? :to_ruby
         @instanceMethods[signature] = closure
       end
 
       define_private_instance_method = proc do |signature, closure|
+        signature = signature.to_ruby if signature.respond_to? :to_ruby
         @privateInstanceMethods[signature] = closure
       end
 

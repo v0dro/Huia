@@ -1,6 +1,7 @@
 module Huia
   module Boot
     class HashWithSuperAccess
+      attr_accessor :superhash
 
       def initialize superhash
         @superhash = superhash
