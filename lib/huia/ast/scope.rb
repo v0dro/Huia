@@ -44,7 +44,6 @@ module Huia
       end
 
       def append node
-        puts "attempting to append #{node.inspect}"
         raise RuntimeError, "Cannot append a non-Node" unless node.is_a? Huia::AST::Node
         @children << node
         self
@@ -75,7 +74,7 @@ module Huia
           g.pop
         end
 
-        g.ret
+        g.ret if top_level?
       end
 
       def push_block
@@ -92,6 +91,10 @@ module Huia
 
       private
 
+      def top_level?
+        !@parent
+      end
+
       def block_from_children g
         blk = g.class.new
         blk.name = name || :__block__
@@ -107,9 +110,9 @@ module Huia
         blk.definition_line line
 
         blk.push_state self
-        blk.state.push_super parent
+        # blk.state.push_super parent
 
-        blk.state.push_name blk.name
+        # blk.state.push_name blk.name
 
         pos blk
 

@@ -43,7 +43,6 @@ module Huia
 
     def load_compiled_file
       optional_recompile
-      puts "attempting to load #{compiled_filename}"
       cl = Rubinius::CodeLoader.new(compiled_filename)
       cl.load_compiled_file(compiled_filename, 0, 0)
     end

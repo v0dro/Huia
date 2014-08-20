@@ -30,13 +30,11 @@ module Huia
 
         base.__huia__define_private_method('definePrivateMethod:as:', proc do |signature,closure|
           signature = signature.value if signature.respond_to? :value
-          puts "defining private method #{signature.inspect} on #{self.inspect}"
           @privateMethods[signature] = closure
         end)
 
         base.__huia__define_private_method('defineMethod:as:', proc do |signature,closure|
           signature = signature.value if signature.respond_to? :value
-          puts "defining method #{signature.inspect} on #{self.inspect}"
           @methods[signature] = closure
         end)
 
@@ -66,7 +64,6 @@ module Huia
 
         base.instance_eval do
           def __huia__send signature, *args
-            puts "Trying to send #{signature.inspect}\n\tto #{self.to_s}\n\tvia DRF\n\twith args: #{args.inspect}"
             drf = @privateMethods['defaultResponderFor:']
             closure = self.instance_exec(signature, &drf.block)
 
