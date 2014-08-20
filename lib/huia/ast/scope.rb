@@ -122,11 +122,13 @@ module Huia
         blk.redo.set!
 
         if empty?
-          push_huia_const g, :Nil
-          g.send :new, 0
+          push_huia_const blk, :Nil
+          blk.send :new, 0
         else
-          children.each do |child|
+          last = children.size - 1
+          children.each_with_index do |child, i|
             child.bytecode(blk)
+            blk.pop unless i == last
           end
         end
 
