@@ -4,11 +4,11 @@ module Huia
       def __huia__init; end
 
       def __huia__bootstrap_ivars
-        @methods        = {}
-        @privateMethods = {}
+        @methods        = HashWithSuperAccess.new({})
+        @privateMethods = HashWithSuperAccess.new({})
         if Class === self
-          @instanceMethods = {}
-          @privateInstanceMethods = {}
+          @instanceMethods = HashWithSuperAccess.new({})
+          @privateInstanceMethods = HashWithSuperAccess.new({})
         end
       end
 

@@ -12,7 +12,7 @@
 #
 #   Note that you can override any of these methods in your subclass.
 
-definePrivateMethod: 'if:then:else' as: |test,positive,negative|
+ifThenElse = Closure.create: |test,positive,negative|
   result  = nil
   wasFalse = true
 
@@ -24,6 +24,14 @@ definePrivateMethod: 'if:then:else' as: |test,positive,negative|
   if: wasFalse then:
     negative.callWithArg: _result
 
-definePrivateMethod: 'unless:then:' as: |test,positive|
+definePrivateMethod: 'if:then:else:' as: ifThenElse
+
+definePrivateInstanceMethod: 'if:then:else:' as: ifThenElse
+
+unlessThen = Closure.create: |test,positive|
   if: !test then:
     positive.callWithArg: result
+
+definePrivateMethod: 'unless:then:' as: unlessThen
+
+definePrivateInstanceMethod: 'unless:then:' as: unlessThen

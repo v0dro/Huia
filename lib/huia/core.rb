@@ -1,17 +1,15 @@
 module Huia
   module Core
 
-    autoload :Object,           'huia/core/object'
-    autoload :Closure,          'huia/core/closure'
+    core_classes = %w| Object Closure Literal Numeric Integer Float String Symbol Nil True False |
 
-    autoload :Literal,          'huia/core/literal'
-    autoload :Numeric,          'huia/core/numeric'
-    autoload :Integer,          'huia/core/integer'
-    autoload :Float,            'huia/core/float'
-    autoload :String,           'huia/core/string'
-    autoload :Symbol,           'huia/core/symbol'
-    autoload :Nil,              'huia/core/nil'
-    autoload :True,             'huia/core/true'
-    autoload :False,            'huia/core/false'
+    core_classes.each do |name|
+      require "huia/core/#{name.downcase}"
+    end
+
+    core_classes.each do |const|
+      klass = const_get const
+      klass.__huia__load_core if klass.respond_to? :__huia__load_core
+    end
   end
 end

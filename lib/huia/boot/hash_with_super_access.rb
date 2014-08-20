@@ -12,6 +12,7 @@ module Huia
       end
 
       def []= key, value
+        raise ArgumentError, "can't write to frozen hash" if @prevent_modifications
         @localhash[key] = value
       end
 
@@ -25,6 +26,10 @@ module Huia
 
       def any?
         @localhash.any? || @superhash.any?
+      end
+
+      def freeze!
+        @prevent_modification = true
       end
 
       def method_missing method, *args

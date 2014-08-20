@@ -1,4 +1,0 @@
-Numeric = Huia.requireFile 'numeric'
-
-Class.newWithSuperClass Numeric
-

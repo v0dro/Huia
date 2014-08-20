@@ -1,0 +1,2 @@
+defineInstanceMethod: 'argumentNames' as:
+  get: 'argument_names'

@@ -12,6 +12,8 @@ module Huia
       extend  Huia::Boot::Gamma
       include Huia::Boot::Gamma
 
+      extend  Huia::Boot::Delta
+
       __huia__define_method('create', proc do
         methods = Huia::Boot::HashWithSuperAccess.new @instanceMethods
         privateMethods = Huia::Boot::HashWithSuperAccess.new @privateInstanceMethods
@@ -56,12 +58,10 @@ module Huia
       end)
 
       define_instance_method = proc do |signature, closure|
-        puts "Adding instance method #{signature.inspect} to #{self.inspect}"
         @instanceMethods[signature] = closure
       end
 
       define_private_instance_method = proc do |signature, closure|
-        puts "Adding private instance method #{signature.inspect} to #{self.inspect}"
         @privateInstanceMethods[signature] = closure
       end
 
@@ -69,8 +69,6 @@ module Huia
       __huia__define_private_method('defineInstanceMethod:as:', define_instance_method)
       __huia__define_private_method('pdef:as:', define_private_instance_method)
       __huia__define_private_method('definePrivateInstanceMethod:as:', define_private_instance_method)
-
-      # extend Huia::Boot::Delta
     end
   end
 end

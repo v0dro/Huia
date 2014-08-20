@@ -52,6 +52,7 @@ module Huia
       def bytecode g
         pos g
 
+        g.name = "#{name}__outer__".to_sym
         push_huia_const g, :Closure
         g.push_literal 'create:'
         g.string_dup
@@ -95,30 +96,23 @@ module Huia
         !@parent
       end
 
+      def empty?
+        @children.size == 0
+      end
+
       def block_from_children g
         blk = g.class.new
         blk.name = name || :__block__
         blk.file = g.file
         blk.for_block = true
 
-        # blk.required_args = 0
-        # blk.post_args = 0
         blk.total_args = arity
-        # blk.splat_index = nil
-        # blk.block_index = nil
         blk.arity = arity
         blk.definition_line line
 
         blk.push_state self
-        # blk.state.push_super parent
-
-        # blk.state.push_name blk.name
 
         pos blk
-
-        # arguments.each do |argument|
-        #   argument.bytecode g
-        # end
 
         blk.state.push_block
         blk.push_modifiers
@@ -127,8 +121,13 @@ module Huia
         blk.redo = blk.new_label
         blk.redo.set!
 
-        children.each do |child|
-          child.bytecode(blk)
+        if empty?
+          push_huia_const g, :Nil
+          g.send :new, 0
+        else
+          children.each do |child|
+            child.bytecode(blk)
+          end
         end
 
         blk.pop_modifiers
