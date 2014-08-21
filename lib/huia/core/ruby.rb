@@ -29,6 +29,14 @@ module Huia
 
       __huia__send('def:as:', 'send:withArgs:', proc do |signature, args|
         signature = signature.to_ruby if signature.respond_to? :to_ruby
+        args = Array(args)
+        args = args.map do |arg|
+          if arg.respond_to? :to_ruby
+            arg.to_ruby
+          else
+            arg
+          end
+        end
         ::Huia::Core::Ruby.__huia__send('createFromObject:', object.public_send(signature.to_sym, *args))
       end)
 
