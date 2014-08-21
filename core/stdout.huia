@@ -1,0 +1,7 @@
+Object.extend:
+
+  Stdout = Ruby.createFromConstant: 'STDOUT'
+
+  defineMethod: 'putString:' as: |string|
+
+    Stdout.send: 'puts' withArgs: string

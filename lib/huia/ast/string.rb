@@ -6,14 +6,11 @@ module Huia
         pos g
 
         push_huia_const g, :String
-        g.send :new, 0
-
-        g.dup
+        g.push_literal 'createFromValue:'
+        g.string_dup
         g.push_literal value
         g.string_dup
-        g.send :value=, 1
-
-        g.pop
+        g.send :__huia__send, 2
       end
 
     end

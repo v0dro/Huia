@@ -7,7 +7,7 @@ module Huia
       end)
 
       __huia__send('defineMethod:as:', 'requireCore:', proc do |file|
-        ::Huia.load(file.to_ruby.downcase, File.expand_path('../../../../core/', __FILE__))
+        ::Huia.load(file.to_ruby.downcase, File.expand_path('../../../../core/', __FILE__)).invoke
       end)
 
     end)

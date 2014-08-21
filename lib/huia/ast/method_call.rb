@@ -36,7 +36,7 @@ module Huia
       end
 
       def arguments
-        right.arguments
+        right.arguments || []
       end
 
       def argument_count

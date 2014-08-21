@@ -31,14 +31,14 @@ module Huia
 
   module_function
 
-  def load file, wd=Dir.getwd, debug=false
+  def load file, wd=Dir.getwd
     cm = Huia::CodeLoader.new(file, wd).load
-    Huia::Script.new(cm, file).tap { |s| s.debug = debug }
+    Huia::Script.new(cm, file)
   end
 
-  def eval string, debug=false
+  def eval string
     cm = Huia::Compiler.eval_from string
-    Huia::Script.new(cm, '(eval)').tap { |s| s.debug = debug }
+    Huia::Script.new(cm, '(eval)')
   end
 
   def lex string_or_io

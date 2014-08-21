@@ -39,7 +39,7 @@ module Huia
       def collect_lines multiline=false
         line = Readline.readline(prompt(multiline), true)
         unless line
-          puts "Exiting Rubby REPL"
+          puts "Exiting Huia REPL"
           exit 0
         end
         line = line.chomp

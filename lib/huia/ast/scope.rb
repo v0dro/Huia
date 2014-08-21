@@ -4,9 +4,9 @@ module Huia
 
       Compiler = ::Huia::ToolSet::Compiler
 
-      include Compiler::LocalVariables
-
       attr_reader :children, :parent, :arguments
+
+      include Compiler::LocalVariables
 
       def initialize parent
         @children  = []
@@ -25,7 +25,8 @@ module Huia
       end
 
       def add_argument variable
-        allocate_local variable
+        v = new_local variable
+        variable.variable = v.reference
         @arguments << variable
       end
 
@@ -33,14 +34,34 @@ module Huia
         @arguments.size
       end
 
-      def allocate_local variable
-        local = @variables[variable.name] ||= Compiler::LocalVariable.new(allocate_slot)
-
-        variable.variable = local.reference
+      def search_for_parent_ref variable
+        @parent.search_for_nested_ref(variable) if @parent
       end
 
-      def argument_names
-        @arguments
+      def search_for_nested_ref variable
+        if local = @variables[variable.name]
+          return local.nested_reference
+        else
+          ref = search_for_parent_ref(variable)
+          ref.depth += 1 if ref
+          ref
+        end
+      end
+
+      def new_local variable
+        @variables[variable.name] = Compiler::LocalVariable.new(allocate_slot)
+      end
+
+      def allocate_local variable
+        if v = @variables[variable.name]
+          variable.variable = v.reference
+        elsif r = search_for_parent_ref(variable)
+          r.depth += 1
+          variable.variable = r
+        else
+          v = new_local variable
+          variable.variable = v.reference
+        end
       end
 
       def append node

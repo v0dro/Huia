@@ -20,7 +20,13 @@ module Huia
           exit(1)
         end
 
-        ::Huia.load(@filename).invoke
+        script = ::Huia.load(@filename, Dir.getwd)
+
+        if @options[:bytecode_debug]
+          script.dump_bytecode
+        else
+          script.invoke
+        end
       end
 
       private
@@ -42,6 +48,10 @@ module Huia
       def option_parser
         OptionParser.new do |opts|
           opts.banner = "Usage: huia [options] <filename.huia>"
+
+          opts.on_tail('-b', '--bytecode', "Print compiler bytecode output for the given file, then exit.") do
+            @options[:bytecode_debug] = true
+          end
 
           opts.on_tail('-v', '--version', "Print version, and exit.") do
             @options[:version] = true

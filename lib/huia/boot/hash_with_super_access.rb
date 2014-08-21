@@ -19,7 +19,7 @@ module Huia
 
       def fetch *args
         if args.size == 1
-          @localhash.fetch(args[0], @superhash.fetch(args[0], args[1]))
+          @localhash.fetch(args[0], @superhash.fetch(args[0]))
         else
           @localhash.fetch(args[0], @superhash.fetch(args[0], args[1]))
         end
