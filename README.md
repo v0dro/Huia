@@ -42,6 +42,8 @@ Further documentation is available on
 ## Status
 
 [![Build Status](https://travis-ci.org/jamesotron/Huia.svg?branch=master)](https://travis-ci.org/jamesotron/Huia)
+[![Code Climate](https://codeclimate.com/github/jamesotron/Huia/badges/gpa.svg)](https://codeclimate.com/github/jamesotron/Huia)
+[![Test Coverage](https://codeclimate.com/github/jamesotron/Huia/badges/coverage.svg)](https://codeclimate.com/github/jamesotron/Huia)
 
 ## Installation
 

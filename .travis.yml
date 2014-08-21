@@ -2,3 +2,4 @@ language: ruby
 rvm:
   - rbx-2.2.10
 script: 'bundle exec rake'
+secure: "r9SKNxooMwP+gROJ0TMm1Sdhw9CWxWFFufkw4O6zjmoyCqSdwBP82f7s+93w4v0kpwkP1q/22EDtgLBGiOL+coq7UocBT0arOqrdisARgbhxPon7kd2zqtJu3lKhl56Fw+/W6u/P3h0StrPkm1laKUm2sX7B2hQ4SEa48YSzvTE="
