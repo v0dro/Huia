@@ -31,7 +31,6 @@ rules
                           /self/                 { [ :SELF, text ] }
 
                           /#.*/                  { [ :COMMENT,     text ] }
-                          /:#{IDENTIFIER}/       { [ :SYMBOL, text ] }
                           /#{IDENTIFIER}\:/      { [ :SIGNATURE,  text ] }
                           /#{IDENTIFIER}?!/      { [ :CALL, text ] }
                           /#{IDENTIFIER}/        { [ :IDENTIFIER,  text ] }

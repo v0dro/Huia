@@ -1,6 +1,6 @@
 class Huia::Parser
 
-  token IDENTIFIER EQUAL PLUS MINUS ASTERISK FWD_SLASH COLON FLOAT INTEGER STRING EXPO INDENT OUTDENT OPAREN CPAREN DOT SIGNATURE SYMBOL NL EOF PIPE COMMA NIL TRUE FALSE EQUALITY CALL SELF CONSTANT CHAR DOUBLE_TICK_STRING DOUBLE_TICK_STRING_END INTERPOLATE_START INTERPOLATE_END
+  token IDENTIFIER EQUAL PLUS MINUS ASTERISK FWD_SLASH COLON FLOAT INTEGER STRING EXPO INDENT OUTDENT OPAREN CPAREN DOT SIGNATURE NL EOF PIPE COMMA NIL TRUE FALSE EQUALITY CALL SELF CONSTANT CHAR DOUBLE_TICK_STRING DOUBLE_TICK_STRING_END INTERPOLATE_START INTERPOLATE_END
 
   prechigh
     left EXPO
@@ -95,13 +95,11 @@ class Huia::Parser
     literal:   integer
              | float
              | string
-             | symbol
              | nil
              | true
              | false
              | self
 
-    symbol:         SYMBOL                      { return n :Symbol,  val[0] }
     float:          FLOAT                       { return n :Float,   val[0] }
     integer:        INTEGER                     { return n :Integer, val[0] }
     nil:            NIL                         { return n :Nil }

@@ -88,8 +88,6 @@ class Huia::Lexer
             action { [ :SELF, text ] }
           when text = ss.scan(/#.*/) then
             action { [ :COMMENT,     text ] }
-          when text = ss.scan(/:#{IDENTIFIER}/) then
-            action { [ :SYMBOL, text ] }
           when text = ss.scan(/#{IDENTIFIER}\:/) then
             action { [ :SIGNATURE,  text ] }
           when text = ss.scan(/#{IDENTIFIER}?!/) then

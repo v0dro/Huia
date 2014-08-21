@@ -18,7 +18,6 @@ module Huia
     autoload :Integer,        'huia/ast/integer'
     autoload :Float,          'huia/ast/float'
     autoload :String,         'huia/ast/string'
-    autoload :Symbol,         'huia/ast/symbol'
     autoload :Variable,       'huia/ast/variable'
     autoload :Nil,            'huia/ast/nil'
     autoload :True,           'huia/ast/true'
