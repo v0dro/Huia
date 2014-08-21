@@ -8,9 +8,13 @@ Gem::Specification.new do |spec|
   spec.version       = Huia::VERSION
   spec.authors       = ["James Harton"]
   spec.email         = ["james@resistor.io"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.summary       = %q{Huia is a whitespace-aware dynamic programming language targeting the Rubinius VM}
+  spec.description   = <<EOF
+Huia, is a programming language targetting the Rubinius VM.
+
+Huia is a whitespace-aware dynamic language with a simple object model based around traditional inheritance and closures.
+EOF
+  spec.homepage      = "https://github.com/jamesotron/Huia"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
