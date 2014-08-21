@@ -10,8 +10,8 @@ module Huia
 
         parse_options
 
-        return print_version_string if @options[:version]
-        return print_help_string    if @options[:help]
+        print_version_string if @options[:version]
+        print_help_string    if @options[:help]
 
         @filename = argv.pop
 
@@ -26,7 +26,7 @@ module Huia
       private
 
       def print_version_string
-        puts "Huia version #{::Huia::VERSION} running on #{RUBY_ENGINE} #{RUBY_VERSION}p#{RUBY_PATCHLEVEL}."
+        puts ::Huia::DESCRIPTION
         exit(0)
       end
 

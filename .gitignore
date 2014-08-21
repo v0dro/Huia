@@ -19,5 +19,5 @@ tmp
 *.so
 *.o
 *.a
-*.chuia
+*.huiac
 mkmf.log

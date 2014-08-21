@@ -13,6 +13,9 @@ proc do
 end.call
 
 module Huia
+
+  DESCRIPTION = "Huia version #{VERSION} running on #{RUBY_ENGINE} #{RUBY_VERSION}p#{RUBY_PATCHLEVEL}."
+
   autoload :Boot,        'huia/boot'
   autoload :Core,        'huia/core'
   autoload :ToolSet,     'huia/tool_set'

@@ -5,7 +5,7 @@ require "rspec/core/rake_task"
 RSpec::Core::RakeTask.new(:spec)
 
 task :clean do
-  `rm -rf core/*.chuia`
+  `rm -rf core/*.huiac`
 end
 
 task :lexer => 'lib/huia/lexer.rex.rb'

@@ -3,7 +3,7 @@ module Huia
     LoadError = Class.new(RuntimeError)
 
     HUIA_EXT  = 'huia'
-    CHUIA_EXT = 'chuia'
+    CHUIA_EXT = 'huiac'
 
     def initialize file, wd
       @file = file
