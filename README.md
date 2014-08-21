@@ -2,7 +2,7 @@
 
 ![Huia](https://raw.githubusercontent.com/jamesotron/Huia/master/img/Huia.png)
 
-Welcome to Huia.
+## Welcome to Huia.
 
 Huia, is a programming language targetting the [Rubinius](http://rubini.us) VM.
 

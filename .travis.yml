@@ -1,0 +1,4 @@
+language: ruby
+rvm:
+  - rbx-2.2.10
+script: 'bundle exec rake'
