@@ -39,6 +39,10 @@ helloWhom.hello: "world"
 Further documentation is available on
 [the GitHub Wiki](https://github.com/jamesotron/Huia/wiki).
 
+## Status
+
+[![Build Status](https://travis-ci.org/jamesotron/Huia.svg?branch=master)](https://travis-ci.org/jamesotron/Huia)
+
 ## Installation
 
 Huia is distributed as a Rubygem, as such you can either place `gem "huia"` in
