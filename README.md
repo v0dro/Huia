@@ -51,6 +51,47 @@ installed, it's not going to work for you.
 You can run Huia scripts using the bundled `huia` binary or interactively
 using the interactive REPL, `hirb`.
 
+## Extinction of the Huia
+
+Melodious as its Māori name, the gentle Huia bird
+seems a fowl lost from an ancient bestiary.
+
+Always in pairs, their life one long low liquid interchange,
+they rarely flew, but hopped and probed in deepest thickets
+preening and balancing, antiphonal.
+
+They fed upon the luscious huhu grub
+under mossed and lichened podocarps
+— fed and hopped so lovingly together
+that if a Māori noosed one bird, its mate would come to hand.
+
+Working together, joint custodians, His straight crow-bar beak
+and Her thin curving probe, utterly unlike, conjoined
+to wingle out tree-eating grubs.
+
+Never widespread or numerous, their superb sober
+plumes made mourning-wear for centuries
+until Cook visited.  The stuffed ones soon
+were 'musts' for lounge-rooms, though few knew
+how well their natures fitted these strange bills.
+
+Charmed by his captive pair,
+Buller records how native know-how and the foreign gun
+took in 600 skins from a week's work
+— most of the world's remaining stock:
+'Now safely on the increase'. A common bird today
+in Auckland's antique shops, its loving notes
+that ranged from purest whistles to what seemed
+a puppy's whining call, are gone, lost,
+all before the age of tapes and films.
+The bird remains supreme in words
+of those who loved and stuffed it.
+
+And our museum has one — that is,
+of course, a pair.
+
+    — by Mark O'Connor.
+
 ## Contributing
 
 1. Fork it ( https://github.com/[my-github-username]/huia/fork )
