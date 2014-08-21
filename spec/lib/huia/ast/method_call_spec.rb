@@ -1,24 +1,22 @@
 require 'spec_helper'
 
 describe Huia::AST::MethodCall do
-  let(:left)  { :left }
-  let(:right) { Huia::AST::CallSignature.new 'helloWorld' }
-  subject     { described_class.new left, right }
+  let(:node)  { described_class.new lhs, rhs }
+  let(:lhs)   { :lhs }
+  let(:rhs)   { Huia::AST::CallSignature.new 'signature' }
+  subject     { node }
 
   it { should be_a Huia::AST::Node }
 
-  context "When RHS isn't a call signature" do
-    let(:right) { :right }
-
-    it 'raises an error' do
-      expect { subject }.to raise_error
-    end
+  context "When the RHS is a CallSignature" do
+    its(:left)  { should eq lhs }
+    its(:right) { should eq rhs }
   end
 
-  describe '#reduce' do
-    it 'debugs' do
-      expect(subject).to receive(:puts)
-      subject.reduce
-    end
+  context "When the RHS is not a CallSignature" do
+    let(:rhs) { :rhs }
+    subject   { -> { node }  }
+
+    it { should raise_error }
   end
 end

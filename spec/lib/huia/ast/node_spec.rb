@@ -1,20 +1,18 @@
 require 'spec_helper'
 
 describe Huia::AST::Node do
-  it { should_not be_reducible }
+  it { should respond_to :file }
+  it { should respond_to :file= }
+  it { should respond_to :line }
+  it { should respond_to :line= }
 
-  describe '#reduce' do
-    it 'returns self' do
-      node = described_class.new
-      expect(node.reduce).to eq node
-    end
-  end
+  describe '#pos' do
+    let(:g) { double(:g) }
 
-  describe '#call_method' do
-    it 'debugs' do
-      node = described_class.new
-      expect(node).to receive(:puts)
-      node.call_method :foo
+    it 'calls set_line on the generator' do
+      subject.line = 123
+      expect(g).to receive(:set_line).with(123)
+      subject.pos g
     end
   end
 end

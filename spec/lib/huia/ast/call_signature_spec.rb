@@ -1,58 +1,61 @@
 require 'spec_helper'
 
 describe Huia::AST::CallSignature do
-  let(:sig)       { 'hello' }
-  let(:args)      { [] }
-  let(:signature) { described_class.new sig, args }
-  subject { signature }
+  let(:signature) { 'signature' }
+  let(:node)      { described_class.new signature }
+  subject         { node }
 
-  its(:signature) { should eq sig }
-  its(:arguments) { should eq args }
+  it { should be_a Huia::AST::Node }
+  it { should respond_to :signature }
+  it { should respond_to :arguments }
 
-  describe "#concat_signature" do
-    context "When the current signature takes an argument" do
-      let(:sig)  { 'hello:' }
-      let(:args) { [ 'world' ]}
-
-      context "And the passed signature takes an argument" do
-        let(:sig2) { described_class.new 'foot:', ['in mouth'] }
-
-        it 'concats the signatures' do
-          subject.concat_signature sig2
-          expect(subject.signature).to eq 'hello:foot:'
-          expect(subject.arguments).to eq [ 'world', 'in mouth' ]
-        end
-      end
-
-      context "And the passed signature doesn't take an argument" do
-        let(:sig2) { described_class.new 'foot' }
-
-        it 'raises an exception' do
-          expect { subject.concat_signature sig2 }.to raise_error
-        end
-      end
-    end
-
-    context "When the current signature doesn't take an argument" do
-      let(:sig2) { :sig2 }
-
-      it 'raises an exception' do
-        expect { subject.concat_signature sig2 }.to raise_error
-      end
-    end
-  end
+  its(:arguments) { should eq [] }
 
   describe '#takes_argument?' do
-    subject { signature.takes_argument? }
+    subject { node.takes_argument? }
 
-    context "When the method signature ends with a colon" do
-      let(:sig) { 'hello:' }
+    context "When the signature ends with a ':'" do
+      let(:signature) { 'signature:' }
+
       it { should eq true }
     end
 
-    context "When the method signature doesn't end with a colon" do
-      let(:sig) { 'hello' }
+    context "When the signature doesn't end with a ':'" do
       it { should eq false }
+    end
+  end
+
+  describe '#concat_signature' do
+    let(:lhs)         { described_class.new l_signature, [1] }
+    let(:l_signature) { 'lhs' }
+    let(:rhs)         { described_class.new r_signature, [2] }
+    let(:r_signature) { 'rhs' }
+    let(:concat)      { lhs.concat_signature rhs }
+    subject { -> { concat } }
+
+    context "When the LHS signature takes no argument" do
+      let(:l_signature) { 'final' }
+
+      it { should raise_error }
+    end
+
+    context "When the LHS signature takes an argument" do
+      let(:l_signature) { 'lhs:' }
+
+      context "When the RHS signature takes no argument" do
+        let(:r_signature) { 'rhs' }
+
+        it { should raise_error }
+      end
+
+      context "When the RHS signature takes an argument" do
+        before            { concat }
+        subject           { lhs }
+        let(:r_signature) { 'rhs:' }
+
+        its(:signature) { should eq 'lhs:rhs:' }
+        its(:arguments) { should eq [1,2] }
+      end
     end
   end
 end
