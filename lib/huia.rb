@@ -14,7 +14,7 @@ end.call
 
 module Huia
 
-  DESCRIPTION = "Huia version #{VERSION} running on #{RUBY_ENGINE} #{RUBY_VERSION}p#{RUBY_PATCHLEVEL}."
+  DESCRIPTION = "Huia version #{VERSION} running on #{RUBY_ENGINE} #{Rubinius::VERSION}."
 
   autoload :Boot,        'huia/boot'
   autoload :Core,        'huia/core'
