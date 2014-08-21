@@ -56,12 +56,12 @@ class Huia::Lexer
     until ss.eos? or token do
       token =
         case state
-        when nil then
+        when nil, :interpolation then
           case
           when text = ss.scan(/'/) then
             [:state, :SINGLE_TICK_STRING]
           when text = ss.scan(/"/) then
-            [:state, :DOUBLE_TICK_STRING]
+            action { @state.push :DOUBLE_TICK_STRING; [ :DOUBLE_TICK_STRING, '' ] }
           when text = ss.scan(/#{INT}\.[0-9]+/) then
             action { [ :FLOAT, text ] }
           when text = ss.scan(/0x[0-9a-fA-F]+/) then
@@ -110,8 +110,6 @@ class Huia::Lexer
             action { [ :COMMA, text ] }
           when text = ss.scan(/\|/) then
             action { [ :PIPE, text ] }
-          when text = ss.scan(/\->/) then
-            action { [ :STABBY, text ] }
           when text = ss.scan(/\-/) then
             action { [ :MINUS, text ] }
           when text = ss.scan(/\*\*/) then
@@ -130,6 +128,8 @@ class Huia::Lexer
             in_or_out_dent text
           when text = ss.scan(/\s+/) then
             # do nothing
+          when (state == :interpolation) && (text = ss.scan(/#{'}'}/)) then
+            action { @state.pop; [ :INTERPOLATE_END, '}'] }
           else
             text = ss.string[ss.pos .. -1]
             raise ScanError, "can not match (#{state.inspect}): '#{text}'"
@@ -146,10 +146,12 @@ class Huia::Lexer
           end
         when :DOUBLE_TICK_STRING then
           case
-          when text = ss.scan(/[^"]+/) then
-            action { [ :STRING, text ] }
+          when text = ss.scan(/#{'#{'}/) then
+            action { @state.push :interpolation; [ :INTERPOLATE_START, '#{' ] }
+          when text = ss.scan(/[^"]/) then
+            action { [ :CHAR, text ] }
           when text = ss.scan(/"/) then
-            [:state, nil]
+            action { @state.pop; [ :DOUBLE_TICK_STRING_END, '' ] }
           else
             text = ss.string[ss.pos .. -1]
             raise ScanError, "can not match (#{state.inspect}): '#{text}'"

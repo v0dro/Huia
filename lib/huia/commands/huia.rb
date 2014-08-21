@@ -15,12 +15,16 @@ module Huia
 
         @filename = argv.pop
 
-        unless @filename
+        unless @filename || @options[:evaluate]
           STDERR.puts "Required parameter, <filename.huia> missing."
           exit(1)
         end
 
-        script = ::Huia.load(@filename, Dir.getwd)
+        script = if @options[:evaluate]
+                   ::Huia.eval(@options[:evaluate])
+                 else
+                   ::Huia.load(@filename, Dir.getwd)
+                 end
 
         if @options[:bytecode_debug]
           script.dump_bytecode
@@ -48,6 +52,10 @@ module Huia
       def option_parser
         OptionParser.new do |opts|
           opts.banner = "Usage: huia [options] <filename.huia>"
+
+          opts.on('-e', '--evaluate SCRIPT', "Evaluate the passed argument as a script, then exit.") do |script|
+            @options[:evaluate] = script
+          end
 
           opts.on_tail('-b', '--bytecode', "Print compiler bytecode output for the given file, then exit.") do
             @options[:bytecode_debug] = true

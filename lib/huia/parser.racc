@@ -1,6 +1,6 @@
 class Huia::Parser
 
-  token IDENTIFIER EQUAL PLUS MINUS ASTERISK FWD_SLASH COLON FLOAT INTEGER STRING EXPO INDENT OUTDENT OPAREN CPAREN DOT SIGNATURE SYMBOL NL EOF PIPE COMMA NIL TRUE FALSE EQUALITY CALL SELF CONSTANT
+  token IDENTIFIER EQUAL PLUS MINUS ASTERISK FWD_SLASH COLON FLOAT INTEGER STRING EXPO INDENT OUTDENT OPAREN CPAREN DOT SIGNATURE SYMBOL NL EOF PIPE COMMA NIL TRUE FALSE EQUALITY CALL SELF CONSTANT CHAR DOUBLE_TICK_STRING DOUBLE_TICK_STRING_END INTERPOLATE_START INTERPOLATE_END
 
   prechigh
     left EXPO
@@ -104,17 +104,28 @@ class Huia::Parser
     symbol:         SYMBOL                      { return n :Symbol,  val[0] }
     float:          FLOAT                       { return n :Float,   val[0] }
     integer:        INTEGER                     { return n :Integer, val[0] }
-    string:         STRING                      { return n :String,  val[0] }
     nil:            NIL                         { return n :Nil }
     true:           TRUE                        { return n :True }
     false:          FALSE                       { return n :False }
     self:           SELF                        { return n :Self }
 
+    string:         STRING                      { return n :String,  val[0] }
+                  | interpolated_string
+
+    interpolated_string: DOUBLE_TICK_STRING interpolated_string_contents DOUBLE_TICK_STRING_END { return val[1] }
+    interpolation:       INTERPOLATE_START expr INTERPOLATE_END { return val[1] }
+    interpolated_string_contents:   interpolated_string_chunk   { return n :InterpolatedString, val[0] }
+                                  | interpolated_string_contents interpolated_string_chunk { val[0].append(val[1]); return val[0] }
+    interpolated_string_chunk:   chars         { return val[0] }
+                               | interpolation { return to_string(val[0]) }
+
+    chars:   CHAR       { return n :String, val[0] }
+           | chars CHAR { val[0].append(val[1]); return val[0] }
 end
 
 ---- inner
 
-attr_accessor :lexer, :state, :scopes
+attr_accessor :lexer, :scopes, :state
 
 def initialize lexer
   @lexer  = lexer
@@ -199,4 +210,8 @@ end
 def constant name
   return scope_instance if name == 'self'
   node(:Constant, name)
+end
+
+def to_string expr
+  node(:MethodCall, expr, node(:CallSignature, 'toString'))
 end

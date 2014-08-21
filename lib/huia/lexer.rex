@@ -9,9 +9,11 @@ rules
   :SINGLE_TICK_STRING     /[^']+/                { [ :STRING, text ] }
   :SINGLE_TICK_STRING     /'/                    nil
 
-                          /"/                    :DOUBLE_TICK_STRING
-  :DOUBLE_TICK_STRING     /[^"]+/                { [ :STRING, text ] }
-  :DOUBLE_TICK_STRING     /"/                    nil
+                          /"/                    { @state.push :DOUBLE_TICK_STRING; [ :DOUBLE_TICK_STRING, '' ] }
+  :DOUBLE_TICK_STRING     /#{'#{'}/              { @state.push :interpolation; [ :INTERPOLATE_START, '#{' ] }
+  :interpolation          /#{'}'}/               { @state.pop; [ :INTERPOLATE_END, '}'] }
+  :DOUBLE_TICK_STRING     /[^"]/                 { [ :CHAR, text ] }
+  :DOUBLE_TICK_STRING     /"/                    { @state.pop; [ :DOUBLE_TICK_STRING_END, '' ] }
 
                           /#{INT}\.[0-9]+/       { [ :FLOAT, text ] }
                           /0x[0-9a-fA-F]+/       { [ :INTEGER, text.to_i(16) ] }
@@ -41,7 +43,6 @@ rules
                           /\+/                   { [ :PLUS, text ] }
                           /,/                    { [ :COMMA, text ] }
                           /\|/                   { [ :PIPE, text ] }
-                          /\->/                  { [ :STABBY, text ] }
                           /\-/                   { [ :MINUS, text ] }
                           /\*\*/                 { [ :EXPO, text ] }
                           /\*/                   { [ :ASTERISK, text ] }

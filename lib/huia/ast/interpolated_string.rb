@@ -1,10 +1,6 @@
 module Huia
   module AST
-    class String < Literal
-
-      def append value
-        @value << value
-      end
+    class InterpolatedString < Expression
 
       def bytecode g
         pos g
@@ -12,9 +8,16 @@ module Huia
         push_huia_const g, :String
         g.push_literal 'createFromValue:'
         g.string_dup
-        g.push_literal value
+        g.push_literal ''
         g.string_dup
         g.send :__huia__send, 2
+
+        @children.each do |child|
+          g.push_literal 'concat:'
+          g.string_dup
+          child.bytecode g
+          g.send :__huia__send, 2
+        end
       end
 
     end

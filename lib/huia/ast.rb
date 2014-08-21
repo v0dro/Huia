@@ -12,6 +12,7 @@ module Huia
     autoload :ScopeInstance,  'huia/ast/scope_instance'
 
     autoload :Assignment,     'huia/ast/assignment'
+    autoload :InterpolatedString, 'huia/ast/interpolated_string'
 
     # Literals
     autoload :Integer,        'huia/ast/integer'

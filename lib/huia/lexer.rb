@@ -9,7 +9,21 @@ class Huia::Lexer
     @indent_level = 0
     @token_stack  = []
     @eof_sent     = false
+    @state        = []
     parse str
+  end
+
+  def state
+    @state.last
+  end
+
+  def state= x
+    if x
+      @state.push x
+    else
+      @state.pop
+    end
+    state
   end
 
   def each
