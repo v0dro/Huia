@@ -1,5 +1,17 @@
 require "huia/version"
 
+# Protect against loading Huia on incorrect Rubies.
+proc do
+  begin
+    raise RuntimeError, RUBY_ENGINE unless RUBY_ENGINE == 'rbx'
+    version = Rubinius::VERSION.split('.').take(3).map(&:to_i)
+    raise RuntimeError, Rubinius::VERSION unless version[0] >= 2 && version[1] >= 2 && version[2] >= 10
+  rescue RuntimeError
+    STDERR.puts "Huia only supports Rubinius >= 2.2.10"
+    exit(1)
+  end
+end.call
+
 module Huia
   autoload :Boot,        'huia/boot'
   autoload :Core,        'huia/core'
@@ -10,6 +22,7 @@ module Huia
   autoload :CodeLoader,  'huia/code_loader'
   autoload :Compiler,    'huia/compiler'
   autoload :Script,      'huia/script'
+  autoload :Commands,    'huia/commands'
 
   SyntaxError = Class.new(RuntimeError)
 
