@@ -6,23 +6,50 @@ Welcome to Huia.
 
 Huia, is a programming language targetting the [Rubinius](http://rubini.us) VM.
 
+Huia is a whitespace-aware dynamic language with a simple object model based
+around traditional inheritance and closures.
+
+Huia only has a few (global) constants for core types (such as Object, Closure.
+Integer, etc).  Everything else can be made by subclassing these core types.
+
+In addition to these two core types there are two other constants available in
+the environment:
+
+  - `Huia` which provides access to runtime features (at this stage only
+     `requireFile:` and `requireCore:`).
+  - `Ruby` which implements a simple object proxy allowing you to encapsulate
+    a Ruby object and send and receive messages from them.  You will see that
+    a large amount of the standard library is implemented this way as it
+    evolves.
+
+A simple example:
+
+```huia
+Stdout = Huia.requireCore: 'stdout'
+
+HelloWhom = Object.extend:
+
+  def: 'hello:' as: |whom|
+    Stdout.putString: "Hello #{whom}"
+
+helloWhom = HelloWhom.create
+helloWhom.hello: "world"
+```
+
+Further documentation is available on
+[the GitHub Wiki](https://github.com/jamesotron/Huia/wiki).
+
 ## Installation
 
-Add this line to your application's Gemfile:
-
-    gem 'huia'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install huia
+Huia is distributed as a Rubygem, as such you can either place `gem "huia"` in
+your `Gemfile` or run `bundle install huia`.  Huia will only run on Rubinius
+version 2.2.10 and greater.  Sorry, but if you don't have a recent Rubinius
+installed, it's not going to work for you.
 
 ## Usage
 
-TODO: Write usage instructions here
+You can run Huia scripts using the bundled `huia` binary or interactively
+using the interactive REPL, `hirb`.
 
 ## Contributing
 
