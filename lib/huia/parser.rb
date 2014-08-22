@@ -787,14 +787,14 @@ module_eval(<<'.,.,', 'parser.racc', 85)
 
 module_eval(<<'.,.,', 'parser.racc', 86)
   def _reduce_62(val, _values, result)
-     return binary val[0], val[2], 'add:' 
+     return binary val[0], val[2], 'plus:' 
     result
   end
 .,.,
 
 module_eval(<<'.,.,', 'parser.racc', 87)
   def _reduce_63(val, _values, result)
-     return binary val[0], val[2], 'subtract:' 
+     return binary val[0], val[2], 'minus:' 
     result
   end
 .,.,

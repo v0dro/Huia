@@ -1,0 +1,7 @@
+klass = self
+
+def: 'plus:' as: |other|
+
+  ruby = Ruby.createFromObject: self
+  v = ruby.send: '+' withArgs: other
+  klass.createFromValue: v

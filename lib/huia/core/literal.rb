@@ -8,6 +8,7 @@ module Huia
       end
 
       __huia__send('defineMethod:as:', 'createFromValue:', proc do |value|
+        value = value.to_ruby if value.respond_to? :to_ruby
         __huia__send('create').tap do |o|
           o.value = value
         end

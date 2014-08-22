@@ -25,6 +25,12 @@ module Huia
         end
       end
 
+      def keys
+        (@superhash.keys + @localhash.keys).uniq.filter do |key|
+          @localhash.has_key? key && @localhash.fetch(key) == nil
+        end
+      end
+
       def any?
         @localhash.any? || @superhash.any?
       end

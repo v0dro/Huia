@@ -84,8 +84,8 @@ class Huia::Parser
              | equality
 
     assignment:     IDENTIFIER EQUAL expr { return allocate_local_assignment val[0], val[2] }
-    addition:       expr PLUS expr        { return binary val[0], val[2], 'add:' }
-    subtraction:    expr MINUS expr       { return binary val[0], val[2], 'subtract:' }
+    addition:       expr PLUS expr        { return binary val[0], val[2], 'plus:' }
+    subtraction:    expr MINUS expr       { return binary val[0], val[2], 'minus:' }
     multiplication: expr ASTERISK expr    { return binary val[0], val[2], 'multiplyBy:' }
     division:       expr FWD_SLASH expr   { return binary val[0], val[2], 'divideBy:' }
     exponentiation: expr EXPO expr        { return binary val[0], val[2], 'toThePowerOf:' }

@@ -35,3 +35,12 @@ unlessThen = Closure.create: |test,positive|
 definePrivateMethod: 'unless:then:' as: unlessThen
 
 definePrivateInstanceMethod: 'unless:then:' as: unlessThen
+
+defineInstanceMethod: 'class' as:
+  get: 'class'
+
+defineInstanceMethod: 'methods' as:
+  get: 'methods'
+
+defineMethod: 'methods' as:
+  get: 'methods'
