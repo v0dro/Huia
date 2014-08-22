@@ -96,7 +96,7 @@ of those who loved and stuffed it.
 And our museum has one — that is,
 of course, a pair.
 
-    — by Mark O'Connor.
+  — by Mark O'Connor.
 
 ## Contributing
 
