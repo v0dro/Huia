@@ -35,6 +35,7 @@ rules
                           /#{IDENTIFIER}?!/      { [ :CALL, text ] }
                           /#{IDENTIFIER}/        { [ :IDENTIFIER,  text ] }
 
+                          /\[\]/                 { [ :BOX, text ] }
                           /\./                   { [ :DOT, text ] }
                           /\:/                   { [ :COLON, text ] }
                           /\==/                  { [ :EQUALITY, text ] }

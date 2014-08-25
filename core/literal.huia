@@ -1,0 +1,2 @@
+def: 'inspect' as:
+  get: 'value'

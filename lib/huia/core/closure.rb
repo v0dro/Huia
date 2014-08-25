@@ -8,7 +8,8 @@ module Huia
       end
 
       # Create the base `callWithSelf:andArgs` method of Closure.
-      __huia__send('def:as:', 'callWithSelf:andArgs:', proc do |_self, *args|
+      __huia__send('def:as:', 'callWithSelf:andArgs:', proc do |_self, args|
+        args = Array(args)
         __huia__call block, _self, *args
       end)
 
@@ -18,6 +19,10 @@ module Huia
           o.block = block
         end
       end)
+
+      define_method :to_ruby do
+        block
+      end
     end)
   end
 end

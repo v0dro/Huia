@@ -94,6 +94,8 @@ class Huia::Lexer
             action { [ :CALL, text ] }
           when text = ss.scan(/#{IDENTIFIER}/) then
             action { [ :IDENTIFIER,  text ] }
+          when text = ss.scan(/\[\]/) then
+            action { [ :BOX, text ] }
           when text = ss.scan(/\./) then
             action { [ :DOT, text ] }
           when text = ss.scan(/\:/) then

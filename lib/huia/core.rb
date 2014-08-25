@@ -7,7 +7,7 @@
 # `Huia.requireCore: 'Stdout'` for example.
 module Huia
   module Core
-    core_classes = %w| Object Closure Huia Ruby Literal Numeric Integer Float String Nil True False |
+    core_classes = %w| Object Closure Huia Ruby Literal Numeric Integer Float String Nil True False Array |
 
     core_classes.each do |name|
       require "huia/core/#{name.downcase}"

@@ -12,7 +12,7 @@ module Huia
         if ::Huia::Core.constants.member? constantized
           ::Huia::Core.const_get constantized
         else
-          ::Huia.load(file.to_ruby.downcase, File.expand_path('../../../../core/', __FILE__)).invoke
+          ::Huia.load(file.downcase, File.expand_path('../../../../core/', __FILE__)).invoke
         end
       end)
 

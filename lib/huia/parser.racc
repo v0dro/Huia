@@ -1,6 +1,6 @@
 class Huia::Parser
 
-  token IDENTIFIER EQUAL PLUS MINUS ASTERISK FWD_SLASH COLON FLOAT INTEGER STRING EXPO INDENT OUTDENT OPAREN CPAREN DOT SIGNATURE NL EOF PIPE COMMA NIL TRUE FALSE EQUALITY CALL SELF CONSTANT CHAR DOUBLE_TICK_STRING DOUBLE_TICK_STRING_END INTERPOLATE_START INTERPOLATE_END
+  token IDENTIFIER EQUAL PLUS MINUS ASTERISK FWD_SLASH COLON FLOAT INTEGER STRING EXPO INDENT OUTDENT OPAREN CPAREN DOT SIGNATURE NL EOF PIPE COMMA NIL TRUE FALSE EQUALITY CALL SELF CONSTANT CHAR DOUBLE_TICK_STRING DOUBLE_TICK_STRING_END INTERPOLATE_START INTERPOLATE_END BOX
 
   prechigh
     left EXPO
@@ -27,6 +27,14 @@ class Huia::Parser
                | method_call
                | constant
                | variable
+               | array
+
+    array:             empty_array
+                     | array_list
+
+    empty_array:       BOX                              { return n :Array }
+    array_list:        expr COMMA expr                  { return n :Array, [val[0], val[2]]}
+                     | array_list COMMA expr            { val[0].append(val[2]); return val[0]}
 
     constant:          CONSTANT                         { return constant val[0] }
 

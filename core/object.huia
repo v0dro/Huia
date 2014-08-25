@@ -44,3 +44,11 @@ defineInstanceMethod: 'methods' as:
 
 defineMethod: 'methods' as:
   get: 'methods'
+
+isEqualTo = Closure.create: |other|
+  ruby = Ruby.createFromObject: self
+  ruby.send: 'equal?' withArgs: other
+
+defineMethod: 'isEqualTo:' as: isEqualTo
+
+defineInstanceMethod: 'isEqualTo:' as: isEqualTo

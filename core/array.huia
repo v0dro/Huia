@@ -1,0 +1,12 @@
+def: 'toString' as:
+  ary = get: 'value'
+  ary = Ruby.createFromObject: ary
+  ary.send: 'to_s'
+
+def: 'inspect' as:
+  ary = get: 'value'
+  ary = Ruby.createFromObject: ary
+  ary = ary.send: 'map' withBlock: |item|
+    item.inspect
+
+  ary.unwrap

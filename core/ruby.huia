@@ -1,0 +1,6 @@
+def: 'inspect' as:
+  o = get: 'object'
+  o.inspect
+
+def: 'unwrap' as:
+  get: 'object'

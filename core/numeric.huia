@@ -1,7 +1,26 @@
 klass = self
+Stdout = Huia.requireCore: 'Stdout'
+
+operation = Closure.create: |otherNumber,operation|
+  Stdout.putString: "otherNumber: #{otherNumber} operation: #{operation}"
+  thisNumber = Ruby.createFromObject: self
+  value = thisNumber.send: operation withArgs: otherNumber
+  klass.createFromValue: value
 
 def: 'plus:' as: |other|
+  operation.callWithSelf: self andArgs: other, '+'
 
-  ruby = Ruby.createFromObject: self
-  v = ruby.send: '+' withArgs: other
-  klass.createFromValue: v
+def: 'minus:' as: |other|
+  operation.callWithSelf: self andArgs: other, '-'
+
+def: 'multiplyBy:' as: |other|
+  operation.callWithSelf: self andArgs: other, '*'
+
+def: 'divideBy:' as: |other|
+  operation.callWithSelf: self andArgs: other, '/'
+
+def: 'toThePowerOf:' as: |other|
+  operation.callWithSelf: self andArgs: other, '**'
+
+def: 'moduloOf:' as: |other|
+  operation.callWithSelf: self andArgs: other, '%'

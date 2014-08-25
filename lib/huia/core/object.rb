@@ -71,6 +71,14 @@ module Huia
       __huia__define_private_method('defineInstanceMethod:as:', define_instance_method)
       __huia__define_private_method('pdef:as:', define_private_instance_method)
       __huia__define_private_method('definePrivateInstanceMethod:as:', define_private_instance_method)
+
+      __huia__define_method('inspect', proc do
+        "<Class##{object_id}>"
+      end)
+
+      __huia__send('def:as:', 'inspect', proc do
+        "<Object##{object_id}>"
+      end)
     end
   end
 end

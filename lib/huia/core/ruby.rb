@@ -22,13 +22,10 @@ module Huia
         end
       end)
 
-      __huia__send('def:as:', 'send:', proc do |signature|
+      __huia__send('def:as:', 'send:withArgs:andBlock:', proc do |signature, args, block|
         signature = signature.to_ruby if signature.respond_to? :to_ruby
-        ::Huia::Core::Ruby.__huia__send('createFromObject:', object.public_send(signature.to_sym))
-      end)
-
-      __huia__send('def:as:', 'send:withArgs:', proc do |signature, args|
-        signature = signature.to_ruby if signature.respond_to? :to_ruby
+        block     = block.to_ruby     if block.respond_to?     :to_ruby
+        args = args.to_ruby if args.is_a? ::Huia::Core::Array
         args = Array(args)
         args = args.map do |arg|
           if arg.respond_to? :to_ruby
@@ -37,7 +34,19 @@ module Huia
             arg
           end
         end
-        ::Huia::Core::Ruby.__huia__send('createFromObject:', object.public_send(signature.to_sym, *args))
+        ::Huia::Core::Ruby.__huia__send('createFromObject:', object.public_send(signature.to_sym, *args, &block))
+      end)
+
+      __huia__send('def:as:', 'send:', proc do |signature|
+        __huia__send('send:withArgs:andBlock:', signature, [], -> {})
+      end)
+
+      __huia__send('def:as:', 'send:withArgs:', proc do |signature,args|
+        __huia__send('send:withArgs:andBlock:', signature, args, -> {})
+      end)
+
+      __huia__send('def:as:', 'send:withBlock:', proc do |signature,block|
+        __huia__send('send:withArgs:andBlock:', signature, [], block)
       end)
 
       define_method :to_ruby do

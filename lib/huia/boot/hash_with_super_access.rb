@@ -26,8 +26,8 @@ module Huia
       end
 
       def keys
-        (@superhash.keys + @localhash.keys).uniq.filter do |key|
-          @localhash.has_key? key && @localhash.fetch(key) == nil
+        (@superhash.keys + @localhash.keys).uniq.reject do |key|
+          @localhash.has_key?(key) && @localhash.fetch(key) == nil
         end
       end
 
@@ -41,6 +41,10 @@ module Huia
 
       def method_missing method, *args
         @localhash.public_send(method, *args)
+      end
+
+      def inspect
+        "<Object#HashWithSuperAccess keys: [#{keys.map(&:inspect).join ", "}]>"
       end
     end
   end

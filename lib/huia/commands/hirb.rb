@@ -1,5 +1,6 @@
 require 'optparse'
 require 'readline'
+require 'pry'
 
 module Huia
   module Commands
@@ -55,12 +56,7 @@ module Huia
       end
 
       def print_result result
-        result = if result.respond_to? :to_ruby
-                   result.to_ruby
-                 else
-                   result
-                 end
-        puts " => %s" % result.inspect
+        puts " => %s" % result.huia_send('inspect').inspect
       end
 
       def print_version_string

@@ -49,7 +49,7 @@ module Huia
       end
 
       def run
-        lexer = Huia::Lexer.new(@source)
+        lexer = Huia::Lexer.new(@source, @filename)
         ast   = Huia::Parser.new(lexer).ast
 
         @output = ast
