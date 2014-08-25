@@ -137,15 +137,20 @@ def ast
   @scopes.first
 end
 
-#def do_parse
-#super
-#rescue ParseError => e
-#  raise SyntaxError, "#{e.message} on line #{@lexer.lineno}"
-#end
+def on_error t, val, vstack
+  line = lexer.line
+  col  = lexer.column
+  message = "Unexpected #{token_to_str t} at #{lexer.filename} line #{line}:#{col}:\n\n"
 
-#def on_error t, val, vstack
-#  binding.pry
-#end
+  start = line - 5 > 0 ? line - 5 : 0
+  i_size = line.to_s.size
+  (start...(start + 5)).each do |i|
+    message << sprintf("\t%#{i_size}d: %s\n", i, lexer.get_line(i))
+  end
+  message << "\t#{' ' * i_size}  #{'-' * col}^\n"
+
+  raise SyntaxError, message
+end
 
 def next_token
   nt = lexer.next_computed_token
@@ -184,7 +189,7 @@ end
 
 def node type, *args
   Huia::AST.const_get(type).new(*args).tap do |n|
-    n.line = lexer.lineno
+    n.line   = lexer.line
   end
 end
 alias n node

@@ -2,15 +2,34 @@ require 'huia/lexer.rex'
 
 class Huia::Lexer
   attr_accessor :indent_level
-  attr_reader   :lineno
+  attr_reader   :filename, :source
 
-  def initialize str
+  def initialize str, filename
     super()
     @indent_level = 0
     @token_stack  = []
     @eof_sent     = false
     @state        = []
+    @filename     = filename
+    @source       = str
+    @pos          = 0
     parse str
+  end
+
+  def line
+    @source[0..@pos].count("\n")
+  end
+
+  def column
+    @source[0..@pos].split("\n").last.length
+  end
+
+  def get_line n
+    @source.split("\n")[n]
+  end
+
+  def current_line
+    get_line line-1
   end
 
   def state
@@ -33,6 +52,13 @@ class Huia::Lexer
       end
     end
   end
+
+  def next_token_with_pos
+    @pos = @ss.pos
+    next_token_without_pos
+  end
+  alias next_token_without_pos next_token
+  alias next_token next_token_with_pos
 
   def next_computed_token
     push_more_tokens if @token_stack.empty?
