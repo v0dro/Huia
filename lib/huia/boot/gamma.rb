@@ -7,19 +7,19 @@ module Huia
     module Gamma
 
       def huia_methods
-        @methods
+        @methods.keys
       end
 
       def huia_instance_methods
-        @instanceMethods
+        @instanceMethods.keys
       end
 
       def huia_private_methods
-        @privateMethods
+        @privateMethods.keys
       end
 
       def huia_private_instance_methods
-        @privateInstanceMethods
+        @privateInstanceMethods.keys
       end
 
       def huia_superclass
@@ -37,6 +37,10 @@ module Huia
             h[method.to_sym] = methods if methods && methods.any?
           end
         end
+      end
+
+      def huia_respond_to? method
+        huia_methods.member? method
       end
 
       def huia_send message, *args
