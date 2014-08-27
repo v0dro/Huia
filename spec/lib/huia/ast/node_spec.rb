@@ -11,7 +11,9 @@ describe Huia::AST::Node do
 
     it 'calls set_line on the generator' do
       subject.line = 123
+      subject.file = 'foo'
       expect(g).to receive(:set_line).with(123)
+      expect(g).to receive(:file=).with(:foo)
       subject.pos g
     end
   end
