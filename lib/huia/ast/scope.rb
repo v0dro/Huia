@@ -84,17 +84,20 @@ module Huia
 
         g.send :__huia__send, 2
 
-        if arity > 0
-          g.dup
-          g.push_literal :@argument_names
-          arguments.each do |argument|
-            g.push_literal argument.name
-            g.string_dup
-          end
-          g.make_array arity
-          g.send :instance_variable_set, 2
-          g.pop
+        g.dup
+        g.push_literal :@argument_names
+
+        # Construct a Huia array of argument names.
+        push_huia_const g, :Array
+        g.push_literal 'createFromValue:'
+        arguments.each do |argument|
+          g.push_literal argument.name
+          g.string_dup
         end
+        g.make_array arity
+        g.send :__huia__send, 2
+        g.send :instance_variable_set, 2
+        g.pop
 
         g.ret if top_level?
       end

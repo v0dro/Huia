@@ -1,6 +1,15 @@
+Integer = Huia.requireCore: 'integer'
+String  = Huia.requireCore: 'string'
+
 def: 'inspect' as:
   o = get: 'object'
   o.inspect
 
 def: 'unwrap' as:
   get: 'object'
+
+def: 'toString' as:
+  String.createFromValue: self.unwrap
+
+def: 'toInteger' as:
+  Integer.createFromValue: self.unwrap

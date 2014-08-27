@@ -9,6 +9,7 @@ module Huia
 
       def pos g
         g.set_line line
+        g.file = file.to_sym
       end
 
       private

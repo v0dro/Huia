@@ -2,12 +2,24 @@ defineInstanceMethod: 'argumentNames' as:
   get: 'argument_names'
 
 defineInstanceMethod: 'takesArguments?' as:
-  argumentNames = get: 'argument_names'
-
-  r = Ruby.createFromObject: argumentNames
-  bool = r.sendMessage: 'any?'
+  bool = Ruby.createFromObject: get: 'argument_names'
+  .send: 'any?'
 
   if: bool then:
     true
   else:
     false
+
+defineInstanceMethod: 'fileName' as:
+  Ruby.createFromObject: self
+  .send: 'block'
+  .send: 'source_location'
+  .send: 'first'
+  .toString
+
+defineInstanceMethod: 'lineNumber' as:
+  Ruby.createFromObject: self
+  .send: 'block'
+  .send: 'source_location'
+  .send: 'last'
+  .toInteger

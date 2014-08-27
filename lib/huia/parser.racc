@@ -156,7 +156,7 @@ def on_error t, val, vstack
 
   start = line - 5 > 0 ? line - 5 : 0
   i_size = line.to_s.size
-  (start...(start + 5)).each do |i|
+  (start..(start + 5)).each do |i|
     message << sprintf("\t%#{i_size}d: %s\n", i, lexer.get_line(i))
   end
   message << "\t#{' ' * i_size}  #{'-' * col}^\n"
@@ -182,6 +182,7 @@ end
 
 def push_scope
   new_scope = Huia::AST::Scope.new scope
+  new_scope.file = lexer.filename
   new_scope.line = lexer.lineno
   scopes.push new_scope
   new_scope
@@ -201,6 +202,7 @@ end
 
 def node type, *args
   Huia::AST.const_get(type).new(*args).tap do |n|
+    n.file   = lexer.filename
     n.line   = lexer.line
   end
 end
