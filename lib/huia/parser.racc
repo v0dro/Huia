@@ -10,6 +10,7 @@ class Huia::Parser
     left EXPO
     left ASTERISK FWD_SLASH PERCENT
     left PLUS MINUS
+    left COMMA
 
     right EQUAL
   preclow
@@ -37,8 +38,10 @@ class Huia::Parser
                      | array_list
 
     empty_array:       BOX                              { return n :Array }
-    array_list:        expr COMMA expr                  { return n :Array, [val[0], val[2]]}
-                     | array_list COMMA expr            { val[0].append(val[2]); return val[0]}
+
+    array_list:        array_tuple
+                     | array_tuple COMMA expr           { val[0].append(val[2]); return val[0] }
+    array_tuple:       expr COMMA expr                  { return n :Array, [val[0], val[2]]}
 
     constant:          CONSTANT                         { return constant val[0] }
 
