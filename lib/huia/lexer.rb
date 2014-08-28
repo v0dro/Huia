@@ -56,6 +56,17 @@ class Huia::Lexer
   def next_token_with_pos
     @pos = @ss.pos
     next_token_without_pos
+  rescue ScanError
+    message = "Lexing error: count not match #{@ss.peek(10).inspect} at #{filename} line #{line}:#{column}:\n\n"
+
+    start = line - 5 > 0 ? line - 5 : 0
+    i_size = line.to_s.size
+    (start..(start + 5)).each do |i|
+      message << sprintf("\t%#{i_size}d: %s\n", i, get_line(i))
+      message << "\t#{' ' * i_size}  #{'-' * (column - 1)}^\n" if i == line
+    end
+
+    raise SyntaxError, message
   end
   alias next_token_without_pos next_token
   alias next_token next_token_with_pos
