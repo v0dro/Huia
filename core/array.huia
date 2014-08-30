@@ -1,12 +1,33 @@
+Integer = Huia.requireCore: 'integer'
+
 def: 'toString' as:
   ary = get: 'value'
   ary = Ruby.createFromObject: ary
   ary.send: 'to_s'
 
-def: 'inspect' as:
-  ary = get: 'value'
-  ary = Ruby.createFromObject: ary
-  ary = ary.send: 'map' withBlock: |item|
-    item.inspect
+def: 'size' as:
+  size = Ruby.createFromObject: self
+  .send: 'size'
+  .unwrap
+  Integer.createFromValue: size
 
-  ary.unwrap
+def: 'inspect' as:
+  result = '['
+
+  last = self.size
+
+  Ruby.createFromObject: self
+  .send: 'each_with_index' withBlock: |item,index|
+    index = Integer.createFromValue: index
+    index = index + 1
+
+    result.push: ' '
+    result.push: item.inspect
+
+    if: (last == index) then:
+      result.push: ' '
+
+    if: (last != index) then:
+      result.push: ','
+
+  result.push: ']'

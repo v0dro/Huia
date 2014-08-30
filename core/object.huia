@@ -6,7 +6,7 @@
 #   - `defineMethod:as:` defines a methods on the receiver.
 #   - `definePrivateMethod:as` defines a a private method on the receiver.
 #   - `defaultResponderFor:` finds the requested method and returns it.
-#   - `sendMessage:withArgs:` calls `defaultResponderFor:` then executes the
+#   - `sendMessage:ithArgs:` calls `defaultResponderFor:` then executes the
 #      closure in the receiver's scope (after a privacy check).
 #   - `if:then:` executes the `then` if the `if` argument is truthy.
 #
@@ -18,19 +18,19 @@ ifThenElse = Closure.create: |test,positive,negative|
 
   if: test then: |_result|
     result = _result
-    positive.callWithArg: _result
+    positive.callWithSelf: self andArgs: [result]
     wasFalse = false
 
   if: wasFalse then:
-    negative.callWithArg: _result
+    negative.callWithSelf: self andArgs: [result]
 
 definePrivateMethod: 'if:then:else:' as: ifThenElse
 
 definePrivateInstanceMethod: 'if:then:else:' as: ifThenElse
 
 unlessThen = Closure.create: |test,positive|
-  if: !test then:
-    positive.callWithArg: result
+  if: (!test) then:
+    positive.callWithSelf: self andArgs: [result]
 
 definePrivateMethod: 'unless:then:' as: unlessThen
 
@@ -45,10 +45,41 @@ defineInstanceMethod: 'methods' as:
 defineMethod: 'methods' as:
   get: 'methods'
 
-isEqualTo = Closure.create: |other|
-  ruby = Ruby.createFromObject: self
-  ruby.send: 'equal?' withArgs: other
+respondsTo = Closure.create: |method|
+  hasMethod = Ruby.createFromObject: self
+  .send: 'methods'
+  .send: 'member?' withArgs: [method]
 
-defineMethod: 'isEqualTo:' as: isEqualTo
+  if: hasMethod then:
+    true
+  else:
+    false
 
-defineInstanceMethod: 'isEqualTo:' as: isEqualTo
+defineMethod: 'respondsTo:' as: respondsTo
+
+defineInstanceMethod: 'respondsTo:' as: respondsTo
+
+defineMethod: 'unaryNot' as:
+  false
+
+defineInstanceMethod: 'unaryNot' as:
+  false
+
+def: 'truthy?' as:
+  true
+
+defineMethod: 'truthy?' as:
+  true
+
+def: 'falsy?' as:
+  !self.truthy?
+
+defineMethod: 'falsy?' as:
+  !self.truthy?
+
+isNotEqualTo = Closure.create: |other|
+  !(self.isEqualTo: other)
+
+defineMethod: 'isNotEqualTo:' as: isNotEqualTo
+
+def: 'isNotEqualTo:' as: isNotEqualTo

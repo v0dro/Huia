@@ -1,26 +1,62 @@
 klass = self
-Stdout = Huia.requireCore: 'Stdout'
-
-operation = Closure.create: |otherNumber,operation|
-  Stdout.putString: "otherNumber: #{otherNumber} operation: #{operation}"
-  thisNumber = Ruby.createFromObject: self
-  value = thisNumber.send: operation withArgs: otherNumber
-  klass.createFromValue: value
+String = Huia.requireCore: 'string'
 
 def: 'plus:' as: |other|
-  operation.callWithSelf: self andArgs: other, '+'
+  other = Ruby.createFromObject: other
+  .unwrap
+  value = Ruby.createFromObject: self
+  .send: '+' withArgs: [other]
+  klass.createFromValue: value.unwrap
 
 def: 'minus:' as: |other|
-  operation.callWithSelf: self andArgs: other, '-'
+  other = Ruby.createFromObject: other
+  .unwrap
+  value = Ruby.createFromObject: self
+  .send: '-' withArgs: [other]
+  klass.createFromValue: value.unwrap
 
 def: 'multiplyBy:' as: |other|
-  operation.callWithSelf: self andArgs: other, '*'
+  other = Ruby.createFromObject: other
+  .unwrap
+  value = Ruby.createFromObject: self
+  .send: '*' withArgs: [other]
+  klass.createFromValue: value.unwrap
 
 def: 'divideBy:' as: |other|
-  operation.callWithSelf: self andArgs: other, '/'
+  other = Ruby.createFromObject: other
+  .unwrap
+  value = Ruby.createFromObject: self
+  .send: '/' withArgs: [other]
+  klass.createFromValue: value.unwrap
 
 def: 'toThePowerOf:' as: |other|
-  operation.callWithSelf: self andArgs: other, '**'
+  other = Ruby.createFromObject: other
+  .unwrap
+  value = Ruby.createFromObject: self
+  .send: '**' withArgs: [other]
+  klass.createFromValue: value.unwrap
 
 def: 'moduloOf:' as: |other|
-  operation.callWithSelf: self andArgs: other, '%'
+  other = Ruby.createFromObject: other
+  .unwrap
+  value = Ruby.createFromObject: self
+  .send: '%' withArgs: [other]
+  klass.createFromValue: value.unwrap
+
+def: 'unaryPlus' as:
+  value = Ruby.createFromObject: self
+  .send: '+@'
+  klass.createFromValue: value
+
+def: 'unaryMinus' as:
+  value = Ruby.createFromObject: self
+  .send: '-@'
+  klass.createFromValue: value
+
+def: 'inspect' as:
+  self.toString
+
+def: 'toString' as:
+  str = Ruby.createFromObject: self
+  .send: 'to_s'
+  String.createFromValue: str

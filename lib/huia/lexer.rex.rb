@@ -56,7 +56,7 @@ class Huia::Lexer
     until ss.eos? or token do
       token =
         case state
-        when nil, :interpolation then
+        when nil, :interpolation, :hash then
           case
           when text = ss.scan(/'/) then
             [:state, :SINGLE_TICK_STRING]
@@ -90,18 +90,30 @@ class Huia::Lexer
             action { [ :COMMENT,     text ] }
           when text = ss.scan(/#{IDENTIFIER}\:/) then
             action { [ :SIGNATURE,  text ] }
-          when text = ss.scan(/#{IDENTIFIER}?!/) then
+          when text = ss.scan(/#{IDENTIFIER}[?!]/) then
             action { [ :CALL, text ] }
           when text = ss.scan(/#{IDENTIFIER}/) then
             action { [ :IDENTIFIER,  text ] }
           when text = ss.scan(/\[\]/) then
             action { [ :BOX, text ] }
+          when text = ss.scan(/\[/) then
+            action { [ :LSQUARE, text ] }
+          when text = ss.scan(/\]/) then
+            action { [ :RSQUARE, text ] }
+          when text = ss.scan(/\{\}/) then
+            action { [ :FACES, text ] }
+          when text = ss.scan(/\{/) then
+            action { @state.push :hash; [ :LFACE, text ] }
+          when text = ss.scan(/\<-/) then
+            action { [ :RETURN, text ] }
           when text = ss.scan(/\./) then
             action { [ :DOT, text ] }
           when text = ss.scan(/\:/) then
             action { [ :COLON, text ] }
           when text = ss.scan(/\==/) then
             action { [ :EQUALITY, text ] }
+          when text = ss.scan(/\!=/) then
+            action { [ :NOT_EQUALITY, text ] }
           when text = ss.scan(/\=/) then
             action { [ :EQUAL, text ] }
           when text = ss.scan(/\+/) then
@@ -124,12 +136,18 @@ class Huia::Lexer
             action { [ :OPAREN, text ] }
           when text = ss.scan(/\)/) then
             action { [ :CPAREN, text ] }
+          when text = ss.scan(/\!/) then
+            action { [ :BANG, text ] }
+          when text = ss.scan(/\~/) then
+            action { [ :TILDE, text ] }
           when text = ss.scan(/[\n\r][\n\t\r ]*/) then
             in_or_out_dent text
           when text = ss.scan(/\s+/) then
             # do nothing
-          when (state == :interpolation) && (text = ss.scan(/#{'}'}/)) then
+          when (state == :interpolation) && (text = ss.scan(/\}/)) then
             action { @state.pop; [ :INTERPOLATE_END, '}'] }
+          when (state == :hash) && (text = ss.scan(/\}/)) then
+            action { @state.pop; [ :RFACE, text ] }
           else
             text = ss.string[ss.pos .. -1]
             raise ScanError, "can not match (#{state.inspect}): '#{text}'"

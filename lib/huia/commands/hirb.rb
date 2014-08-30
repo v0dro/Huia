@@ -56,7 +56,9 @@ module Huia
       end
 
       def print_result result
-        puts " => %s" % result.huia_send('inspect').inspect
+        return puts "WARNING: object #{result.inspect} is not a Huia object!" unless result.respond_to? :__huia__send
+        result = result.__huia__send('inspect')
+        puts sprintf(" => %s", result.value)
       end
 
       def print_version_string

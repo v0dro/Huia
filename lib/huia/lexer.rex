@@ -11,7 +11,7 @@ rules
 
                           /"/                    { @state.push :DOUBLE_TICK_STRING; [ :DOUBLE_TICK_STRING, '' ] }
   :DOUBLE_TICK_STRING     /#{'#{'}/              { @state.push :interpolation; [ :INTERPOLATE_START, '#{' ] }
-  :interpolation          /#{'}'}/               { @state.pop; [ :INTERPOLATE_END, '}'] }
+  :interpolation          /\}/                   { @state.pop; [ :INTERPOLATE_END, '}'] }
   :DOUBLE_TICK_STRING     /[^"]/                 { [ :CHAR, text ] }
   :DOUBLE_TICK_STRING     /"/                    { @state.pop; [ :DOUBLE_TICK_STRING_END, '' ] }
 
@@ -32,13 +32,21 @@ rules
 
                           /#.*/                  { [ :COMMENT,     text ] }
                           /#{IDENTIFIER}\:/      { [ :SIGNATURE,  text ] }
-                          /#{IDENTIFIER}?!/      { [ :CALL, text ] }
+                          /#{IDENTIFIER}[?!]/    { [ :CALL, text ] }
                           /#{IDENTIFIER}/        { [ :IDENTIFIER,  text ] }
 
                           /\[\]/                 { [ :BOX, text ] }
+                          /\[/                   { [ :LSQUARE, text ] }
+                          /\]/                   { [ :RSQUARE, text ] }
+
+                          /\{\}/                 { [ :FACES, text ] }
+                          /\{/                   { @state.push :hash; [ :LFACE, text ] }
+  :hash                   /\}/                   { @state.pop; [ :RFACE, text ] }
+                          /\<-/                  { [ :RETURN, text ] }
                           /\./                   { [ :DOT, text ] }
                           /\:/                   { [ :COLON, text ] }
                           /\==/                  { [ :EQUALITY, text ] }
+                          /\!=/                  { [ :NOT_EQUALITY, text ] }
                           /\=/                   { [ :EQUAL, text ] }
                           /\+/                   { [ :PLUS, text ] }
                           /,/                    { [ :COMMA, text ] }
@@ -50,5 +58,7 @@ rules
                           /%/                    { [ :PERCENT, text ] }
                           /\(/                   { [ :OPAREN, text ] }
                           /\)/                   { [ :CPAREN, text ] }
+                          /\!/                   { [ :BANG, text ] }
+                          /\~/                   { [ :TILDE, text ] }
                           /[\n\r][\n\t\r ]*/     in_or_out_dent
                           /\s+/

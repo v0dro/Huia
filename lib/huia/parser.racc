@@ -4,10 +4,12 @@ class Huia::Parser
     IDENTIFIER EQUAL PLUS MINUS ASTERISK FWD_SLASH COLON FLOAT INTEGER STRING
     EXPO INDENT OUTDENT OPAREN CPAREN DOT SIGNATURE NL EOF PIPE COMMA NIL TRUE
     FALSE EQUALITY CALL SELF CONSTANT CHAR DOUBLE_TICK_STRING
-    DOUBLE_TICK_STRING_END INTERPOLATE_START INTERPOLATE_END BOX
+    DOUBLE_TICK_STRING_END INTERPOLATE_START INTERPOLATE_END BOX LSQUARE
+    RSQUARE FACES LFACE RFACE BANG TILDE RETURN NOT_EQUALITY
 
   prechigh
     left EXPO
+    left BANG TILDE
     left ASTERISK FWD_SLASH PERCENT
     left PLUS MINUS
 
@@ -28,17 +30,35 @@ class Huia::Parser
     expr:        literal
                | grouped_expr
                | binary_op
+               | unary_op
                | method_call
                | constant
                | variable
                | array
+               | hash
+               | return
+
+    return:            return_expr
+                     | return_nil
+    return_expr:       RETURN expr                      { return n(:Return, val[1]) }
+    return_nil:        RETURN                           { return n(:Return, n(:Nil)) }
 
     array:             empty_array
                      | array_list
 
     empty_array:       BOX                              { return n :Array }
-    array_list:        expr COMMA expr                  { return n :Array, [val[0], val[2]]}
-                     | array_list COMMA expr            { val[0].append(val[2]); return val[0]}
+
+    array_list:        LSQUARE array_items RSQUARE      { return val[1] }
+    array_items:       expr                             { return n :Array, [val[0]] }
+                     | array_items COMMA expr           { val[0].append(val[2]); return val[0] }
+
+    hash:              empty_hash
+                     | hash_list
+    empty_hash:        FACES                            { return n :Hash }
+    hash_list:         LFACE hash_items RFACE           { return val[1] }
+    hash_items:        hash_item                        { return n :Hash, val[0] }
+                     | hash_items COMMA hash_item       { val[0].append(val[2]); return val[0] }
+    hash_item:         expr COLON expr                  { return n :HashItem, val[0], val[2] }
 
     constant:          CONSTANT                         { return constant val[0] }
 
@@ -94,15 +114,27 @@ class Huia::Parser
              | exponentiation
              | modulo
              | equality
+             | not_equality
 
-    assignment:     IDENTIFIER EQUAL expr { return allocate_local_assignment val[0], val[2] }
-    addition:       expr PLUS expr        { return binary val[0], val[2], 'plus:' }
-    subtraction:    expr MINUS expr       { return binary val[0], val[2], 'minus:' }
-    multiplication: expr ASTERISK expr    { return binary val[0], val[2], 'multiplyBy:' }
-    division:       expr FWD_SLASH expr   { return binary val[0], val[2], 'divideBy:' }
-    exponentiation: expr EXPO expr        { return binary val[0], val[2], 'toThePowerOf:' }
-    modulo:         expr PERCENT expr     { return binary val[0], val[2], 'moduloOf:' }
-    equality:       expr EQUALITY expr    { return binary val[0], val[2], 'isEqualTo:' }
+    assignment:     IDENTIFIER EQUAL expr  { return allocate_local_assignment val[0], val[2] }
+    addition:       expr PLUS expr         { return binary val[0], val[2], 'plus:' }
+    subtraction:    expr MINUS expr        { return binary val[0], val[2], 'minus:' }
+    multiplication: expr ASTERISK expr     { return binary val[0], val[2], 'multiplyBy:' }
+    division:       expr FWD_SLASH expr    { return binary val[0], val[2], 'divideBy:' }
+    exponentiation: expr EXPO expr         { return binary val[0], val[2], 'toThePowerOf:' }
+    modulo:         expr PERCENT expr      { return binary val[0], val[2], 'moduloOf:' }
+    equality:       expr EQUALITY expr     { return binary val[0], val[2], 'isEqualTo:' }
+    not_equality:   expr NOT_EQUALITY expr { return binary val[0], val[2], 'isNotEqualTo:' }
+
+    unary_op:  unary_not
+             | unary_plus
+             | unary_minus
+             | unary_complement
+
+    unary_not:        BANG  expr { return unary val[1], 'unaryNot' }
+    unary_plus:       PLUS  expr { return unary val[1], 'unaryPlus' }
+    unary_minus:      MINUS expr { return unary val[1], 'unaryMinus' }
+    unary_complement: TILDE expr { return unary val[1], 'unaryComplement' }
 
     literal:   integer
              | float
@@ -158,8 +190,8 @@ def on_error t, val, vstack
   i_size = line.to_s.size
   (start..(start + 5)).each do |i|
     message << sprintf("\t%#{i_size}d: %s\n", i, lexer.get_line(i))
+    message << "\t#{' ' * i_size}  #{'-' * (col - 1)}^\n" if i == line
   end
-  message << "\t#{' ' * i_size}  #{'-' * col}^\n"
 
   raise SyntaxError, message
 end
@@ -182,8 +214,9 @@ end
 
 def push_scope
   new_scope = Huia::AST::Scope.new scope
-  new_scope.file = lexer.filename
-  new_scope.line = lexer.lineno
+  new_scope.file   = lexer.filename
+  new_scope.line   = lexer.lineno
+  new_scope.column = lexer.column
   scopes.push new_scope
   new_scope
 end
@@ -200,10 +233,15 @@ def binary left, right, method
   node(:MethodCall, left, node(:CallSignature, method, [right]))
 end
 
+def unary left, method
+  node(:MethodCall, left, node(:CallSignature, method))
+end
+
 def node type, *args
   Huia::AST.const_get(type).new(*args).tap do |n|
     n.file   = lexer.filename
     n.line   = lexer.line
+    n.column = lexer.column
   end
 end
 alias n node

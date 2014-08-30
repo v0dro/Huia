@@ -17,11 +17,7 @@ module Huia
       end
 
       def name
-        if @parent
-          "__closure__#{arguments.map(&:name).join("__")}".to_sym
-        else
-          :__root__scope__
-        end
+        "#{file}:#{line}:#{column}".to_sym
       end
 
       def add_argument variable
@@ -73,7 +69,7 @@ module Huia
       def bytecode g
         pos g
 
-        g.name = "#{name}__outer__".to_sym
+        g.name = "#{name} (file scope)".to_sym
         push_huia_const g, :Closure
         g.push_literal 'create:'
         g.string_dup

@@ -1,0 +1,26 @@
+Array   = Huia.requireCore: 'array'
+Integer = Huia.requireCore: 'integer'
+Stdout  = Huia.requireCore: 'stdout'
+
+def: 'inspect' as:
+  result = '{'
+
+  last = self.size
+
+  Ruby.createFromObject: self.keys
+  .send: 'each_with_index' withBlock: |key,index|
+    index = Integer.createFromValue: index
+    index = index + 1
+    value = self.at: key
+    result.push: ' '
+    result.push: key.inspect
+    result.push: ' : '
+    result.push: value.inspect
+
+    if: (last == index) then:
+      result.push: ' '
+
+    if: (last != index) then:
+      result.push: ','
+
+  result.push: '}'

@@ -23,34 +23,57 @@ module Huia
       end)
 
       __huia__send('def:as:', 'send:withArgs:andBlock:', proc do |signature, args, block|
-        signature = signature.to_ruby if signature.respond_to? :to_ruby
-        block     = block.to_ruby     if block.respond_to?     :to_ruby
-        args = args.to_ruby if args.is_a? ::Huia::Core::Array
-        args = Array(args)
-        args = args.map do |arg|
-          if arg.respond_to? :to_ruby
-            arg.to_ruby
-          else
-            arg
-          end
-        end
-        ::Huia::Core::Ruby.__huia__send('createFromObject:', object.public_send(signature.to_sym, *args, &block))
+        signature = normalize_signature signature
+        block     = normalize_block     block
+        args      = normalize_args      args
+        result = object.public_send(signature.to_sym, *args, &block)
+        ::Huia::Core::Ruby.__huia__send('createFromObject:', result)
       end)
 
       __huia__send('def:as:', 'send:', proc do |signature|
-        __huia__send('send:withArgs:andBlock:', signature, [], -> {})
+        signature = normalize_signature signature
+        result = object.public_send(signature.to_sym)
+        ::Huia::Core::Ruby.__huia__send('createFromObject:', result)
       end)
 
       __huia__send('def:as:', 'send:withArgs:', proc do |signature,args|
-        __huia__send('send:withArgs:andBlock:', signature, args, -> {})
+        signature = normalize_signature signature
+        args      = normalize_args      args
+        result = object.public_send(signature.to_sym, *args)
+        ::Huia::Core::Ruby.__huia__send('createFromObject:', result)
       end)
 
       __huia__send('def:as:', 'send:withBlock:', proc do |signature,block|
-        __huia__send('send:withArgs:andBlock:', signature, [], block)
+        signature = normalize_signature signature
+        block     = normalize_block     block
+        result = object.public_send(signature.to_sym, &block)
+        ::Huia::Core::Ruby.__huia__send('createFromObject:', result)
+      end)
+
+      __huia__send('def:as:', 'truthy?', proc do
+        if !!object
+          ::Huia::Core::True.__huia__send('create')
+        else
+          ::Huia::Core::False.__huia__send('create')
+        end
       end)
 
       define_method :to_ruby do
         object
+      end
+
+      define_method :normalize_signature do |signature|
+        signature.to_str
+      end
+
+      define_method :normalize_block do |block|
+        return block.to_ruby if block.respond_to? :to_ruby
+        block
+      end
+
+      define_method :normalize_args do |args|
+        return args.to_ruby if args.is_a? ::Huia::Core::Array
+        args = Array(args)
       end
 
     end)

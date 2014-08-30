@@ -13,6 +13,7 @@ module Huia
 
     autoload :Assignment,     'huia/ast/assignment'
     autoload :InterpolatedString, 'huia/ast/interpolated_string'
+    autoload :Return,         'huia/ast/return'
 
     # Literals
     autoload :Integer,        'huia/ast/integer'
@@ -25,5 +26,7 @@ module Huia
     autoload :Self,           'huia/ast/self'
     autoload :Constant,       'huia/ast/constant'
     autoload :Array,          'huia/ast/array'
+    autoload :Hash,           'huia/ast/hash'
+    autoload :HashItem,       'huia/ast/hash_item'
   end
 end

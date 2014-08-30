@@ -6,6 +6,10 @@ module Huia
   module Boot
     module Gamma
 
+      def huia?
+        true
+      end
+
       def huia_methods
         @methods.keys
       end

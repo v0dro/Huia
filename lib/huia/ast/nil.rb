@@ -10,7 +10,8 @@ module Huia
         pos g
 
         push_huia_const g, :Nil
-        g.send :new, 0
+        g.push_literal 'create'
+        g.send :__huia__send, 1
       end
 
     end

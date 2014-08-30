@@ -1,0 +1,6 @@
+klass = self
+
+def: 'unaryComplement' as:
+  value = Ruby.createFromObject: self
+  .send: '~'
+  klass.createFromValue: value

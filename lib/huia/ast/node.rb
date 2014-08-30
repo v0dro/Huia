@@ -1,7 +1,7 @@
 module Huia
   module AST
     class Node
-      attr_accessor :file, :line
+      attr_accessor :file, :line, :column
 
       def bytecode g
         pos g

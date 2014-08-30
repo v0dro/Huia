@@ -73,12 +73,46 @@ module Huia
       __huia__define_private_method('definePrivateInstanceMethod:as:', define_private_instance_method)
 
       __huia__define_method('inspect', proc do
-        "<Class##{object_id}>"
+        klass_name = self.to_s.split('::').last
+        ivars      = instance_variables.map { |i| i.to_s[1..-1] }
+        ivars      = if ivars.any?
+                       " [#{ivars.join(' ')}]"
+                     else
+                       ''
+                     end
+        ::Huia::Core::String.__huia__send('createFromValue:', "<Class(#{klass_name})##{object_id}#{ivars}>")
       end)
 
       __huia__send('def:as:', 'inspect', proc do
-        "<Object##{object_id}>"
+        klass_name = self.class.to_s.split('::').last
+        ivars      = instance_variables.map { |i| i.to_s[1..-1] }
+        ivars      = if ivars.any?
+                       " [#{ivars.join(' ')}]"
+                     else
+                       ''
+                     end
+        ::Huia::Core::String.__huia__send('createFromValue:', "<Object(#{klass_name})##{object_id}#{ivars}>")
       end)
+
+      __huia__send('def:as:', 'isEqualTo:', proc do |other|
+        if self == other
+          ::Huia::Core::True.__huia__send('create')
+        else
+          ::Huia::Core::False.__huia__send('create')
+        end
+      end)
+
+      __huia__send('defineMethod:as:', 'isEqualTo:', proc do |other|
+        if self == other
+          ::Huia::Core::True.__huia__send('create')
+        else
+          ::Huia::Core::False.__huia__send('create')
+        end
+      end)
+
+      define_method :unique_id do
+        self.object_id
+      end
     end
   end
 end

@@ -1,0 +1,8 @@
+def: 'inspect' as:
+  'false'
+
+def: 'truthy?' as:
+  false
+
+def: 'unaryNot' as:
+  true

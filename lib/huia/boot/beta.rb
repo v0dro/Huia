@@ -50,8 +50,8 @@ module Huia
         end)
 
         base.__huia__define_private_method('if:then:', proc do |test,closure|
-          if result = test
-            __huia__call closure, self, result
+          if test.__huia__send('truthy?').value
+            __huia__call closure, self, test
           end
         end)
 

@@ -1,7 +1,7 @@
 module Huia
   module Core
     Nil = Literal.__huia__send('extend:', proc do
-      def __huia__init
+      define_method :__huia__init do
         super
         @value = nil
       end

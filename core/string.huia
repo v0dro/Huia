@@ -1,2 +1,17 @@
+klass = self
+
 def: 'toString' as:
-  get: 'value'
+  self
+
+def: 'push:' as: |string|
+  str = Ruby.createFromObject: string
+  Ruby.createFromObject: self
+  .send: '<<' withArgs: [str.unwrap]
+
+  self
+
+def: 'inspect' as:
+  inspected = Ruby.createFromObject: self
+  .send: 'inspect'
+
+  klass.createFromValue: inspected

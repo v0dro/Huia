@@ -11,6 +11,10 @@ module Huia
               end
         String.__huia__send('createFromValue:', str)
       end)
+
+      define_method :to_str do
+        to_ruby
+      end
     end)
   end
 end

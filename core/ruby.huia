@@ -1,9 +1,12 @@
 Integer = Huia.requireCore: 'integer'
 String  = Huia.requireCore: 'string'
 
-def: 'inspect' as:
-  o = get: 'object'
-  o.inspect
+#def: 'inspect' as:
+#  o = get: 'object'
+#  if: (o.respondsTo: 'inspect') then:
+#    o.inspect
+#  else:
+#    String.createFromValue: (self.send: 'inspect')
 
 def: 'unwrap' as:
   get: 'object'

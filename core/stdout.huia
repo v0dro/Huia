@@ -4,4 +4,4 @@ Object.extend:
 
   defineMethod: 'putString:' as: |string|
 
-    Stdout.send: 'puts' withArgs: string
+    Stdout.send: 'puts' withArgs: [string]
