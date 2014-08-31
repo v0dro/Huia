@@ -2,26 +2,12 @@ module Huia
   module Core
     Hash = Literal.__huia__send('extend:', proc do
       define_method :__huia__init do
-        @value = {
-          keys:   {},
-          values: {}
-        }
+        super
+        @value = {}
       end
 
-      __huia__send('def:as:', 'keys', proc do
-        ::Huia::Core::Array.__huia__send('createFromValue:', value[:keys].values)
-      end)
-
-      __huia__send('def:as:', 'values', proc do
-        ::Huia::Core::Array.__huia__send('createFromValue:', value[:values].values)
-      end)
-
-      __huia__send('def:as:', 'size', proc do
-        ::Huia::Core::Integer.__huia__send('createFromValue:', value[:keys].size)
-      end)
-
       __huia__send('def:as:', 'at:', proc do |index|
-        result = value[:values][index.unique_id]
+        result = value[index]
         if result
           result
         else
@@ -30,8 +16,7 @@ module Huia
       end)
 
       __huia__send('def:as:', 'at:set:', proc do |index, _value|
-        value[:values][index.unique_id] = _value
-        value[:keys][index.unique_id]   = index
+        value[index] = _value
       end)
     end)
   end

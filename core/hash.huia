@@ -1,6 +1,23 @@
 Array   = Huia.requireCore: 'array'
 Integer = Huia.requireCore: 'integer'
-Stdout  = Huia.requireCore: 'stdout'
+
+def: 'keys' as:
+  keys = Ruby.createFromObject: self
+  .send: 'keys'
+  .unwrap
+  Array.createFromValue: keys
+
+def: 'values' as:
+  values = Ruby.createFromObject: self
+  .send: 'values'
+  .unwrap
+  Array.createFromValue: values
+
+def: 'size' as:
+  size = Ruby.createFromObject: self
+  .send: 'size'
+  .unwrap
+  Integer.createFromValue: size
 
 def: 'inspect' as:
   result = '{'

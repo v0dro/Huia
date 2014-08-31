@@ -26,28 +26,28 @@ module Huia
         signature = normalize_signature signature
         block     = normalize_block     block
         args      = normalize_args      args
-        result = object.public_send(signature.to_sym, *args, &block)
-        ::Huia::Core::Ruby.__huia__send('createFromObject:', result)
+        result = object.public_send(signature, *args, &block)
+        normalize_result result
       end)
 
       __huia__send('def:as:', 'send:', proc do |signature|
         signature = normalize_signature signature
-        result = object.public_send(signature.to_sym)
-        ::Huia::Core::Ruby.__huia__send('createFromObject:', result)
+        result = object.public_send(signature)
+        normalize_result result
       end)
 
       __huia__send('def:as:', 'send:withArgs:', proc do |signature,args|
         signature = normalize_signature signature
         args      = normalize_args      args
-        result = object.public_send(signature.to_sym, *args)
-        ::Huia::Core::Ruby.__huia__send('createFromObject:', result)
+        result = object.public_send(signature, *args)
+        normalize_result result
       end)
 
       __huia__send('def:as:', 'send:withBlock:', proc do |signature,block|
         signature = normalize_signature signature
         block     = normalize_block     block
-        result = object.public_send(signature.to_sym, &block)
-        ::Huia::Core::Ruby.__huia__send('createFromObject:', result)
+        result = object.public_send(signature, &block)
+        normalize_result result
       end)
 
       __huia__send('def:as:', 'truthy?', proc do
@@ -63,7 +63,7 @@ module Huia
       end
 
       define_method :normalize_signature do |signature|
-        signature.to_str
+        signature.to_str.to_sym
       end
 
       define_method :normalize_block do |block|
@@ -74,6 +74,11 @@ module Huia
       define_method :normalize_args do |args|
         return args.to_ruby if args.is_a? ::Huia::Core::Array
         args = Array(args)
+      end
+
+      define_method :normalize_result do |result|
+        return result if ::Huia::Core::Object === result
+        ::Huia::Core::Ruby.__huia__send('createFromObject:', result)
       end
 
     end)

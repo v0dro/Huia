@@ -7,8 +7,17 @@ module Huia
         value
       end
 
-      define_method :unique_id do
-        value.object_id
+      define_method :eql? do |other|
+        if ::Huia::Core::Literal === other
+          value.eql? other.value
+        else
+          value.eql? other
+        end
+      end
+      alias_method :==, :eql?
+
+      define_method :hash do
+        value.hash
       end
 
       __huia__send('def:as:', 'isEqualTo:', proc do |other|

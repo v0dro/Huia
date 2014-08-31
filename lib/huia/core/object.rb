@@ -109,10 +109,6 @@ module Huia
           ::Huia::Core::False.__huia__send('create')
         end
       end)
-
-      define_method :unique_id do
-        self.object_id
-      end
     end
   end
 end

@@ -1,9 +1,20 @@
+String  = Huia.requireCore: 'string'
 Integer = Huia.requireCore: 'integer'
 
 def: 'toString' as:
-  ary = get: 'value'
-  ary = Ruby.createFromObject: ary
-  ary.send: 'to_s'
+  str = Ruby.createFromObject: self
+  .send: 'to_s'
+  String.createFromValue: str
+
+def: 'at:' as: |index|
+  Ruby.createFromObject: self
+  .send: '[]' withArgs: [index]
+
+def: 'at:set:' as: |index,value|
+  Ruby.createFromObject: self
+  .send: '[]=' withArgs: [index,value]
+
+  value
 
 def: 'size' as:
   size = Ruby.createFromObject: self
