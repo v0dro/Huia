@@ -7,13 +7,6 @@ module Huia
       def initialize value
         self.value = value
       end
-
-      def bytecode g
-        pos g
-
-        g.push_literal value
-      end
-
     end
   end
 end

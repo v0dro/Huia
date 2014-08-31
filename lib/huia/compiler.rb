@@ -30,7 +30,7 @@ module Huia
       end
 
       def run
-        @output = ToolSet::Generator.new
+        @output = ::Huia::Generator.new
         @input.bytecode @output
         @output.close
 

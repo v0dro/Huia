@@ -5,10 +5,7 @@ module Huia
       def bytecode g
         pos g
 
-        push_huia_const g, :Float
-        g.push_literal 'createFromValue:'
-        g.push_literal value.to_f
-        g.send :__huia__send, 2
+        g.push_huia_float value
       end
 
     end

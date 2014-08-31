@@ -46,6 +46,7 @@ module Huia
         end)
 
         base.__huia__define_method('sendMessage:withArgs:', proc do |signature, args|
+          args = args.to_ruby if ::Huia::Core::Array === args
           __huia__send signature, *args
         end)
 

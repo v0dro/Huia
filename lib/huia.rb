@@ -23,6 +23,7 @@ module Huia
   autoload :Parser,      'huia/parser'
   autoload :AST,         'huia/ast'
   autoload :CodeLoader,  'huia/code_loader'
+  autoload :Generator,   'huia/generator'
   autoload :Compiler,    'huia/compiler'
   autoload :Script,      'huia/script'
   autoload :Commands,    'huia/commands'

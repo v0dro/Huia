@@ -5,7 +5,7 @@ module Huia
       def bytecode g
         pos g
 
-        push_huia_const g, value
+        g.push_huia_const value
       end
 
     end

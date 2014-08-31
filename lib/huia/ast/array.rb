@@ -2,8 +2,8 @@ module Huia
   module AST
     class Array < Literal
 
-      def initialize array=[]
-        @value = array
+      def initialize ary=[]
+        @value = ary
       end
 
       def append value
@@ -13,15 +13,11 @@ module Huia
       def bytecode g
         pos g
 
-        push_huia_const g, :Array
-        g.push_literal 'createFromValue:'
-
-        @value.each do |item|
-          item.bytecode g
+        g.push_huia_array @value.size do |g|
+          @value.each do |item|
+            item.bytecode g
+          end
         end
-        g.make_array @value.size
-
-        g.send :__huia__send, 2
       end
     end
   end

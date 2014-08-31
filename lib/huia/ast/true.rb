@@ -9,10 +9,7 @@ module Huia
       def bytecode g
         pos(g)
 
-        push_huia_const g, :True
-        g.push_literal 'create'
-        g.string_dup
-        g.send :__huia__send, 1
+        g.push_huia_true
       end
 
     end

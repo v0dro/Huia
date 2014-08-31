@@ -14,25 +14,16 @@ module Huia
       def bytecode g
         pos g
 
-        # Hash.createFromValue:
-        push_huia_const g, :Hash
-        g.push_literal 'create'
-        g.string_dup
-
-        # Dispatch Hash.createFromValue: <hash>
-        g.send :__huia__send, 1
+        g.push_huia_hash
 
         # Assign each key and value.
         @value.each do |item|
           g.dup
 
-          g.push_literal 'at:set:'
-          g.string_dup
+          g.huia_send 'at:set:', 2 do |g|
+            item.bytecode g
+          end
 
-          # bytecode for key and value:
-          item.bytecode g
-
-          g.send :__huia__send, 3
           g.pop
         end
       end

@@ -5,18 +5,12 @@ module Huia
       def bytecode g
         pos g
 
-        push_huia_const g, :String
-        g.push_literal 'createFromValue:'
-        g.string_dup
-        g.push_literal ''
-        g.string_dup
-        g.send :__huia__send, 2
+        g.push_huia_string ''
 
         @children.each do |child|
-          g.push_literal 'concat:'
-          g.string_dup
-          child.bytecode g
-          g.send :__huia__send, 2
+          g.huia_send 'concat:', 1 do |g|
+            child.bytecode g
+          end
         end
       end
 
