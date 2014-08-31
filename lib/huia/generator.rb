@@ -75,7 +75,6 @@ module Huia
 
       dup
       push_literal :@argumentNames
-      puts "Generator#push_huia_closure size on #{argument_names.inspect}"
       push_huia_array argument_names.size do |g|
         argument_names.each do |argument_name|
           g.push_huia_string argument_name

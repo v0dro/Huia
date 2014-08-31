@@ -70,30 +70,8 @@ module Huia
         pos g
 
         g.name = "#{name} (file scope)".to_sym
-        push_huia_const g, :Closure
-        g.push_literal 'create:'
-        g.string_dup
 
-        g.push_rubinius
-        g.create_block block_from_children g
-        g.send_with_block :lambda, 0, false
-
-        g.send :__huia__send, 2
-
-        g.dup
-        g.push_literal :@argument_names
-
-        # Construct a Huia array of argument names.
-        push_huia_const g, :Array
-        g.push_literal 'createFromValue:'
-        arguments.each do |argument|
-          g.push_literal argument.name
-          g.string_dup
-        end
-        g.make_array arity
-        g.send :__huia__send, 2
-        g.send :instance_variable_set, 2
-        g.pop
+        g.push_huia_closure block_from_children(g), argument_names
 
         g.ret if top_level?
       end
@@ -111,6 +89,10 @@ module Huia
       end
 
       private
+
+      def argument_names
+        arguments.map(&:name)
+      end
 
       def top_level?
         !@parent

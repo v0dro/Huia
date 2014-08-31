@@ -43,7 +43,7 @@ module Huia
         return _self.instance_exec(*args, &closure) unless closure.respond_to? :__huia__send
 
         # Otherwise dispatch via Huia's own method calling.
-        closure.__huia__send('callWithSelf:andArgs:', _self, *args)
+        closure.__huia__send('callWithSelf:andArgs:', _self, args)
       end
     end
   end

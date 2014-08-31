@@ -1,5 +1,5 @@
 defineInstanceMethod: 'argumentNames' as:
-  get: 'argument_names'
+  get: 'argumentNames'
 
 defineInstanceMethod: 'takesArguments?' as:
   bool = Ruby.createFromObject: get: 'argument_names'

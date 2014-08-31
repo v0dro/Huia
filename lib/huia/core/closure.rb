@@ -1,10 +1,14 @@
 module Huia
   module Core
     Closure = Object.__huia__send('extend:', proc do
-      attr_accessor :block, :argument_names
+      attr_accessor :block
 
       def arity
         argument_names.size
+      end
+
+      def argument_names
+        @argumentNames.to_ruby.map { |a| a.to_str }
       end
 
       # Create the base `callWithSelf:andArgs` method of Closure.
