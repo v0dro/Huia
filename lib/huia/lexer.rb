@@ -21,7 +21,7 @@ class Huia::Lexer
   end
 
   def column
-    @source[0..@pos].split("\n").last.length
+    @source[0..@pos].split("\n").fetch(-1, '').length
   end
 
   def get_line n
