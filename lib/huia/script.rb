@@ -10,7 +10,6 @@ module Huia
     end
 
     def invoke main = new_object_instance
-      # closure.__huia__send 'callWithSelf:andArgs:', main, []
       main.instance_exec([], &closure.block)
     end
 
