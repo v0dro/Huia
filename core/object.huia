@@ -39,21 +39,12 @@ definePrivateInstanceMethod: 'unless:then:' as: unlessThen
 defineInstanceMethod: 'class' as:
   get: 'class'
 
-defineInstanceMethod: 'methods' as:
-  get: 'methods'
-
-defineMethod: 'methods' as:
-  get: 'methods'
-
 respondsTo = Closure.create: |method|
-  hasMethod = Ruby.createFromObject: self
-  .send: 'methods'
+  hasMethod = Ruby.createFromObject: (get: 'methods')
+  .send: 'keys'
   .send: 'member?' withArgs: [method]
 
-  if: hasMethod then:
-    true
-  else:
-    false
+  hasMethod.truthy?
 
 defineMethod: 'respondsTo:' as: respondsTo
 

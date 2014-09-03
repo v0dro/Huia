@@ -58,6 +58,11 @@ module Huia
         end
       end)
 
+      __huia__send('def:as:', 'inspect', proc do
+        klass_name = self.class.to_s.split('::').last
+        ::Huia::Core::String.__huia__send('createFromValue:', "<Class(#{klass_name})##{object_id} object=#{object.inspect}>")
+      end)
+
       define_method :to_ruby do
         object
       end
