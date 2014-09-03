@@ -8,6 +8,9 @@ describe Huia::AST::String do
 
   describe '#append' do
     before { node.append 'ing' }
-    its(:value) { should eq 'string' }
+
+    specify "#value" do
+      expect(subject.value).to eq 'string'
+    end
   end
 end

@@ -16,6 +16,12 @@ def: 'at:set:' as: |index,value|
 
   value
 
+def: 'push:' as: |value|
+  Ruby.createFromObject: self
+  .send: '<<' withArgs: [value]
+
+  self
+
 def: 'size' as:
   size = Ruby.createFromObject: self
   .send: 'size'

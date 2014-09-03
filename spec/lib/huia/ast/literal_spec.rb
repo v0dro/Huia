@@ -6,5 +6,8 @@ describe Huia::AST::Literal do
   subject     { node }
 
   it { should be_a Huia::AST::Node }
-  its(:value) { should eq value }
+
+  it 'has the correct value' do
+    expect(subject.value).to eq value
+  end
 end

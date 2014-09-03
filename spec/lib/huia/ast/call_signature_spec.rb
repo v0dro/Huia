@@ -9,7 +9,9 @@ describe Huia::AST::CallSignature do
   it { should respond_to :signature }
   it { should respond_to :arguments }
 
-  its(:arguments) { should eq [] }
+  it 'has empty arguments' do
+    expect(subject.arguments).to eq []
+  end
 
   describe '#takes_argument?' do
     subject { node.takes_argument? }
@@ -53,8 +55,13 @@ describe Huia::AST::CallSignature do
         subject           { lhs }
         let(:r_signature) { 'rhs:' }
 
-        its(:signature) { should eq 'lhs:rhs:' }
-        its(:arguments) { should eq [1,2] }
+        it 'has the correct signature' do
+          expect(subject.signature).to eq 'lhs:rhs:'
+        end
+
+        it 'has the correct arguments' do
+          expect(subject.arguments).to eq [1,2]
+        end
       end
     end
   end

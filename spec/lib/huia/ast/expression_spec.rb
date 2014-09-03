@@ -5,11 +5,16 @@ describe Huia::AST::Expression do
   subject    { node }
 
   it { should be_a Huia::AST::Node }
-  its(:children) { should eq [ :child ] }
+
+  it 'has the correct children' do
+    expect(subject.children).to eq [ :child ]
+  end
 
   describe '#append' do
     before { node.append :child2 }
 
-    its(:children) { should eq [ :child, :child2 ] }
+    it 'has the correct children' do
+      expect(subject.children).to eq [ :child, :child2 ]
+    end
   end
 end

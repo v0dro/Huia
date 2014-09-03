@@ -11,6 +11,11 @@ describe Huia::AST::Variable do
   it { should respond_to :variable }
   it { should respond_to :variable= }
 
-  its(:name)     { should eq name }
-  its(:variable) { should eq nil }
+  specify "#name" do
+    expect(subject.name).to eq name
+  end
+
+  specify "#variable" do
+    expect(subject.variable).to eq nil
+  end
 end

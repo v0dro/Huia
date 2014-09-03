@@ -9,6 +9,8 @@ end
 guard :rspec, cmd: 'rspec' do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
+  watch(%r{^spec/acceptance/.+\.feature$})
+  watch(%r{^spec/steps/(.+)_steps\.rb$}) { |m| "spec/acceptance/#{m[1]}.feature" }
   watch('spec/spec_helper.rb')  { "spec" }
 end
 

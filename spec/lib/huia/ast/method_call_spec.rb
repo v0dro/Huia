@@ -9,8 +9,13 @@ describe Huia::AST::MethodCall do
   it { should be_a Huia::AST::Node }
 
   context "When the RHS is a CallSignature" do
-    its(:left)  { should eq lhs }
-    its(:right) { should eq rhs }
+    specify '#left' do
+      expect(subject.left).to eq lhs
+    end
+
+    specify '#right' do
+      expect(subject.right).to eq rhs
+    end
   end
 
   context "When the RHS is not a CallSignature" do

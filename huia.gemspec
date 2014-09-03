@@ -25,9 +25,9 @@ EOF
   spec.add_development_dependency "bundler", "~> 1.6"
 
   %w|
-      rake pry rspec rspec-its rspec-mocks oedipus_lex guard
+      rake pry rspec rspec-mocks oedipus_lex guard
       guard-rspec guard-rake guard-bundler racc rubinius-debugger
-      codeclimate-test-reporter
+      codeclimate-test-reporter turnip
     |.each do |gem|
     spec.add_development_dependency gem
   end

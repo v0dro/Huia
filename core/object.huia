@@ -6,7 +6,7 @@
 #   - `defineMethod:as:` defines a methods on the receiver.
 #   - `definePrivateMethod:as` defines a a private method on the receiver.
 #   - `defaultResponderFor:` finds the requested method and returns it.
-#   - `sendMessage:ithArgs:` calls `defaultResponderFor:` then executes the
+#   - `sendMessage:withArgs:` calls `defaultResponderFor:` then executes the
 #      closure in the receiver's scope (after a privacy check).
 #   - `if:then:` executes the `then` if the `if` argument is truthy.
 #

@@ -56,16 +56,15 @@ module Huia
           end
         end)
 
-        base.instance_eval do
-          def __huia__send signature, *args
-            drf = @privateMethods['defaultResponderFor:']
-            closure = self.instance_exec(signature, &drf.block)
+      end
 
-            raise NoMethodError, "Unable to find method #{signature.inspect} on #{self.__huia__send('inspect')}" unless closure
+      def __huia__send signature, *args
+        drf = @privateMethods['defaultResponderFor:']
+        closure = self.instance_exec(signature, &drf.block)
 
-            __huia__call closure, self, *args
-          end
-        end
+        raise NoMethodError, "Unable to find method #{signature.inspect} on #{self.__huia__send('inspect')}" unless closure
+
+        __huia__call closure, self, *args
       end
     end
   end
