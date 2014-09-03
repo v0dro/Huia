@@ -15,6 +15,7 @@ task :lexer => 'lib/huia/lexer.rex.rb'
 task :parser => [ :lexer, 'lib/huia/parser.racc' ] do
   sh 'racc -o lib/huia/parser.rb lib/huia/parser.racc'
 end
-task suite: [ :spec, :turnips ]
+# task suite: [ :spec, :turnips ]
+task suite: [ :spec ]
 task default: [ :parser, :suite ]
 
