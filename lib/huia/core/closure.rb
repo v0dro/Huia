@@ -19,8 +19,12 @@ module Huia
 
       # Create the `create:` constructor which takes a block.
       __huia__send('defineMethod:as:', 'create:', proc do |block|
-        __huia__send('create').tap do |o|
-          o.block = block
+        if Proc === block
+          __huia__send('create').tap do |o|
+            o.block = block
+          end
+        else
+          block
         end
       end)
 

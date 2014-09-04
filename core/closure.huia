@@ -2,13 +2,9 @@ defineInstanceMethod: 'argumentNames' as:
   get: 'argumentNames'
 
 defineInstanceMethod: 'takesArguments?' as:
-  bool = Ruby.createFromObject: get: 'argument_names'
+  Ruby.createFromObject: (get: 'argumentNames')
   .send: 'any?'
-
-  if: bool then:
-    true
-  else:
-    false
+  .truthy?
 
 defineInstanceMethod: 'fileName' as:
   Ruby.createFromObject: self
