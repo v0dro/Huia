@@ -153,6 +153,7 @@ class Huia::Parser
 
     string:         STRING                      { return n :String,  val[0] }
                   | interpolated_string
+                  | empty_string
 
     interpolated_string: DOUBLE_TICK_STRING interpolated_string_contents DOUBLE_TICK_STRING_END { return val[1] }
     interpolation:       INTERPOLATE_START expr INTERPOLATE_END { return val[1] }
@@ -160,6 +161,7 @@ class Huia::Parser
                                   | interpolated_string_contents interpolated_string_chunk { val[0].append(val[1]); return val[0] }
     interpolated_string_chunk:   chars         { return val[0] }
                                | interpolation { return to_string(val[0]) }
+    empty_string: DOUBLE_TICK_STRING DOUBLE_TICK_STRING_END { return n :String, '' }
 
     chars:   CHAR       { return n :String, val[0] }
            | chars CHAR { val[0].append(val[1]); return val[0] }
@@ -215,7 +217,7 @@ end
 def push_scope
   new_scope = Huia::AST::Scope.new scope
   new_scope.file   = lexer.filename
-  new_scope.line   = lexer.lineno
+  new_scope.line   = lexer.line
   new_scope.column = lexer.column
   scopes.push new_scope
   new_scope

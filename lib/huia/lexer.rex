@@ -5,6 +5,7 @@ macros
   INT             /(0|[1-9][0-9]*)/
 
 rules
+                          /''/                   { [ :STRING, '' ] }
                           /'/                    :SINGLE_TICK_STRING
   :SINGLE_TICK_STRING     /[^']+/                { [ :STRING, text ] }
   :SINGLE_TICK_STRING     /'/                    nil
