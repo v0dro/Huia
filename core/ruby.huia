@@ -1,11 +1,36 @@
 Integer = Huia.requireCore: 'integer'
 String  = Huia.requireCore: 'string'
+Float   = Huia.requireCore: 'float'
+Array   = Huia.requireCore: 'array'
+Hash    = Huia.requireCore: 'hash'
 
 def: 'unwrap' as:
   get: 'object'
 
 def: 'toString' as:
-  String.createFromValue: self.unwrap
+  value = self.send: 'to_s'
+  .unwrap
+  String.createFromValue: value
 
 def: 'toInteger' as:
-  Integer.createFromValue: self.unwrap
+  value = self.send: 'to_i'
+  .unwrap
+  Integer.createFromValue: value
+
+def: 'toFloat' as:
+  value = self.send: 'to_f'
+  .unwrap
+  Float.createFromValue: value
+
+def: 'toArray' as:
+  value = self.send: 'to_a'
+  .unwrap
+  Array.createFromValue: value
+
+def: 'toHash' as:
+  value = self.send: 'to_h'
+  .unwrap
+  Hash.createFromValue: value
+
+def: 'toBoolean' as:
+  self.truthy?
