@@ -1,10 +1,5 @@
-String  = Huia.requireCore: 'string'
-Integer = Huia.requireCore: 'integer'
-
 def: 'toString' as:
-  str = Ruby.createFromObject: self
-  .send: 'to_s'
-  String.createFromValue: str
+  self.inspect
 
 def: 'at:' as: |index|
   Ruby.createFromObject: self
@@ -23,10 +18,9 @@ def: 'push:' as: |value|
   self
 
 def: 'size' as:
-  size = Ruby.createFromObject: self
+  Ruby.createFromObject: self
   .send: 'size'
-  .unwrap
-  Integer.createFromValue: size
+  .toInteger
 
 def: 'inspect' as:
   result = '['
@@ -35,7 +29,8 @@ def: 'inspect' as:
 
   Ruby.createFromObject: self
   .send: 'each_with_index' withBlock: |item,index|
-    index = Integer.createFromValue: index
+    index = Ruby.createFromObject: index
+    .toInteger
     index = index + 1
 
     result.push: ' '
