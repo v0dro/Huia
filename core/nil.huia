@@ -1,6 +1,9 @@
 def: 'inspect' as:
   'nil'
 
+def: 'toString' as:
+  'nil'
+
 def: 'truthy?' as:
   false
 

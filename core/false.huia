@@ -1,6 +1,9 @@
 def: 'inspect' as:
   'false'
 
+def: 'toString' as:
+  'false'
+
 def: 'truthy?' as:
   false
 
