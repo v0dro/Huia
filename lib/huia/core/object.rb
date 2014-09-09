@@ -13,6 +13,7 @@ module Huia
       include ::Huia::Boot::Gamma
 
       extend  ::Huia::Boot::Delta
+      extend  ::Huia::Boot::Epsilon
 
       __huia__define_method('create', proc do
         methods = ::Huia::Boot::HashWithSuperAccess.new @instanceMethods
@@ -80,7 +81,7 @@ module Huia
                      else
                        ''
                      end
-        ::Huia::Core::String.__huia__send('createFromValue:', "<Class(#{klass_name})##{object_id}#{ivars}>")
+        ::Huia::Core.string "<Class(#{klass_name})##{object_id}#{ivars}>"
       end)
 
       __huia__send('def:as:', 'inspect', proc do
@@ -91,22 +92,22 @@ module Huia
                      else
                        ''
                      end
-        ::Huia::Core::String.__huia__send('createFromValue:', "<Object(#{klass_name})##{object_id}#{ivars}>")
+        ::Huia::Core.string "<Object(#{klass_name})##{object_id}#{ivars}>"
       end)
 
       __huia__send('def:as:', 'isEqualTo:', proc do |other|
         if self == other
-          ::Huia::Core::True.__huia__send('create')
+          ::Huia::Core.true
         else
-          ::Huia::Core::False.__huia__send('create')
+          ::Huia::Core.false
         end
       end)
 
       __huia__send('defineMethod:as:', 'isEqualTo:', proc do |other|
         if self == other
-          ::Huia::Core::True.__huia__send('create')
+          ::Huia::Core.true
         else
-          ::Huia::Core::False.__huia__send('create')
+          ::Huia::Core.false
         end
       end)
     end

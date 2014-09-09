@@ -20,22 +20,22 @@ module Huia
         value.hash
       end
 
-      __huia__send('def:as:', 'isEqualTo:', proc do |other|
+      define_instance_method_as 'isEqualTo:' do |other|
         other = other.to_ruby if other.respond_to? :to_ruby
 
         if value == other
-          ::Huia::Core::True.__huia__send('create')
+          ::Huia::Core.true
         else
-          ::Huia::Core::False.__huia__send('create')
+          ::Huia::Core.false
         end
-      end)
+      end
 
-      __huia__send('defineMethod:as:', 'createFromValue:', proc do |value|
+      define_method_as 'createFromValue:' do |value|
         value = value.to_ruby if value.respond_to? :to_ruby
-        __huia__send('create').tap do |o|
+        huia_send('create').tap do |o|
           o.value = value
         end
-      end)
+      end
     end)
   end
 end

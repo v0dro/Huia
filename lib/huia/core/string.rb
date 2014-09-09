@@ -9,7 +9,7 @@ module Huia
               else
                 str + other
               end
-        String.__huia__send('createFromValue:', str)
+        ::Huia::Core.string str
       end)
 
       define_method :to_str do

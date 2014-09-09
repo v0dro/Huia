@@ -4,7 +4,7 @@ module Huia
 
       attr_accessor :object
 
-      __huia__send('defineMethod:as:', 'createFromConstant:', proc do |constant|
+      define_method_as 'createFromConstant:' do |constant|
         constant = constant.to_ruby if constant.respond_to? :to_ruby
 
         const = constant.split('::').inject(Kernel) do |parent, const|
@@ -13,55 +13,59 @@ module Huia
         __huia__send('create').tap do |o|
           o.object = const
         end
-      end)
+      end
 
-      __huia__send('defineMethod:as:', 'createFromObject:', proc do |object|
+      define_method_as 'createFromObject:' do |object|
         object = object.to_ruby if object.respond_to? :to_ruby
-        __huia__send('create').tap do |o|
+        huia_send('create').tap do |o|
           o.object = object
         end
-      end)
+      end
 
-      __huia__send('def:as:', 'send:withArgs:andBlock:', proc do |signature, args, block|
+      define_instance_method_as 'send:withArgs:andBlock:' do |signature, args, block|
         signature = normalize_signature signature
         block     = normalize_block     block
         args      = normalize_args      args
+
         result = object.public_send(signature, *args, &block)
         normalize_result result
-      end)
+      end
 
-      __huia__send('def:as:', 'send:', proc do |signature|
+      define_instance_method_as 'send:' do |signature|
         signature = normalize_signature signature
+
         result = object.public_send(signature)
         normalize_result result
-      end)
+      end
 
-      __huia__send('def:as:', 'send:withArgs:', proc do |signature,args|
+      define_instance_method_as 'send:withArgs:' do |signature, args|
         signature = normalize_signature signature
         args      = normalize_args      args
+
         result = object.public_send(signature, *args)
         normalize_result result
-      end)
+      end
 
-      __huia__send('def:as:', 'send:withBlock:', proc do |signature,block|
+      define_instance_method_as 'send:withBlock:' do |signature, block|
         signature = normalize_signature signature
         block     = normalize_block     block
+
         result = object.public_send(signature, &block)
         normalize_result result
-      end)
+      end
 
-      __huia__send('def:as:', 'truthy?', proc do
+      define_instance_method_as 'truthy?' do
         if !!object
-          ::Huia::Core::True.__huia__send('create')
+          ::Huia::Core.true
         else
-          ::Huia::Core::False.__huia__send('create')
+          ::Huia::Core.false
         end
-      end)
+      end
 
-      __huia__send('def:as:', 'inspect', proc do
+      define_instance_method_as 'inspect' do
         klass_name = self.class.to_s.split('::').last
-        ::Huia::Core::String.__huia__send('createFromValue:', "<Class(#{klass_name})##{object_id} object=#{object.inspect}>")
-      end)
+        ::Huia::Core.string "<Class(#{klass_name})##{object_id} object=#{object.inspect}>"
+      end
 
       define_method :to_ruby do
         object
@@ -83,9 +87,13 @@ module Huia
 
       define_method :normalize_result do |result|
         return result if ::Huia::Core::Object === result
-        ::Huia::Core::Ruby.__huia__send('createFromObject:', result)
+
+        ::Huia::Core::Ruby.create_from_object result
       end
 
+      def self.create_from_object object
+        self.__huia__send('createFromObject:', object)
+      end
     end)
   end
 end

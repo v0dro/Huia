@@ -12,13 +12,13 @@ module Huia
       end
 
       # Create the base `callWithSelf:andArgs` method of Closure.
-      __huia__send('def:as:', 'callWithSelf:andArgs:', proc do |_self, args|
+      define_instance_method_as 'callWithSelf:andArgs:' do |_self, args|
         args = Array(args)
         __huia__call block, _self, *args
-      end)
+      end
 
       # Create the `create:` constructor which takes a block.
-      __huia__send('defineMethod:as:', 'create:', proc do |block|
+      define_method_as 'create:' do |block|
         if Proc === block
           __huia__send('create').tap do |o|
             o.block = block
@@ -26,7 +26,7 @@ module Huia
         else
           block
         end
-      end)
+      end
 
       define_method :to_ruby do
         block

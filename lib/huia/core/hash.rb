@@ -6,18 +6,18 @@ module Huia
         @value = {}
       end
 
-      __huia__send('def:as:', 'at:', proc do |index|
+      define_instance_method_as 'at:' do |index|
         result = value[index]
         if result
           result
         else
-          ::Huia::Core::Nil.__huia__send('create') unless result
+          ::Huia::Core.nil unless result
         end
-      end)
+      end
 
-      __huia__send('def:as:', 'at:set:', proc do |index, _value|
+      define_instance_method_as 'at:set:' do |index, _value|
         value[index] = _value
-      end)
+      end
     end)
   end
 end

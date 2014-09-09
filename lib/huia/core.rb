@@ -17,5 +17,23 @@ module Huia
       klass = const_get const
       klass.__huia__load_core if klass.respond_to? :__huia__load_core
     end
+
+    module_function
+
+    def true
+      ::Huia::Core::True.__huia__send('create')
+    end
+
+    def false
+      ::Huia::Core::False.__huia__send('create')
+    end
+
+    def string value
+      ::Huia::Core::String.__huia__send('createFromValue:', value)
+    end
+
+    def nil
+      ::Huia::Core::Nil.__huia__send('create')
+    end
   end
 end
