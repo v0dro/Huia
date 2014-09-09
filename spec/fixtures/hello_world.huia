@@ -1,0 +1,4 @@
+Hello  = Object.extend:
+
+  defineMethod: 'whom:' as: |whom|
+    "Hello #{whom}!"
