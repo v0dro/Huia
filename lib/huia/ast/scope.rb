@@ -73,6 +73,13 @@ module Huia
 
         g.push_huia_closure block_from_children(g), argument_names
 
+        g.dup
+        g.push_literal file
+        g.push_int line
+        g.push_int column
+        g.send :defined_at, 3
+        g.pop
+
         g.ret if top_level?
       end
 

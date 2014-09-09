@@ -1,0 +1,11 @@
+Stdout = Huia.requireCore: 'stdout'
+
+Object.extend:
+
+  def: 'exit' as:
+    Stdout.putString: "Exiting Huia REPL."
+    Ruby.createFromConstant: 'Kernel'
+    .send: 'exit'
+
+  def: 'displayHelp' as:
+    Stdout.putString: "A helpful message from the REPL"

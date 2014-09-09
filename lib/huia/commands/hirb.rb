@@ -21,12 +21,19 @@ module Huia
 
       private
 
+      def main
+        @main ||= begin
+                    file = File.expand_path('../hirb.huia', __FILE__)
+                    ::Huia.load(file).invoke.huia_send('create')
+                  end
+      end
+
       def repl
-        @main = ::Huia::Core::Object.__huia__send('create')
         loop do
           line = collect_lines
+          line = rewrite_line(line)
           begin
-            result = ::Huia.eval(line).invoke(@main)
+            result = ::Huia.eval(line).invoke(main)
           rescue SystemExit
             exit(0)
           rescue Exception => e
@@ -35,6 +42,12 @@ module Huia
           end
           print_result result
         end
+      end
+
+      def rewrite_line line
+        return "self.exit\n" if line == "exit\n"
+        return "self.displayHelp\n" if line == "help\n"
+        line
       end
 
       def collect_lines multiline=false
@@ -56,7 +69,8 @@ module Huia
       end
 
       def print_result result
-        return puts "WARNING: object #{result.inspect} is not a Huia object!" unless result.respond_to? :__huia__send
+        return if result.nil?
+        return puts "WARNING: object #{result.inspect} is not a Huia object!" unless result.respond_to?(:__huia__send)
         result = result.__huia__send('inspect')
         puts sprintf(" => %s", result.value)
       end

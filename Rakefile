@@ -9,13 +9,15 @@ RSpec::Core::RakeTask.new(:turnips) do |task|
 end
 
 task :clean do
-  `rm -rf core/*.huiac`
+  Dir['**/*.huiac'].each do |file|
+    `rm -v #{file}`
+  end
 end
 task :lexer => 'lib/huia/lexer.rex.rb'
 task :parser => [ :lexer, 'lib/huia/parser.racc' ] do
   sh 'racc -o lib/huia/parser.rb lib/huia/parser.racc'
 end
 # task suite: [ :spec, :turnips ]
-task suite: [ :spec ]
+task suite: [ :clean, :spec ]
 task default: [ :parser, :suite ]
 

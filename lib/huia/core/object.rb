@@ -46,15 +46,16 @@ module Huia
         privateMethods         = ::Huia::Boot::HashWithSuperAccess.new @privateMethods
         instanceMethods        = ::Huia::Boot::HashWithSuperAccess.new @instanceMethods
         privateInstanceMethods = ::Huia::Boot::HashWithSuperAccess.new @privateInstanceMethods
-        klass                  = self
-        Class.new klass do
-          @methods                = methods
-          @privateMethods         = privateMethods
-          @instanceMethods        = instanceMethods
-          @privateInstanceMethods = privateInstanceMethods
-          @superclass             = klass
+        definedAt              = closure.definedAt if closure.respond_to? :definedAt
 
-          self.instance_eval(&closure.block)
+        Class.new(self).tap do |klass|
+          klass.instance_variable_set(:@methods, methods)
+          klass.instance_variable_set(:@privateMethods, privateMethods)
+          klass.instance_variable_set(:@instanceMethods, instanceMethods)
+          klass.instance_variable_set(:@privateInstanceMethods, privateInstanceMethods)
+          klass.instance_variable_set(:@superclass, self)
+          klass.instance_variable_set(:@definedAt, definedAt) if definedAt
+          klass.instance_eval(&closure.block)
         end
       end)
 
@@ -74,18 +75,37 @@ module Huia
       __huia__define_private_method('definePrivateInstanceMethod:as:', define_private_instance_method)
 
       __huia__define_method('inspect', proc do
-        klass_name = self.to_s.split('::').last
+        klass_name = if self.name
+                       "(#{self.name.split('::').last})"
+                     else
+                       ''
+                     end
         ivars      = instance_variables.map { |i| i.to_s[1..-1] }
         ivars      = if ivars.any?
                        " [#{ivars.join(' ')}]"
                      else
                        ''
                      end
-        ::Huia::Core.string "<Class(#{klass_name})##{object_id}#{ivars}>"
+        location   = if @definedAt
+                       "@#{@definedAt[:file]}:#{@definedAt[:line]}"
+                     else
+                       ''
+                     end
+        ::Huia::Core.string "<Class#{klass_name}##{object_id}#{location}#{ivars}>"
       end)
 
       __huia__send('def:as:', 'inspect', proc do
-        klass_name = self.class.to_s.split('::').last
+        klass_name = if self.class.name
+                       self.class.name.split("::").last
+                     else
+                       defined_at = self.class.instance_variable_get('@definedAt')
+                       location = if defined_at
+                                    "@#{defined_at[:file]}:#{defined_at[:line]}"
+                                  else
+                                    ''
+                                  end
+                       "Class##{self.class.object_id}#{location}"
+                     end
         ivars      = instance_variables.map { |i| i.to_s[1..-1] }
         ivars      = if ivars.any?
                        " [#{ivars.join(' ')}]"

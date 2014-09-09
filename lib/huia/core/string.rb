@@ -15,6 +15,10 @@ module Huia
       define_method :to_str do
         to_ruby
       end
+
+      define_method :to_s do
+        to_ruby
+      end
     end)
   end
 end
