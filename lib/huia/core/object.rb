@@ -95,21 +95,16 @@ module Huia
         ::Huia::Core.string "<Object(#{klass_name})##{object_id}#{ivars}>"
       end)
 
-      __huia__send('def:as:', 'isEqualTo:', proc do |other|
+      is_equal_to_other = proc do |other|
         if self == other
           ::Huia::Core.true
         else
           ::Huia::Core.false
         end
-      end)
+      end
 
-      __huia__send('defineMethod:as:', 'isEqualTo:', proc do |other|
-        if self == other
-          ::Huia::Core.true
-        else
-          ::Huia::Core.false
-        end
-      end)
+      __huia__send 'def:as:', 'isEqualTo:', is_equal_to_other
+      __huia__send 'defineMethod:as:', 'isEqualTo:', is_equal_to_other
     end
   end
 end
