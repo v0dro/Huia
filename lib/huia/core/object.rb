@@ -1,5 +1,3 @@
-# The most basic definition of object.  See also `core/object`.
-
 module Huia
   module Core
     class Object < ::Object
@@ -16,6 +14,7 @@ module Huia
       extend  ::Huia::Boot::Epsilon
 
       # `Object.create` **Public**
+      # ==========================
       #
       # Creates a new instance of the Object.
       __huia__define_method('create', proc do
@@ -31,6 +30,7 @@ module Huia
       end)
 
       # `Object.extend:` **Public**
+      # ===========================
       #
       # Creates a new subclass of Object. You must pass a block argument which
       # is used to specialise the behaviour of the subclass, eg:
@@ -70,6 +70,7 @@ module Huia
       end
 
       # `Object.defineInstanceMethod:as:` **Private**
+      # =============================================
       #
       # Defines an instance method on a class.
       # Aliased to `Object.def:as:`.
@@ -81,6 +82,7 @@ module Huia
       __huia__define_private_method('defineInstanceMethod:as:', define_instance_method)
 
       # `Object.definePrivateInstanceMethod:as:` **Private**
+      # ====================================================
       #
       # Defines a private instsance method on a class.
       # Aliased to `Object.pdef:as:`.
@@ -92,6 +94,7 @@ module Huia
       __huia__define_private_method('definePrivateInstanceMethod:as:', define_private_instance_method)
 
       # `Object.inspect`
+      # ================
       #
       # Default inspection string for all classes.
       __huia__define_method('inspect', proc do
@@ -115,6 +118,7 @@ module Huia
       end)
 
       # `Object#inspect`
+      # ================
       #
       # Default inspection string for all object instances.
       __huia__send('def:as:', 'inspect', proc do
@@ -147,6 +151,7 @@ module Huia
       end
 
       # `Object.isEqualTo:` & `Object#isEqualTo:`
+      # =========================================
       #
       # Default test for object equality.
       #

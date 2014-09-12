@@ -1,11 +1,25 @@
 require "bundler/gem_tasks"
 Rake.application.rake_require "oedipus_lex"
 require "rspec/core/rake_task"
+require File.expand_path('../utils/extract_doc', __FILE__)
 
 RSpec::Core::RakeTask.new(:spec)
 RSpec::Core::RakeTask.new(:turnips) do |task|
   task.pattern = 'spec/acceptance/**/*.feature'
   task.rspec_opts = '-r turnip/rspec'
+end
+
+task :docs do
+  Dir['core/**/*.huia'].each do |file|
+    docs = DocumentExtractor.extract_file file
+
+    snippet = File.basename(file).split('.')[0..-2].join('.')
+
+    doc_filename = "docs/#{snippet[0].upcase}#{snippet[1..-1]}.md"
+
+    puts "Writing docs to #{doc_filename}"
+    File.write doc_filename, docs
+  end
 end
 
 task :clean do

@@ -1,4 +1,5 @@
 # `Object.if:then:else:` & `Object#if:then:else:` **Private**
+# ===========================================================
 #
 # Provide basic "if then else" control flow by using the builtin `if:then:`
 # method provided by the VM.
@@ -25,6 +26,7 @@ definePrivateMethod: 'if:then:else:' as: ifThenElse
 definePrivateInstanceMethod: 'if:then:else:' as: ifThenElse
 
 # `Object.unless:then:` & `Object#unless:then:` **Private**
+# =========================================================
 #
 # Provide basic "unless then" control flow by using the builtin `if:then:`
 # method provided by the VM.
@@ -42,12 +44,14 @@ definePrivateMethod: 'unless:then:' as: unlessThen
 definePrivateInstanceMethod: 'unless:then:' as: unlessThen
 
 # `Object#class` **Public**
+# =========================
 #
 # Return the class that this object was cloned from.
 defineInstanceMethod: 'class' as:
   get: 'class'
 
 # `Object.respondsTo:` & `Object#respondsTo:` **Public**
+# ======================================================
 #
 # Returns true of the receiver responds to the passed method signature.
 #
@@ -65,6 +69,7 @@ defineMethod: 'respondsTo:' as: respondsTo
 defineInstanceMethod: 'respondsTo:' as: respondsTo
 
 # `Object.unaryNot` & `Object#unaryNot` **Public**
+# ================================================
 #
 # Returns false.
 defineMethod: 'unaryNot' as:
@@ -74,6 +79,7 @@ defineInstanceMethod: 'unaryNot' as:
   false
 
 # `Object.truthy?` & `Object#truthy?` **Public**
+# ==============================================
 #
 # Returns true.
 def: 'truthy?' as:
@@ -83,6 +89,7 @@ defineMethod: 'truthy?' as:
   true
 
 # `Object.falsy?` & `Object#falsy?` **Public**
+# ============================================
 #
 # Returns the unary not of `self.truthy?`
 def: 'falsy?' as:
@@ -92,6 +99,7 @@ defineMethod: 'falsy?' as:
   !self.truthy?
 
 # `Object.isNotEqualTo:` & `Object#isNotEqualTo:` **Public**
+# ==========================================================
 #
 # Returns the unary not of `self.isEqualTo: other`
 isNotEqualTo = Closure.create: |other|
