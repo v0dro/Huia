@@ -1,16 +1,12 @@
-# These are the basic methods defined on Object.
-# There are seven magically defined in the runtime:
+# `Object.if:then:else:` & `Object#if:then:else:` **Private**
 #
-#   - `get:` retrieves an instance variable.
-#   - `set:to:` sets an instance variable to a value.
-#   - `defineMethod:as:` defines a methods on the receiver.
-#   - `definePrivateMethod:as` defines a a private method on the receiver.
-#   - `defaultResponderFor:` finds the requested method and returns it.
-#   - `sendMessage:withArgs:` calls `defaultResponderFor:` then executes the
-#      closure in the receiver's scope (after a privacy check).
-#   - `if:then:` executes the `then` if the `if` argument is truthy.
+# Provide basic "if then else" control flow by using the builtin `if:then:`
+# method provided by the VM.
 #
-#   Note that you can override any of these methods in your subclass.
+# Arguments:
+#   - `test`: the expression to test for truthiness.
+#   - `positive`: the Closure or block argument to call if the test is truthy.
+#   - `negative`: the Closure or block argument to call if the test is falsy.
 
 ifThenElse = Closure.create: |test,positive,negative|
   result  = nil
@@ -28,21 +24,39 @@ definePrivateMethod: 'if:then:else:' as: ifThenElse
 
 definePrivateInstanceMethod: 'if:then:else:' as: ifThenElse
 
-unlessThen = Closure.create: |test,positive|
+# `Object.unless:then:` & `Object#unless:then:` **Private**
+#
+# Provide basic "unless then" control flow by using the builtin `if:then:`
+# method provided by the VM.
+#
+# Arguments:
+#   - `test`: the expression to test for truthiness.
+#   - `negative`: the Closure or block argument to call if the test is falsy.
+
+unlessThen = Closure.create: |test,negative|
   if: (!test) then:
-    positive.callWithSelf: self andArgs: [result]
+    negative.callWithSelf: self andArgs: [result]
 
 definePrivateMethod: 'unless:then:' as: unlessThen
 
 definePrivateInstanceMethod: 'unless:then:' as: unlessThen
 
+# `Object#class` **Public**
+#
+# Return the class that this object was cloned from.
 defineInstanceMethod: 'class' as:
   get: 'class'
 
-respondsTo = Closure.create: |method|
+# `Object.respondsTo:` & `Object#respondsTo:` **Public**
+#
+# Returns true of the receiver responds to the passed method signature.
+#
+# Arguments:
+#   - `signature` (String): method signature.
+respondsTo = Closure.create: |signature|
   hasMethod = Ruby.createFromObject: (get: 'methods')
   .send: 'keys'
-  .send: 'member?' withArgs: [method]
+  .send: 'member?' withArgs: [signature]
 
   hasMethod.truthy?
 
@@ -50,24 +64,36 @@ defineMethod: 'respondsTo:' as: respondsTo
 
 defineInstanceMethod: 'respondsTo:' as: respondsTo
 
+# `Object.unaryNot` & `Object#unaryNot` **Public**
+#
+# Returns false.
 defineMethod: 'unaryNot' as:
   false
 
 defineInstanceMethod: 'unaryNot' as:
   false
 
+# `Object.truthy?` & `Object#truthy?` **Public**
+#
+# Returns true.
 def: 'truthy?' as:
   true
 
 defineMethod: 'truthy?' as:
   true
 
+# `Object.falsy?` & `Object#falsy?` **Public**
+#
+# Returns the unary not of `self.truthy?`
 def: 'falsy?' as:
   !self.truthy?
 
 defineMethod: 'falsy?' as:
   !self.truthy?
 
+# `Object.isNotEqualTo:` & `Object#isNotEqualTo:` **Public**
+#
+# Returns the unary not of `self.isEqualTo: other`
 isNotEqualTo = Closure.create: |other|
   !(self.isEqualTo: other)
 
