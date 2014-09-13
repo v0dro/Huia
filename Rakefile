@@ -17,8 +17,10 @@ task :docs do
 
     doc_filename = "docs/#{snippet[0].upcase}#{snippet[1..-1]}.md"
 
-    puts "Writing docs to #{doc_filename}"
-    File.write doc_filename, docs
+    unless docs.size == 0
+      puts "Writing docs to #{doc_filename}"
+      File.write doc_filename, docs
+    end
   end
 end
 
