@@ -1,11 +1,22 @@
+# ### `Closure#argumentNames` **Public**
+# 
+# Returns an [[Array]] of [[String]] objects representing the argument names
+# expected by this closure.
 defineInstanceMethod: 'argumentNames' as:
   get: 'argumentNames'
 
+# ### `Closure#takesArguments?` **Public**
+#
+# Returns [[True]] or [[False]] depending on whether the block accepts any
+# arguments.
 defineInstanceMethod: 'takesArguments?' as:
   Ruby.createFromObject: (get: 'argumentNames')
   .send: 'any?'
   .truthy?
 
+# ### `Closure#fileName` **Public**
+#
+# Returns the name of the file in which this Closure is defined.
 defineInstanceMethod: 'fileName' as:
   Ruby.createFromObject: self
   .send: 'block'
@@ -13,6 +24,9 @@ defineInstanceMethod: 'fileName' as:
   .send: 'first'
   .toString
 
+# ### `Closure#lineNumber` **Public**
+#
+# Returns the line of the file at which this Closure is defined.
 defineInstanceMethod: 'lineNumber' as:
   Ruby.createFromObject: self
   .send: 'block'

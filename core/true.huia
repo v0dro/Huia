@@ -1,8 +1,23 @@
+# # `True`
+#
+# What more is there to say?
+#
+# ## Methods defined by the Huia core library:
+
+# ### `True#inspect` **Public**
+#
+# Returns a human readable [[String]] of the object.
 def: 'inspect' as:
   'true'
 
+# ### `True#toString` **Public**
+#
+# Returns the [[String]] `"true"`
 def: 'toString' as:
   'true'
 
+# ### `True#unaryNot` **Public**
+#
+# Returns [[False]].
 def: 'unaryNot' as:
   false

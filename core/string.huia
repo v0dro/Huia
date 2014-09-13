@@ -1,8 +1,23 @@
+# # `String`
+#
+# Strings are used to hold and manipulate an arbitrary sequence of bytes, typically characters.
+#
+# ## Methods defined by the Huia core library:
+
 klass = self
 
+# ### `String#toString` **Public**
+#
+# Returns self.
 def: 'toString' as:
   self
 
+# ### `String#push:` **Public**
+#
+# Append the passed string onto self.
+#
+# Arguments:
+#   - `string`: the string to append onto self.
 def: 'push:' as: |string|
   str = Ruby.createFromObject: string
   Ruby.createFromObject: self
@@ -10,6 +25,9 @@ def: 'push:' as: |string|
 
   self
 
+# ### `String#inspect` **Public**
+#
+# Returns an escaped representation of the string.
 def: 'inspect' as:
   inspected = Ruby.createFromObject: self
   .send: 'inspect'

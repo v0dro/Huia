@@ -1,36 +1,59 @@
+# ## Methods defined by the core library:
+
 Integer = Huia.requireCore: 'integer'
 String  = Huia.requireCore: 'string'
 Float   = Huia.requireCore: 'float'
 Array   = Huia.requireCore: 'array'
 Hash    = Huia.requireCore: 'hash'
 
+# ### `Ruby#unwrap` **Public**
+#
+# Return the wrapped object.
 def: 'unwrap' as:
   get: 'object'
 
+# ### `Ruby#toString` **Public**
+#
+# Calls `to_s` on the wrapped object, and then return a [[String]] of the contents.
 def: 'toString' as:
   value = self.send: 'to_s'
   .unwrap
   String.createFromValue: value
 
+# ### `Ruby#toInteger` **Public**
+#
+# Calls `to_i` on the wrapped object and return an [[Integer]] of the contents.
 def: 'toInteger' as:
   value = self.send: 'to_i'
   .unwrap
   Integer.createFromValue: value
 
+# ### `Ruby#toFloat` **Public**
+#
+# Calls `to_f` on the wrapped object and return a [[Float]] of the contents.
 def: 'toFloat' as:
   value = self.send: 'to_f'
   .unwrap
   Float.createFromValue: value
 
+# ### `Ruby#toArray` **Public**
+#
+# Calls `to_a` on the wrapped object and return an [[Array]] of the contents.
 def: 'toArray' as:
   value = self.send: 'to_a'
   .unwrap
   Array.createFromValue: value
 
+# ### `Ruby#toHash` **Public**
+#
+# Calls `to_h` on the wrapped object and return a [[Hash]] of the contents.
 def: 'toHash' as:
   value = self.send: 'to_h'
   .unwrap
   Hash.createFromValue: value
 
+# ### `Ruby#toBoolean` **Public**
+#
+# Retutns `Ruby#truthy?`
 def: 'toBoolean' as:
   self.truthy?

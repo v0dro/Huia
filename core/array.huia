@@ -1,27 +1,63 @@
+# # `Array`
+#
+# The default implementation of Array. Could use a lot more methods :)
+#
+# Inherits from [[Object]].
+#
+# ## Methods defined by the Huia core library:
+
+# ### `Array#toString`
+#
+# Defaults to `Array#inspect`
 def: 'toString' as:
   self.inspect
 
+# ### `Array#at:`
+#
+# Returns the object at the provided index.
+#
+# Arguments:
+#   - `index`: [[Integer]] the location of the array element to return.
 def: 'at:' as: |index|
   Ruby.createFromObject: self
   .send: '[]' withArgs: [index]
 
+# ### `Array#at:set:`
+#
+# Set the value of the item at index `index`.
+#
+# Arguments:
+#   - `index`: [[Integer]] the location of the array element to set.
+#   - `value`: The value to set it to.
 def: 'at:set:' as: |index,value|
   Ruby.createFromObject: self
   .send: '[]=' withArgs: [index,value]
 
   value
 
+# ### `Array#push:`
+#
+# Push a new element onto the end of the array.
+#
+# Arguments:
+#   - `value`: the object to push onto the end of the array.
 def: 'push:' as: |value|
   Ruby.createFromObject: self
   .send: '<<' withArgs: [value]
 
   self
 
+# ### `Array#size`
+#
+# Return the number of elements in the array.
 def: 'size' as:
   Ruby.createFromObject: self
   .send: 'size'
   .toInteger
 
+# ### `Array#inspect`
+#
+# Return a human readable [[String]] of the contents of the Array.
 def: 'inspect' as:
   result = '['
 

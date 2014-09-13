@@ -1,6 +1,20 @@
+# # `Numeric`
+#
+# Abstract base class for all numeric types ([[Integer]], [[Float]]).
+#
+# Inherits from [[Object]].
+#
+# ## Methods defined by the Huia core library:
+
 klass = self
 String = Huia.requireCore: 'string'
 
+# ### `Numeric#plus:` **Public**
+#
+# Adds another numeric from this numeric.
+#
+# Arguments:
+#   - `other`: the other numeric to add to self.
 def: 'plus:' as: |other|
   other = Ruby.createFromObject: other
   .unwrap
@@ -8,6 +22,12 @@ def: 'plus:' as: |other|
   .send: '+' withArgs: [other]
   klass.createFromValue: value.unwrap
 
+# ### `Numeric#minus:` **Public**
+#
+# Subtracts another numeric from this numeric.
+#
+# Arguments:
+#   - `other`: the other numeric to subtract from self.
 def: 'minus:' as: |other|
   other = Ruby.createFromObject: other
   .unwrap
@@ -15,6 +35,12 @@ def: 'minus:' as: |other|
   .send: '-' withArgs: [other]
   klass.createFromValue: value.unwrap
 
+# ### `Numeric#multiplyBy:` **Public**
+#
+# Multiplies this numeric multiplied by another numeric.
+#
+# Arguments:
+#   - `other`: the other numeric to multiply by.
 def: 'multiplyBy:' as: |other|
   other = Ruby.createFromObject: other
   .unwrap
@@ -22,6 +48,12 @@ def: 'multiplyBy:' as: |other|
   .send: '*' withArgs: [other]
   klass.createFromValue: value.unwrap
 
+# ### `Numeric#divideBy:` **Public**
+#
+# Divides this numeric by another numeric.
+#
+# Arguments:
+#   - `other`: the other numeric to divide by.
 def: 'divideBy:' as: |other|
   other = Ruby.createFromObject: other
   .unwrap
@@ -29,6 +61,12 @@ def: 'divideBy:' as: |other|
   .send: '/' withArgs: [other]
   klass.createFromValue: value.unwrap
 
+# ### `Numeric#toThePowerOf:` **Public**
+#
+# Exponentiation. Equavalent to multiplying this numeric by itself N times.
+#
+# Arguments:
+#   - `toThePowerOf:` the number of times to multiply by self.
 def: 'toThePowerOf:' as: |other|
   other = Ruby.createFromObject: other
   .unwrap
@@ -36,6 +74,12 @@ def: 'toThePowerOf:' as: |other|
   .send: '**' withArgs: [other]
   klass.createFromValue: value.unwrap
 
+# ### `Numeric#moduloOf:` **Public**
+#
+# The remainder of dividing this numeric by another numeric.
+#
+# Arguments:
+#   - `other`: the other numeric to divide by.
 def: 'moduloOf:' as: |other|
   other = Ruby.createFromObject: other
   .unwrap
@@ -43,19 +87,31 @@ def: 'moduloOf:' as: |other|
   .send: '%' withArgs: [other]
   klass.createFromValue: value.unwrap
 
+# ### `Numeric#unaryPlus` **Public**
+#
+# Performs a unary plus on the numeric.
 def: 'unaryPlus' as:
   value = Ruby.createFromObject: self
   .send: '+@'
   klass.createFromValue: value
 
+# ### `Numeric#unaryMinus` **Public**
+#
+# Performs a unary minus on the numeric.
 def: 'unaryMinus' as:
   value = Ruby.createFromObject: self
   .send: '-@'
   klass.createFromValue: value
 
+# ### `Numeric#inspect` **Public**
+#
+# Returns a human readable [[String]] representation of the object.
 def: 'inspect' as:
   self.toString
 
+# ### `Numeric#toString` **Public**
+#
+# Returns a [[String]] representation of the object.
 def: 'toString' as:
   str = Ruby.createFromObject: self
   .send: 'to_s'

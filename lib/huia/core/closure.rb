@@ -1,3 +1,9 @@
+# # `Closure`
+#
+# Used to represent a closure as an object which can be passed around and into
+# methods as arguments. Inherits from [[Object]]
+#
+# ## Methods defined by the Huia Runtime:
 module Huia
   module Core
     Closure = Object.__huia__send('extend:', proc do
@@ -15,13 +21,21 @@ module Huia
         @definedAt = { file: file, line: line, column: column }
       end
 
-      # Create the base `callWithSelf:andArgs` method of Closure.
+      # ### `Closure#callWithSelf:andArgs` **Public**
+      #
+      # Allows you to call the closure.
+      #
+      # Arguments:
+      #   - `self`: the object to use as self within the block.
+      #   - `args`: an [[Array]] of arguments to pass to the block.
       define_instance_method_as 'callWithSelf:andArgs:' do |_self, args|
         args = Array(args)
         __huia__call block, _self, *args
       end
 
-      # Create the `create:` constructor which takes a block.
+      # ### `Closure.create:` **Public**
+      #
+      # Creates a new [[Closure]] object taking a block argument.
       define_method_as 'create:' do |block|
         if Proc === block
           __huia__send('create').tap do |o|

@@ -1,11 +1,29 @@
+# # `Nil`
+#
+# A representation of the nil object.
+#
+# ## Methods defined by the Huia core library:
+
+# ### `Nil#inspect` **Public**
+#
+# Returns a human readable [[String]] represtation of the object.
 def: 'inspect' as:
   'nil'
 
+# ### `Nil#toString` **Public**
+#
+# Returns a [[String]] representation of the object.
 def: 'toString' as:
   'nil'
 
+# ### `Nil#truthy?` **Public**
+#
+# Returns [[False]].
 def: 'truthy?' as:
   false
 
+# ### `Nil#unaryNot` **Public**
+#
+# Returns [[True]].
 def: 'unaryNot' as:
   true

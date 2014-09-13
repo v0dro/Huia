@@ -1,20 +1,34 @@
+# ## Methods defined by the Huia core library:
+
 Integer = Huia.requireCore: 'integer'
 
+# ### `Hash#keys` **Public**
+#
+# Returns an [[Array]] of keys in the hash.
 def: 'keys' as:
   keys = Ruby.createFromObject: self
   .send: 'keys'
   .toArray
 
+# ### `Hash#values` **Public**
+#
+# Returns an [[Array]] of values in the hash.
 def: 'values' as:
   values = Ruby.createFromObject: self
   .send: 'values'
   .toArray
 
+# ### `Hash#size` **Public**
+#
+# Returns the number of elements in the hash.
 def: 'size' as:
   size = Ruby.createFromObject: self
   .send: 'size'
   .toInteger
 
+# ### `Hash#inspect` **Public**
+#
+# Returns a human readable [[String]] representation of the hash.
 def: 'inspect' as:
   result = '{'
 

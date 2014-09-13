@@ -1,5 +1,16 @@
+# # `Integer`
+#
+# Represents integer numbers.
+#
+# Inherits from [[Numeric]].
+#
+# ## Methods defined by the Huia core library:
+
 klass = self
 
+# ### `Integer#unaryComplement` **Public**
+#
+# Returns the unary complement of the integer value.
 def: 'unaryComplement' as:
   value = Ruby.createFromObject: self
   .send: '~'

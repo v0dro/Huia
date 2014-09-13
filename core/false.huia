@@ -1,11 +1,29 @@
+# # `False`
+#
+# What more is there to say?
+#
+# ## Methods defined by the Huia core library:
+
+# ### `False#inspect` **Public**
+#
+# Returns a human readable [[String]] of the object.
 def: 'inspect' as:
   'false'
 
+# ### `False#toString` **Public**
+#
+# Returns the [[String]] `"false"`
 def: 'toString' as:
   'false'
 
+# ### `False#truthy?` **Public**
+#
+# Returns [[False]].
 def: 'truthy?' as:
   false
 
+# ### `False#unaryNot` **Public**
+#
+# Returns [[True]].
 def: 'unaryNot' as:
   true
