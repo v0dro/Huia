@@ -17,6 +17,9 @@ module Huia
       extend  ::Huia::Boot::Delta
       extend  ::Huia::Boot::Epsilon
 
+      extend ::Huia::AsyncMethod
+      include ::Huia::AsyncMethod
+
       # ### `Object.create` **Public**
       #
       # Creates a new instance of the Object.

@@ -32,7 +32,8 @@ EOF
     spec.add_development_dependency gem
   end
 
-  %w| rubinius-bridge rubinius-toolset rubinius-compiler rubinius-ast |.each do |gem|
+  %w| rubinius-bridge rubinius-toolset rubinius-compiler rubinius-ast
+      celluloid celluloid-io mr_darcy |.each do |gem|
     spec.add_dependency gem
   end
 end

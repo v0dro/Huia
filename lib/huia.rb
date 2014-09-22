@@ -27,6 +27,7 @@ module Huia
   autoload :Compiler,    'huia/compiler'
   autoload :Script,      'huia/script'
   autoload :Commands,    'huia/commands'
+  autoload :AsyncMethod, 'huia/async_method'
 
   SyntaxError = Class.new(RuntimeError)
 
