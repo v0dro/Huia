@@ -55,6 +55,18 @@ def: 'size' as:
   .send: 'size'
   .toInteger
 
+# ### `Array#withEach:`
+#
+# Iterate over the array, passing each element to the supplied block.
+#
+# Arguments:
+#   - `block`: a [[Closure]] which accepts an item as the argument.
+def: 'withEach:' as: |block|
+  Ruby.createFromObject: self
+  .send: 'each' withBlock: block
+
+  self
+
 # ### `Array#inspect`
 #
 # Return a human readable [[String]] of the contents of the Array.
