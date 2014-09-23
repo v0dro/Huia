@@ -1,0 +1,8 @@
+HSpec = Huia.requireFile: 'lib/hspec'
+
+HSpec.describe: 'test' as:
+
+  context: 'when is a test not a test' as:
+
+    example: 'the thing' do:
+      true

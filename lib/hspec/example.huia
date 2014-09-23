@@ -1,0 +1,27 @@
+Stdout = Huia.requireCore: 'stdout'
+
+Object.extend:
+
+  defineMethod: 'createWithBlock:' as: |block|
+    self.createWithDescription: 'example' andBlock: block
+
+  defineMethod: 'createWithDescription:andBlock:' as: |description, block|
+    example = self.create
+    example.setDescription: description
+    example.setBlock: block
+    example
+
+  defineInstanceMethod: 'setDescription:' as: |description|
+    set: 'description' to: description
+
+  defineInstanceMethod: 'setBlock:' as: |block|
+    set: 'block' to: block
+
+  defineInstanceMethod: 'run' as:
+    block       = get: 'block'
+    description = get: 'description'
+
+    if: description then:
+      Stdout.putString: description
+
+    block.callWithSelf: self andArgs: []

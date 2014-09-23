@@ -1,0 +1,14 @@
+# # HSpec
+#
+# A cheap, crappy hack to write specs in Huia.
+
+Context = Huia.requireFile: 'lib/hspec/context'
+Stdout  = Huia.requireCore: 'stdout'
+
+Stdout.putString: "HSpec started"
+
+Object.extend:
+
+  defineMethod: 'describe:as:' as: |describee, block|
+    Context.createWithDescription: describee andBlock: block
+    .run

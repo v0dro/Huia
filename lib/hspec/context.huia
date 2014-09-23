@@ -1,0 +1,51 @@
+Stdout  = Huia.requireCore: 'stdout'
+Example = Huia.requireFile: 'lib/hspec/example'
+
+Object.extend:
+
+  Context = self
+
+  defineMethod: 'createWithDescription:andBlock:' as: |describee, block|
+    context  = self.create
+    context.setDescription: describee
+    context.setBlock: block
+    context.initialize
+    context
+
+  defineInstanceMethod: 'initialize' as:
+    set: 'examples' to: []
+
+    block = get: 'block'
+    block.callWithSelf: self andArgs: []
+
+  defineInstanceMethod: 'setDescription:' as: |description|
+    set: 'description' to: description
+
+  defineInstanceMethod: 'setBlock:' as: |block|
+    set: 'block' to: block
+
+  defineInstanceMethod: 'example:' as: |block|
+    self.addExample: Example.createWithBlock: block
+
+  defineInstanceMethod: 'example:do:' as: |description, block|
+    self.addExample: Example.createWithDescription: description andBlock: block
+
+  defineInstanceMethod: 'describe:as:' as: |describee, block|
+    self.addExample: Context.createWithDescription: describee andBlock: block
+
+  defineInstanceMethod: 'context:as:' as: |describee, block|
+    self.addExample: Context.createWithDescription: describee andBlock: block
+
+  defineInstanceMethod: 'addExample:' as: |example|
+    examples = get: 'examples'
+    examples.push: example
+
+  defineInstanceMethod: 'run' as:
+    description = get: 'description'
+    examples    = get: 'examples'
+
+    if: description then:
+      Stdout.putString: description
+
+    examples.withEach: |example|
+      example.run

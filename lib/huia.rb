@@ -27,6 +27,7 @@ module Huia
   autoload :Compiler,    'huia/compiler'
   autoload :Script,      'huia/script'
   autoload :Commands,    'huia/commands'
+  autoload :HuiaLoader,  'huia/huia_loader'
 
   SyntaxError = Class.new(RuntimeError)
 
@@ -40,6 +41,11 @@ module Huia
   def eval string
     cm = Huia::Compiler.eval_from string
     Huia::Script.new(cm, '(eval)')
+  end
+
+  def extend_loader
+    Huia::HuiaLoader
+    true
   end
 
 end
