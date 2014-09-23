@@ -52,3 +52,16 @@ Feature: Core Array methods
     """
     When it is evaluated
     Then the result is '"[ 1, 2, 3, 4 ]"'
+
+  Scenario: 'withEach' yields each item in the array.
+    Given the following source:
+    """
+    result = []
+
+    [1,2,3,4,5].withEach: |item|
+      result.push: item * 2
+
+    result
+    """
+    When it is evaluated
+    Then the result is '[ 2, 4, 6, 8, 10 ]'
