@@ -24,6 +24,20 @@ Feature: Core Hash methods
     When it is evaluated
     Then the result is '3'
 
+  Scenario: 'withEach:' yields each key/value pair in the hash
+    Given the following source:
+    """
+    result = []
+
+    { 1: 2, 3: 4, 5: 6 }.withEach: |key,value|
+      result.push: key
+      result.push: value
+
+    result
+    """
+    When it is evaluated
+    Then the result is '[ 1, 2, 3, 4, 5, 6 ]'
+
   Scenario: 'inspect' displays a human-readable version of the hash
     Given the following source:
     """

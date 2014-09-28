@@ -53,7 +53,7 @@ Feature: Core Array methods
     When it is evaluated
     Then the result is '"[ 1, 2, 3, 4 ]"'
 
-  Scenario: 'withEach' yields each item in the array.
+  Scenario: 'withEach:' yields each item in the array.
     Given the following source:
     """
     result = []

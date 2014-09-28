@@ -6,13 +6,13 @@
 #
 # ## Methods defined by the Huia core library:
 
-# ### `Array#toString`
+# ### `Array#toString` **Public**
 #
 # Defaults to `Array#inspect`
 def: 'toString' as:
   self.inspect
 
-# ### `Array#at:`
+# ### `Array#at:` **Public**
 #
 # Returns the object at the provided index.
 #
@@ -22,7 +22,7 @@ def: 'at:' as: |index|
   Ruby.createFromObject: self
   .send: '[]' withArgs: [index]
 
-# ### `Array#at:set:`
+# ### `Array#at:set:` **Public**
 #
 # Set the value of the item at index `index`.
 #
@@ -35,7 +35,7 @@ def: 'at:set:' as: |index,value|
 
   value
 
-# ### `Array#push:`
+# ### `Array#push:` **Public**
 #
 # Push a new element onto the end of the array.
 #
@@ -55,7 +55,7 @@ def: 'size' as:
   .send: 'size'
   .toInteger
 
-# ### `Array#withEach:`
+# ### `Array#withEach:` **Public**
 #
 # Iterate over the array, passing each element to the supplied block.
 #
@@ -67,7 +67,7 @@ def: 'withEach:' as: |block|
 
   self
 
-# ### `Array#inspect`
+# ### `Array#inspect` **Public**
 #
 # Return a human readable [[String]] of the contents of the Array.
 def: 'inspect' as:

@@ -26,6 +26,18 @@ def: 'size' as:
   .send: 'size'
   .toInteger
 
+# ### `Hash#withEach` **Public**
+#
+# Iterate over the hash, passing each key/value pair to the supplied block.
+#
+# Arguments:
+#   - `block`: a [[Closure]] which accepts `key` and `value` as arguments.
+def: 'withEach:' as: |block|
+  Ruby.createFromObject: self
+  .send: 'each' withBlock: block
+
+  self
+
 # ### `Hash#inspect` **Public**
 #
 # Returns a human readable [[String]] representation of the hash.
