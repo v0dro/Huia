@@ -1,0 +1,42 @@
+# # `Enumerator`
+#
+# A concrete instance of an enumerator, which is returned from any of the methods
+# in [[Enumerable]]
+
+EnumeratorContext = Object.extend:
+
+  defineMethod: 'createWithBlock:' as |block|
+    self.create.initWithBlock: block
+
+  def: 'initWithBlock:' as: |block|
+    set: 'block' to: block
+    self
+
+  def: 'yield:' as: |item|
+    block = get: 'block'
+    block.callWithSelf: self andArgs: [item]
+
+Enumerator = Object.extend:
+
+  defineMethod: 'createWithEnumerable:withBlock:' as: |enumerable,block|
+    self.create.initWithEnumerable: enumerable andBlock: block
+
+  def: 'initWithEnumerable:andBlock:' as: |enumerable,block|
+    set: 'enumerable' to: enumerable
+    set: 'block'      to: block
+
+    self
+
+  def: 'withEach:' as: |block|
+    enumerable = get: 'enumerable'
+    transform  = get: 'block'
+
+    context    = EnumeratorContext.createWithBlock: block
+    enumerable.withEach: |item|
+      transformedItem = transform.callWithSelf: context andArgs: [item]
+
+    self
+
+Enumerable = Huia.requireCore: 'enumerable'
+
+Enumerator.extend: Enumerable

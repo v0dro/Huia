@@ -1,0 +1,23 @@
+# # `Enumerable`
+#
+# An instance of [[Closure]] which can be used to extend classes with Enumerable behaviour.
+# classes must include a `withEach:` method which yields each item in the collection to the
+# passed-in block.
+
+Enumerable = Closure.create:
+
+  Enumerator = Huia.requireCore: 'enumerator'
+
+  def: 'mapWith:' as: |block|
+    Enumerator.createWithEnumerable: self andBlock: |item|
+      newItem = /lw
+      :w
+
+
+  def: 'mapBy:' as: |methodName|
+    Enumerator.createWithEnumerable: self andBlock: |item|
+      newItem = item.sendMessage: methodName andArgs: []
+      yield: newItem
+
+  def: 'compact' as:
+    Enumerator.createWithEnumerable: self andBlock: |item
