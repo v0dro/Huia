@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Huia by jamesotron</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Huia</h1>
+          <h2>Huia is a whitespace-aware dynamic programming language targeting the Rubinius VM.</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/jamesotron/Huia/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/jamesotron/Huia/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/jamesotron/Huia" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a name="huia" class="anchor" href="#huia"><span class="octicon octicon-link"></span></a>Huia</h1>
+
+<p><img src="https://raw.githubusercontent.com/jamesotron/Huia/master/img/Huia.png" alt="Huia"></p>
+
+<h2>
+<a name="welcome-to-huia" class="anchor" href="#welcome-to-huia"><span class="octicon octicon-link"></span></a>Welcome to Huia.</h2>
+
+<p>Huia, is a programming language targetting the <a href="http://rubini.us">Rubinius</a> VM.</p>
+
+<p>Huia is a whitespace-aware dynamic language with a simple object model based
+around traditional inheritance and closures.</p>
+
+<p>Huia only has a few (global) constants for core types (such as Object, Closure.
+Integer, etc).  Everything else can be made by subclassing these core types.</p>
+
+<p>In addition to these two core types there are two other constants available in
+the environment:</p>
+
+<ul>
+<li>
+<code>Huia</code> which provides access to runtime features (at this stage only
+ <code>requireFile:</code> and <code>requireCore:</code>).</li>
+<li>
+<code>Ruby</code> which implements a simple object proxy allowing you to encapsulate
+a Ruby object and send and receive messages from them.  You will see that
+a large amount of the standard library is implemented this way as it
+evolves.</li>
+</ul><p>A simple example:</p>
+
+<pre lang="huia"><code>Stdout = Huia.requireCore: 'stdout'
+
+HelloWhom = Object.extend:
+
+  def: 'hello:' as: |whom|
+    Stdout.putString: "Hello #{whom}"
+
+helloWhom = HelloWhom.create
+helloWhom.hello: "world"
+</code></pre>
+
+<p>Further documentation is available on
+<a href="https://github.com/jamesotron/Huia/wiki">the GitHub Wiki</a>.</p>
+
+<h2>
+<a name="status" class="anchor" href="#status"><span class="octicon octicon-link"></span></a>Status</h2>
+
+<p><a href="https://travis-ci.org/jamesotron/Huia"><img src="https://travis-ci.org/jamesotron/Huia.svg?branch=master" alt="Build Status"></a>
+<a href="https://codeclimate.com/github/jamesotron/Huia"><img src="https://codeclimate.com/github/jamesotron/Huia/badges/gpa.svg" alt="Code Climate"></a>
+<a href="https://codeclimate.com/github/jamesotron/Huia"><img src="https://codeclimate.com/github/jamesotron/Huia/badges/coverage.svg" alt="Test Coverage"></a></p>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Huia is distributed as a Rubygem, as such you can either place <code>gem "huia"</code> in
+your <code>Gemfile</code> or run <code>bundle install huia</code>.  Huia will only run on Rubinius
+version 2.2.10 and greater.  Sorry, but if you don't have a recent Rubinius
+installed, it's not going to work for you.</p>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>You can run Huia scripts using the bundled <code>huia</code> binary or interactively
+using the interactive REPL, <code>hirb</code>.</p>
+
+<h2>
+<a name="extinction-of-the-huia" class="anchor" href="#extinction-of-the-huia"><span class="octicon octicon-link"></span></a>Extinction of the Huia</h2>
+
+<p>Melodious as its Māori name, the gentle Huia bird
+seems a fowl lost from an ancient bestiary.</p>
+
+<p>Always in pairs, their life one long low liquid interchange,
+they rarely flew, but hopped and probed in deepest thickets
+preening and balancing, antiphonal.</p>
+
+<p>They fed upon the luscious huhu grub
+under mossed and lichened podocarps
+— fed and hopped so lovingly together
+that if a Māori noosed one bird, its mate would come to hand.</p>
+
+<p>Working together, joint custodians, His straight crow-bar beak
+and Her thin curving probe, utterly unlike, conjoined
+to wingle out tree-eating grubs.</p>
+
+<p>Never widespread or numerous, their superb sober
+plumes made mourning-wear for centuries
+until Cook visited.  The stuffed ones soon
+were 'musts' for lounge-rooms, though few knew
+how well their natures fitted these strange bills.</p>
+
+<p>Charmed by his captive pair,
+Buller records how native know-how and the foreign gun
+took in 600 skins from a week's work
+— most of the world's remaining stock:
+'Now safely on the increase'. A common bird today
+in Auckland's antique shops, its loving notes
+that ranged from purest whistles to what seemed
+a puppy's whining call, are gone, lost,
+all before the age of tapes and films.
+The bird remains supreme in words
+of those who loved and stuffed it.</p>
+
+<p>And our museum has one — that is,
+of course, a pair.</p>
+
+<p>— by Mark O'Connor.</p>
+
+<h2>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<ol>
+<li>Fork it ( <a href="https://github.com/%5Bmy-github-username%5D/huia/fork">https://github.com/[my-github-username]/huia/fork</a> )</li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+<li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create a new Pull Request</li>
+</ol>
+        </section>
+
+        <footer>
+          Huia is maintained by <a href="https://github.com/jamesotron">jamesotron</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
