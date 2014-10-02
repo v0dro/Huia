@@ -155,6 +155,22 @@ module Huia
       # Argument: object to test against.
       __huia__send 'def:as:', 'isEqualTo:', is_equal_to_other
       __huia__send 'defineMethod:as:', 'isEqualTo:', is_equal_to_other
+
+      raise_exception_with_message = proc do |exception_class, message|
+        raise ::Huia::Core::Exception, "class #{exception_class.huia_send('inspect')} is not a subclass of `Exception` (raising: #{message.huia_send('inspect')})" unless exception.is_a? ::Huia::Core::Exception
+
+        raise exception_class, message
+      end
+
+      # ### `Object.raiseException:withMessage:` **Private**
+      #
+      # Raise a run-time exception.
+      #
+      # Arguments:
+      #   - `exceptionClass` - the class of exception to raise. Usually a subclass of [[Exception]].
+      #   - `message` - the message to set on the exception instance.
+      __huia__send 'def:as:', 'raiseException:withMessage:', raise_exception_with_message
+      __huia__send 'defineMethod:as:', 'raiseException:withMessage:', raise_exception_with_message
     end
   end
 end

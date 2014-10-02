@@ -1,0 +1,27 @@
+# ## Methods defined by the Huia core library:
+#
+# ### `Exception.createWithMessage:` **Public**
+#
+# Returns an instance of the exception with the message set.
+#
+# Arguments:
+#  - `message`: a [[String]] containing the message for the exception instance.
+
+defineMethod: 'createWithMessage:' as: |message|
+  self.create.initWithMessage: message
+
+# ### `Exception#initWithMessage:` **Public**
+#
+# Initialises a newly created instance with a message.
+#
+# Arguments:
+#  - `message`: a [[String]] containing the message for this exception.
+def: 'initWithMessage:' as: |message|
+  set: 'message' to: message
+  self
+
+# ### `Exception#message` **Public**
+#
+# Retrieve this exception's message.
+def: 'message' as:
+  get: 'message'
