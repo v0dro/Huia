@@ -42,7 +42,17 @@ module Huia
     end
 
     def load_compiled_file
-      optional_recompile
+      if needs_recompile?
+        @compiled_file = begin
+                           compile
+                           really_load_compiled_file
+                         end
+      else
+        @compiled_file ||= really_load_compiled_file
+      end
+    end
+
+    def really_load_compiled_file
       cl = Rubinius::CodeLoader.new(compiled_filename)
       cl.load_compiled_file(compiled_filename, 0, 0)
     end
@@ -52,8 +62,8 @@ module Huia
       load_compiled_file
     end
 
-    def optional_recompile
-      compile if mtime_of(uncompiled_filename) > mtime_of(compiled_filename)
+    def needs_recompile?
+      mtime_of(uncompiled_filename) > mtime_of(compiled_filename)
     end
 
     def compile
