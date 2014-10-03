@@ -98,7 +98,7 @@ module Huia
       # Default inspection string for all classes.
       __huia__define_method('inspect', proc do
         klass_name = if self.name
-                       "(#{self.name.split('::').last})"
+                       "(#{self.name.to_s.split('::').last})"
                      else
                        ''
                      end
@@ -188,6 +188,10 @@ module Huia
 
       define_method :huia_instance? do
         true
+      end
+
+      def self.name
+        @name || super
       end
     end
   end
