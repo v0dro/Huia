@@ -121,6 +121,10 @@ class Huia::Lexer
             action { [ :PLUS, text ] }
           when text = ss.scan(/,/) then
             action { [ :COMMA, text ] }
+          when text = ss.scan(/\|\|/) then
+            action { [ :OR, text ] }
+          when text = ss.scan(/\&\&/) then
+            action { [ :AND, text ] }
           when text = ss.scan(/\|/) then
             action { [ :PIPE, text ] }
           when text = ss.scan(/\-/) then

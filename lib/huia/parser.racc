@@ -5,7 +5,7 @@ class Huia::Parser
     EXPO INDENT OUTDENT OPAREN CPAREN DOT SIGNATURE NL EOF PIPE COMMA NIL TRUE
     FALSE EQUALITY CALL SELF CONSTANT CHAR DOUBLE_TICK_STRING
     DOUBLE_TICK_STRING_END INTERPOLATE_START INTERPOLATE_END BOX LSQUARE
-    RSQUARE FACES LFACE RFACE BANG TILDE RETURN NOT_EQUALITY
+    RSQUARE FACES LFACE RFACE BANG TILDE RETURN NOT_EQUALITY OR AND
 
   prechigh
     left EXPO
@@ -115,6 +115,8 @@ class Huia::Parser
              | modulo
              | equality
              | not_equality
+             | logical_or
+             | logical_and
 
     assignment:     IDENTIFIER EQUAL expr  { return allocate_local_assignment val[0], val[2] }
     addition:       expr PLUS expr         { return binary val[0], val[2], 'plus:' }
@@ -125,6 +127,8 @@ class Huia::Parser
     modulo:         expr PERCENT expr      { return binary val[0], val[2], 'moduloOf:' }
     equality:       expr EQUALITY expr     { return binary val[0], val[2], 'isEqualTo:' }
     not_equality:   expr NOT_EQUALITY expr { return binary val[0], val[2], 'isNotEqualTo:' }
+    logical_or:     expr OR expr           { return binary val[0], val[2], 'logicalOr:' }
+    logical_and:    expr AND expr          { return binary val[0], val[2], 'logicalAnd:' }
 
     unary_op:  unary_not
              | unary_plus

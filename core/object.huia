@@ -103,6 +103,41 @@ defineMethod: 'isNotEqualTo:' as: isNotEqualTo
 
 def: 'isNotEqualTo:' as: isNotEqualTo
 
+# ### `Object.logicalOr:` & `Object#logicalOr:` **Public**
+#
+# Implicitly called by the `||` binary operator.
+#
+# Arguments:
+#   - `other`: the other value to or against.
+logicalOr = Closure.create: |other|
+  result = other
+  if: self then:
+    result = self
+  result
+
+defineMethod: 'logicalOr:' as: logicalOr
+
+def: 'logicalOr:' as: logicalOr
+
+# ### `Object.logicalAnd:` & `Object#logicalAnd:` **Public**
+#
+# Implicitly called by the `&&` binary operator.
+#
+# Arguments:
+#   - `other`: the other value to and against.
+logicalAnd = Closure.create: |other|
+  result = nil
+
+  if: self then:
+    result = other
+  else:
+    result = self
+
+  result
+
+defineMethod: 'logicalAnd:' as: logicalAnd
+
+def: 'logicalAnd:' as: logicalAnd
 
 # ## TODO:
 #

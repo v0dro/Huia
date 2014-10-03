@@ -51,6 +51,8 @@ rules
                           /\=/                   { [ :EQUAL, text ] }
                           /\+/                   { [ :PLUS, text ] }
                           /,/                    { [ :COMMA, text ] }
+                          /\|\|/                 { [ :OR, text ] }
+                          /\&\&/                 { [ :AND, text ] }
                           /\|/                   { [ :PIPE, text ] }
                           /\-/                   { [ :MINUS, text ] }
                           /\*\*/                 { [ :EXPO, text ] }
