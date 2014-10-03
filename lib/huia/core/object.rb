@@ -157,12 +157,14 @@ module Huia
       __huia__send 'defineMethod:as:', 'isEqualTo:', is_equal_to_other
 
       raise_exception_with_message = proc do |exception_class, message|
-        raise ::Huia::Core::Exception, "class #{exception_class.huia_send('inspect')} is not a subclass of `Exception` (raising: #{message.huia_send('inspect')})" unless exception.is_a? ::Huia::Core::Exception
+        fail_exception = ::Huia::Core::Exception.huia_send('createWithMessage:', "Object #{exception_class.huia_send('inspect')} is not a subclass of `Exception` (raising: #{message.huia_send('inspect')})")
+        raise fail_exception unless exception_class.huia_class?
+        raise fail_exception unless exception_class.ancestors.member? ::Huia::Core::Exception
 
-        raise exception_class, message
+        raise exception_class.huia_send('createWithMessage:', message)
       end
 
-      # ### `Object.raiseException:withMessage:` **Private**
+      # ### `Object.raiseException:withMessage:` & `Object#raiseException:withMessage:` **Private**
       #
       # Raise a run-time exception.
       #
@@ -171,6 +173,22 @@ module Huia
       #   - `message` - the message to set on the exception instance.
       __huia__send 'def:as:', 'raiseException:withMessage:', raise_exception_with_message
       __huia__send 'defineMethod:as:', 'raiseException:withMessage:', raise_exception_with_message
+
+      def self.huia_class?
+        true
+      end
+
+      define_method :huia_class? do
+        false
+      end
+
+      def self.huia_instance?
+        false
+      end
+
+      define_method :huia_instance? do
+        true
+      end
     end
   end
 end

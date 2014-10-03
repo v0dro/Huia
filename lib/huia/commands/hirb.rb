@@ -36,6 +36,11 @@ module Huia
             result = ::Huia.eval(line).invoke(main)
           rescue SystemExit
             exit(0)
+          rescue ::Huia::Core::RuntimeException => e
+            e  = e.huia_exception
+            bt = e.backtrace
+            puts "#{e.huia_send('inspect').to_s}: #{e.huia_send('message').to_s}"
+            puts "  #{bt.join("\n  ")}"
           rescue Exception => e
             puts "#{e.class}: #{e.message}"
             puts "  #{e.backtrace.join("\n  ")}"
