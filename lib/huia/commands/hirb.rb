@@ -41,6 +41,8 @@ module Huia
             bt = e.backtrace
             puts "#{e.huia_send('inspect').to_s}: #{e.huia_send('message').to_s}"
             puts "  #{bt.join("\n  ")}"
+          rescue ::Huia::SyntaxError => e
+            puts e.message
           rescue Exception => e
             puts "#{e.class}: #{e.message}"
             puts "  #{e.backtrace.join("\n  ")}"
