@@ -51,6 +51,10 @@ rules
                           /\=/                   { [ :EQUAL, text ] }
                           /\+/                   { [ :PLUS, text ] }
                           /,/                    { [ :COMMA, text ] }
+                          />=/                   { [ :GTE, text ] }
+                          /<=/                   { [ :LTE, text ] }
+                          />/                    { [ :GT, text ] }
+                          /</                    { [ :LT, text ] }
                           /\|\|/                 { [ :OR, text ] }
                           /\&\&/                 { [ :AND, text ] }
                           /\|/                   { [ :PIPE, text ] }

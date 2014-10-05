@@ -116,3 +116,59 @@ def: 'toString' as:
   str = Ruby.createFromObject: self
   .send: 'to_s'
   String.createFromValue: str
+
+# ### `Numeric#isGreaterThan:` **Public**
+#
+# Tests to see if `self` is greater than `other`.
+#
+# Arguments:
+#   - `other`: the value to test against.
+def: 'isGreaterThan:' as: |other|
+  other = Ruby.createFromObject: other
+  .unwrap
+
+  Ruby.createFromObject: self
+  .send: '>' withArgs: [other]
+  .toBoolean
+
+# ### `Numeric#isLessThan:` **Public**
+#
+# Tests to see if `self` is less than `other`.
+#
+# Arguments:
+#  - `other`: the value to test against.
+def: 'isLessThan:' as: |other|
+  other = Ruby.createFromObject: other
+  .unwrap
+
+  Ruby.createFromObject: self
+  .send: '<' withArgs: [other]
+  .toBoolean
+
+# ### `Numeric#isGreaterOrEqualTo:` **Public**
+#
+# Tests to see if `self` is greater or equal to `other`.
+#
+# Arguments:
+#   - `other`: the value to test against.
+def: 'isGreaterOrEqualTo:' as: |other|
+  other = Ruby.createFromObject: other
+  .unwrap
+
+  Ruby.createFromObject: self
+  .send: '>=' withArgs: [other]
+  .toBoolean
+
+# ### `Numeric#isLessOrEqualTo:` **Public**
+#
+# Tests to see if `self` is less or equal to `other`.
+#
+# Arguments:
+#   - `other`: the value to test against.
+def: 'isLessOrEqualTo:' as: |other|
+  other = Ruby.createFromObject: other
+  .unwrap
+
+  Ruby.createFromObject: self
+  .send: '<=' withArgs: [other]
+  .toBoolean
