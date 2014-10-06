@@ -38,6 +38,14 @@ module Huia
       define_instance_method_as 'at:set:' do |index, _value|
         value[index] = _value
       end
+
+      define_method :[] do |index|
+        value[index]
+      end
+
+      define_method :[]= do |index, _value|
+        value[index] = _value
+      end
     end)
   end
 end

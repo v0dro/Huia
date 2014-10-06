@@ -121,7 +121,7 @@ module Huia
       # Default inspection string for all object instances.
       __huia__send('def:as:', 'inspect', proc do
         klass_name = if self.class.name
-                       self.class.name.split("::").last
+                       self.class.name.to_s.split("::").last
                      else
                        defined_at = self.class.instance_variable_get('@definedAt')
                        location = if defined_at

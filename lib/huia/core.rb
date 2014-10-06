@@ -35,5 +35,13 @@ module Huia
     def nil
       ::Huia::Core::Nil.__huia__send('create')
     end
+
+    def array default=[]
+      ::Huia::Core::Array.__huia__send('createFromValue:', default)
+    end
+
+    def hash default={}
+      ::Huia::Core::Hash.__huia__send('createFromValue:', default)
+    end
   end
 end

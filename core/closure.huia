@@ -1,5 +1,5 @@
 # ### `Closure#argumentNames` **Public**
-# 
+#
 # Returns an [[Array]] of [[String]] objects representing the argument names
 # expected by this closure.
 defineInstanceMethod: 'argumentNames' as:
@@ -33,3 +33,23 @@ defineInstanceMethod: 'lineNumber' as:
   .send: 'source_location'
   .send: 'last'
   .toInteger
+
+
+def: 'rescueFrom:with:' as: |exceptionClass,block|
+  rescues = get: 'rescues'
+  rescues = rescues || {}
+  rescues.at: exceptionClass set: block
+
+  set: 'rescues' to: rescues
+
+  rescues.keys.size
+
+def: 'ensure:' as: |block|
+  ensures = get: 'ensures'
+  ensures = ensures || []
+
+  ensures.push: block
+
+  set: 'ensures' to: ensures
+
+  ensures.size

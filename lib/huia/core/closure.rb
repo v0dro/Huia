@@ -21,6 +21,22 @@ module Huia
         @definedAt = { file: file, line: line, column: column }
       end
 
+      define_method :ensures do
+        @ensures ||= ::Huia::Core.array
+      end
+
+      define_method :rescues do
+        @rescues ||= ::Huia::Core.hash
+      end
+
+      define_method :rescues_exception? do |exception|
+        !!rescues[exception.class]
+      end
+
+      define_method :rescue_for do |exception|
+        rescues[exception.class]
+      end
+
       # ### `Closure#callWithSelf:andArgs` **Public**
       #
       # Allows you to call the closure.
@@ -30,19 +46,31 @@ module Huia
       #   - `args`: an [[Array]] of arguments to pass to the block.
       define_instance_method_as 'callWithSelf:andArgs:' do |_self, args|
         args = Array(args)
-        __huia__call block, _self, *args
+        begin
+          __huia__call block, _self, *args
+
+        rescue ::Huia::Core::RuntimeException => e
+          exception = e.huia_exception
+
+          if rescues_exception? exception
+            __huia__call(rescue_for(exception), _self, exception)
+          else
+            raise e
+          end
+
+        ensure
+          ensures.each do |ensure_block|
+            __huia__call(ensure_block, _self)
+          end
+        end
       end
 
       # ### `Closure.create:` **Public**
       #
       # Creates a new [[Closure]] object taking a block argument.
       define_method_as 'create:' do |block|
-        if Proc === block
-          __huia__send('create').tap do |o|
-            o.block = block
-          end
-        else
-          block
+        __huia__send('create').tap do |o|
+          o.block = block
         end
       end
 
