@@ -14,6 +14,8 @@ module Huia
         @variables = {}
         @block     = 0
         @parent    = parent
+
+        add_argument ::Huia::AST::Variable.new('@')
       end
 
       def name

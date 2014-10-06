@@ -153,6 +153,8 @@ class Huia::Lexer
             action { [ :BANG, text ] }
           when text = ss.scan(/\~/) then
             action { [ :TILDE, text ] }
+          when text = ss.scan(/\@/) then
+            action { [ :AT, text ] }
           when text = ss.scan(/[\n\r][\n\t\r ]*/) then
             in_or_out_dent text
           when text = ss.scan(/\s+/) then

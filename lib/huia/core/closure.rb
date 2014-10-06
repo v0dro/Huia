@@ -47,7 +47,7 @@ module Huia
       define_instance_method_as 'callWithSelf:andArgs:' do |_self, args|
         args = Array(args)
         begin
-          __huia__call block, _self, *args
+          __huia__call block, _self, self, *args
 
         rescue ::Huia::Core::RuntimeException => e
           exception = e.huia_exception
@@ -69,8 +69,12 @@ module Huia
       #
       # Creates a new [[Closure]] object taking a block argument.
       define_method_as 'create:' do |block|
-        __huia__send('create').tap do |o|
-          o.block = block
+        if block.respond_to? :__huia__send
+          block
+        else
+          __huia__send('create').tap do |o|
+            o.block = block
+          end
         end
       end
 

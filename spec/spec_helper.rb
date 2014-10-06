@@ -1,5 +1,6 @@
 # require "codeclimate-test-reporter"
 # CodeClimate::TestReporter.start
+require 'pry'
 require 'huia'
 
 if defined? Turnip

@@ -32,7 +32,7 @@ module Huia
         loop do
           line = collect_lines
           line = rewrite_line(line)
-          next unless line.match(/\w/) # skip empty lines.
+          next unless line.match(/\S/) # skip empty lines.
           begin
             result = ::Huia.eval(line).invoke(main)
           rescue SystemExit

@@ -35,6 +35,16 @@ defineInstanceMethod: 'lineNumber' as:
   .toInteger
 
 
+# ### `Closure#rescueFrom:with:` **Public**
+#
+# Registers a rescue handler for a given class of exception and
+# calls the passed block if the exception is raised by this Closure's
+# block.
+#
+# Arguments:
+#   - `exceptionClass`: The (sub)class of [[Exception]] to rescue.
+#   - `block`: A [[Closure]] containing code to run in the event of this
+#              exception being raised.
 def: 'rescueFrom:with:' as: |exceptionClass,block|
   rescues = get: 'rescues'
   rescues = rescues || {}
@@ -44,6 +54,13 @@ def: 'rescueFrom:with:' as: |exceptionClass,block|
 
   rescues.keys.size
 
+# ### `Closure#ensure:` **Public**
+#
+# Registers an ensure block which is always called after the [[Closure]]
+# completes, regardless of whether an [[Exception]] is raised or not.
+#
+# Arguments:
+#   - `block`: A [[Closure]].
 def: 'ensure:' as: |block|
   ensures = get: 'ensures'
   ensures = ensures || []

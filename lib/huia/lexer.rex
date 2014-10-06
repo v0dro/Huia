@@ -67,5 +67,6 @@ rules
                           /\)/                   { [ :CPAREN, text ] }
                           /\!/                   { [ :BANG, text ] }
                           /\~/                   { [ :TILDE, text ] }
+                          /\@/                   { [ :AT, text ] }
                           /[\n\r][\n\t\r ]*/     in_or_out_dent
                           /\s+/

@@ -6,7 +6,7 @@ class Huia::Parser
     FALSE EQUALITY CALL SELF CONSTANT CHAR DOUBLE_TICK_STRING
     DOUBLE_TICK_STRING_END INTERPOLATE_START INTERPOLATE_END BOX LSQUARE
     RSQUARE FACES LFACE RFACE BANG TILDE RETURN NOT_EQUALITY OR AND GT LT
-    GTE LTE
+    GTE LTE AT
 
   prechigh
     left EXPO
@@ -86,9 +86,13 @@ class Huia::Parser
 
     method_call:            method_call_on_object
                           | method_call_on_self
+                          | method_call_on_closure
     method_call_on_object:  expr DOT call_signature        { return n :MethodCall, val[0], val[2] }
                           | expr DOT IDENTIFIER            { return n :MethodCall, val[0], n(:CallSignature, val[2]) }
     method_call_on_self:    call_signature                 { return n :MethodCall, scope_instance, val[0] }
+
+    method_call_on_closure: AT call_signature              { return n :MethodCall, this_closure, val[1] }
+                          | AT IDENTIFIER                  { return n :MethodCall, this_closure, n(:CallSignature, val[1]) }
 
     call_signature:         call_arguments
                           | call_simple_name
@@ -271,6 +275,10 @@ def allocate_local_assignment name, value
   node(:Assignment, name, value).tap do |n|
     scope.allocate_local n
   end
+end
+
+def this_closure
+  allocate_local('@')
 end
 
 def scope_instance

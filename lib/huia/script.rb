@@ -10,7 +10,7 @@ module Huia
     end
 
     def invoke main = new_object_instance
-      main.instance_exec([], &closure.block)
+      main.instance_exec(closure, &closure.block)
     end
 
     def closure
