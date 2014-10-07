@@ -8,6 +8,7 @@ module Huia
     Exception = Object.__huia__send('extend:', proc do
 
       attr_accessor :backtrace
+      attr_reader :message
 
       class RuntimeException < ::RuntimeError
 
