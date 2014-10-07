@@ -14,7 +14,7 @@ Feature: Nil Methods
     nil.toString
     """
     When it is evaluated
-    Then the result is '"nil"'
+    Then the result is '""'
 
   Scenario: 'truthy?' is nil
     Given the following source:
