@@ -29,7 +29,11 @@ module Huia
     end
 
     def string value
-      ::Huia::Core::String.__huia__send('createFromValue:', value)
+      ::Huia::Core::String.__huia__send('createFromValue:', value.to_s)
+    end
+
+    def integer value
+      ::Huia::Core::Integer.__huia__send('createFromValue:', value.to_i)
     end
 
     def nil
