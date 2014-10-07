@@ -27,7 +27,7 @@ EOF
   %w|
       rake pry rspec rspec-mocks oedipus_lex guard
       guard-rspec guard-rake guard-bundler racc rubinius-debugger
-      codeclimate-test-reporter turnip
+      codeclimate-test-reporter turnip rspec-its
     |.each do |gem|
     spec.add_development_dependency gem
   end
