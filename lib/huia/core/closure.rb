@@ -9,11 +9,11 @@ module Huia
     Closure = Object.__huia__send('extend:', proc do
       attr_accessor :block, :definedAt
 
-      def arity
+      define_method :arity do
         argument_names.size
       end
 
-      def argument_names
+      define_method :argument_names do
         @argumentNames.to_ruby.map { |a| a.to_str }
       end
 
