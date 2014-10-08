@@ -22,3 +22,20 @@ RSpec.shared_examples :huia_class do
     end
   end
 end
+
+RSpec.shared_examples :huia_literal do
+  it_behaves_like :huia_object
+  %w| to_ruby eql? == hash value |.each do |method|
+    it { should respond_to method }
+  end
+
+  describe 'Huia methods' do
+    it 'responds to #isEqualTo:' do
+      expect(subject.huia_respond_to? 'isEqualTo:').to eq(true)
+    end
+
+    it 'responds to .createFromValue:' do
+      expect(subject.class.huia_respond_to? 'createFromValue:').to eq(true)
+    end
+  end
+end
