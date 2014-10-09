@@ -79,18 +79,18 @@ module Huia
       # Arguments:
       #   - `signature` the method signature, as a [[String]].
       #   - `closure` the method implementation, as a [[Closure]] or block argument.
-      __huia__define_private_method('def:as:', define_instance_method)
-      __huia__define_private_method('defineInstanceMethod:as:', define_instance_method)
+      __huia__define_method('def:as:', define_instance_method)
+      __huia__define_method('defineInstanceMethod:as:', define_instance_method)
 
       # ### `Object.definePrivateInstanceMethod:as:` **Private**
       #
       # Defines a private instsance method on a class.
-      # Aliased to `Object.pdef:as:`.
+      # Aliased to `Object.defp:as:`.
       #
       # Arguments:
       #   - `signature` the method signature, as a [[String]].
       #   - `closure` the method implementation, as a [[Closure]] or block argument.
-      __huia__define_private_method('pdef:as:', define_private_instance_method)
+      __huia__define_private_method('defp:as:', define_private_instance_method)
       __huia__define_private_method('definePrivateInstanceMethod:as:', define_private_instance_method)
 
       # ### `Object.inspect` **Public**
