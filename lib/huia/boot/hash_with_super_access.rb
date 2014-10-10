@@ -1,7 +1,7 @@
 module Huia
   module Boot
     class HashWithSuperAccess
-      attr_accessor :superhash
+      attr_reader :superhash, :localhash
 
       def initialize superhash
         @superhash = superhash
@@ -9,30 +9,34 @@ module Huia
       end
 
       def [] key
-        @localhash.fetch(key, @superhash[key])
+        localhash.fetch(key) do
+          superhash[key]
+        end
       end
 
       def []= key, value
-        raise ArgumentError, "can't write to frozen hash" if @prevent_modifications
-        @localhash[key] = value
+        raise ArgumentError, "can't write to frozen hash" if @prevent_modification
+        localhash[key] = value
       end
 
-      def fetch *args
-        if args.size == 1
-          @localhash.fetch(args[0], @superhash.fetch(args[0]))
-        else
-          @localhash.fetch(args[0], @superhash.fetch(args[0], args[1]))
+      def fetch key, default=nil, &block
+        localhash.fetch(key) do
+          superhash.fetch(key, default, &block)
         end
       end
 
       def keys
-        (@superhash.keys + @localhash.keys).uniq.reject do |key|
-          @localhash.has_key?(key) && @localhash.fetch(key) == nil
+        (superhash.keys + localhash.keys).uniq.reject do |key|
+          localhash.has_key?(key) && localhash.fetch(key) == nil
         end
       end
 
-      def any?
-        @localhash.any? || @superhash.any?
+      def has_key? key
+        keys.include? key
+      end
+
+      def any? &block
+        localhash.any?(&block) || superhash.any?(&block)
       end
 
       def freeze!
@@ -40,7 +44,7 @@ module Huia
       end
 
       def method_missing method, *args
-        @localhash.public_send(method, *args)
+        localhash.public_send(method, *args)
       end
 
       def inspect
