@@ -193,6 +193,16 @@ module Huia
       def self.name
         @name || super
       end
+
+      define_method :inspect do
+        return __huia__send('inspect').to_s if respond_to? :__huia__send
+        super
+      end
+
+      def self.inspect
+        return __huia__send('inspect').to_s if respond_to? :__huia__send
+        super
+      end
     end
   end
 end

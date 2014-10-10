@@ -81,6 +81,10 @@ module Huia
       define_method :to_ruby do
         block
       end
+
+      define_method :to_proc do
+        block
+      end
     end)
   end
 end
