@@ -203,6 +203,10 @@ module Huia
         return __huia__send('inspect').to_s if respond_to? :__huia__send
         super
       end
+
+      def self.class_name
+        name.to_s.split('::').last
+      end
     end
   end
 end

@@ -139,6 +139,26 @@ defineMethod: 'logicalAnd:' as: logicalAnd
 
 def: 'logicalAnd:' as: logicalAnd
 
+# ### `Object.name` **Public**
+#
+# Returns the name of the class.
+defineMethod: 'name' as:
+  name = Ruby.createFromObject: self
+  .send: 'class_name'
+  .toString
+
+# ### `Object.objectId` && `Object#objectId`
+#
+# Returns a unique identifier for this object in the VM.
+objectId = Closure.create:
+  Ruby.createFromObject: self
+  .send: 'object_id'
+  .toInteger
+
+definePrivateMethod: 'objectId' as: objectId
+
+defp: 'objectId' as: objectId
+
 # ## TODO:
 #
 # There's plenty of methods missing from `Object`. Feel free to add them and raise a PR.

@@ -74,3 +74,4 @@ Feature: Closures can rescue exceptions and ensure blocks.
     """
     When it is evaluated
     Then the result includes '<Object(Exception)#'
+    And the result includes 'Explode'

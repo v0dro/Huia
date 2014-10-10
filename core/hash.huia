@@ -26,7 +26,7 @@ def: 'size' as:
   .send: 'size'
   .toInteger
 
-# ### `Hash#withEach` **Public**
+# ### `Hash#withEach:` **Public**
 #
 # Iterate over the hash, passing each key/value pair to the supplied block.
 #
@@ -44,13 +44,12 @@ def: 'withEach:' as: |block|
 def: 'inspect' as:
   result = '{'
 
-  last = self.size
+  last  = self.size
+  index = 0
 
-  Ruby.createFromObject: self.keys
-  .send: 'each_with_index' withBlock: |key,index|
-    index = Integer.createFromValue: index
+  self.withEach: |key,value|
     index = index + 1
-    value = self.at: key
+
     result.push: ' '
     result.push: key.inspect
     result.push: ' : '

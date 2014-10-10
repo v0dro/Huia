@@ -25,3 +25,9 @@ def: 'initWithMessage:' as: |message|
 # Retrieve this exception's message.
 def: 'message' as:
   get: 'message'
+
+# ### `Exception#inspect` **Public**
+#
+# Returns a human-readable version of the exception.
+def: 'inspect' as:
+  "<Object(#{self.class.name})##{self.objectId}: #{self.message.inspect}>"

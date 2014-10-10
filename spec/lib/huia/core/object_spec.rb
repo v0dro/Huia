@@ -25,6 +25,11 @@ describe Huia::Core::Object do
     its(:huia_class?)    { should eq true }
     its(:huia_instance?) { should eq false }
 
+    describe '.class_name' do
+      subject { described_class.class_name }
+      it { should eq 'Object' }
+    end
+
     %w| def:as: defineInstanceMethod:as: defp:as: definePrivateInstanceMethod:as:
         inspect isEqualTo: raiseException:withMessage: if:then: if:then:else:
         unless:then: respondsTo: unaryNot truthy? falsy? isNotEqualTo:

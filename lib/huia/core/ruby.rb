@@ -133,7 +133,7 @@ module Huia
       define_method :normalize_block do |block|
         if block.respond_to? :__huia__send
           proc do |*args|
-            block.block.call block, *args
+            __huia__call(block, self, *args.flatten)
           end
         else
           block
