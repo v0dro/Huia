@@ -41,7 +41,7 @@ Further documentation is available on
 
 ## Status
 
-[![Build Status](https://travis-ci.org/jamesotron/Huia.svg?branch=master)](https://travis-ci.org/jamesotron/Huia)
+[ ![Codeship Status for jamesotron/Huia](https://www.codeship.io/projects/fd82fd50-30f2-0132-7402-3aec29ffe38a/status)](https://www.codeship.io/projects/39934)
 [![Code Climate](https://codeclimate.com/github/jamesotron/Huia/badges/gpa.svg)](https://codeclimate.com/github/jamesotron/Huia)
 [![Test Coverage](https://codeclimate.com/github/jamesotron/Huia/badges/coverage.svg)](https://codeclimate.com/github/jamesotron/Huia)
 
