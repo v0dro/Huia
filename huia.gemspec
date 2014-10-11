@@ -14,7 +14,7 @@ Huia, is a programming language targetting the Rubinius VM.
 
 Huia is a whitespace-aware dynamic language with a simple object model based around traditional inheritance and closures.
 EOF
-  spec.homepage      = "https://github.com/jamesotron/Huia"
+  spec.homepage      = "http://huia-lang.org/"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
