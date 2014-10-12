@@ -79,18 +79,18 @@ module Huia
       # Arguments:
       #   - `signature` the method signature, as a [[String]].
       #   - `closure` the method implementation, as a [[Closure]] or block argument.
-      __huia__define_private_method('def:as:', define_instance_method)
-      __huia__define_private_method('defineInstanceMethod:as:', define_instance_method)
+      __huia__define_method('def:as:', define_instance_method)
+      __huia__define_method('defineInstanceMethod:as:', define_instance_method)
 
       # ### `Object.definePrivateInstanceMethod:as:` **Private**
       #
       # Defines a private instsance method on a class.
-      # Aliased to `Object.pdef:as:`.
+      # Aliased to `Object.defp:as:`.
       #
       # Arguments:
       #   - `signature` the method signature, as a [[String]].
       #   - `closure` the method implementation, as a [[Closure]] or block argument.
-      __huia__define_private_method('pdef:as:', define_private_instance_method)
+      __huia__define_private_method('defp:as:', define_private_instance_method)
       __huia__define_private_method('definePrivateInstanceMethod:as:', define_private_instance_method)
 
       # ### `Object.inspect` **Public**
@@ -98,7 +98,7 @@ module Huia
       # Default inspection string for all classes.
       __huia__define_method('inspect', proc do
         klass_name = if self.name
-                       "(#{self.name.split('::').last})"
+                       "(#{self.name.to_s.split('::').last})"
                      else
                        ''
                      end
@@ -121,7 +121,7 @@ module Huia
       # Default inspection string for all object instances.
       __huia__send('def:as:', 'inspect', proc do
         klass_name = if self.class.name
-                       self.class.name.split("::").last
+                       self.class.name.to_s.split("::").last
                      else
                        defined_at = self.class.instance_variable_get('@definedAt')
                        location = if defined_at
@@ -155,6 +155,58 @@ module Huia
       # Argument: object to test against.
       __huia__send 'def:as:', 'isEqualTo:', is_equal_to_other
       __huia__send 'defineMethod:as:', 'isEqualTo:', is_equal_to_other
+
+      raise_exception_with_message = proc do |exception_class, message|
+        fail_exception = ::Huia::Core::Exception.huia_send('createWithMessage:', "Object #{exception_class.huia_send('inspect')} is not a subclass of `Exception` (raising: #{message.huia_send('inspect')})")
+        raise fail_exception unless exception_class.huia_class?
+        raise fail_exception unless exception_class.ancestors.member? ::Huia::Core::Exception
+
+        raise exception_class.huia_send('createWithMessage:', message)
+      end
+
+      # ### `Object.raiseException:withMessage:` & `Object#raiseException:withMessage:` **Private**
+      #
+      # Raise a run-time exception.
+      #
+      # Arguments:
+      #   - `exceptionClass` - the class of exception to raise. Usually a subclass of [[Exception]].
+      #   - `message` - the message to set on the exception instance.
+      __huia__send 'def:as:', 'raiseException:withMessage:', raise_exception_with_message
+      __huia__send 'defineMethod:as:', 'raiseException:withMessage:', raise_exception_with_message
+
+      def self.huia_class?
+        true
+      end
+
+      define_method :huia_class? do
+        false
+      end
+
+      def self.huia_instance?
+        false
+      end
+
+      define_method :huia_instance? do
+        true
+      end
+
+      def self.name
+        @name || super
+      end
+
+      define_method :inspect do
+        return __huia__send('inspect').to_s if respond_to? :__huia__send
+        super
+      end
+
+      def self.inspect
+        return __huia__send('inspect').to_s if respond_to? :__huia__send
+        super
+      end
+
+      def self.class_name
+        name.to_s.split('::').last
+      end
     end
   end
 end

@@ -134,3 +134,14 @@ Feature: Object methods
       | expression           | result  |
       | 1.isNotEqualTo: 1    | false   |
       | 1 != 1               | false   |
+
+  Scenario: 'name' returns the class name
+    Given the following source:
+    """
+    ExampleClass = Object.extend:
+      set: 'name' to: 'ExampleClass'
+
+    ExampleClass.name
+    """
+    When it is evaluated
+    Then the result is '"ExampleClass"'

@@ -7,7 +7,7 @@
 # `Huia.requireCore: 'Stdout'` for example.
 module Huia
   module Core
-    core_classes = %w| Object Closure Huia Ruby Literal Numeric Integer Float String Nil True False Array Hash |
+    core_classes = %w| Object Closure Huia Ruby Literal Numeric Integer Float String Nil True False Array Hash Exception |
 
     core_classes.each do |name|
       require "huia/core/#{name.downcase}"
@@ -29,11 +29,23 @@ module Huia
     end
 
     def string value
-      ::Huia::Core::String.__huia__send('createFromValue:', value)
+      ::Huia::Core::String.__huia__send('createFromValue:', value.to_s)
+    end
+
+    def integer value
+      ::Huia::Core::Integer.__huia__send('createFromValue:', value.to_i)
     end
 
     def nil
       ::Huia::Core::Nil.__huia__send('create')
+    end
+
+    def array default=[]
+      ::Huia::Core::Array.__huia__send('createFromValue:', default)
+    end
+
+    def hash default={}
+      ::Huia::Core::Hash.__huia__send('createFromValue:', default)
     end
   end
 end

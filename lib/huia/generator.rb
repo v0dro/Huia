@@ -75,8 +75,12 @@ module Huia
 
       dup
       push_literal :@argumentNames
-      push_huia_array argument_names.size do |g|
-        argument_names.each do |argument_name|
+
+      # Remove the special '@' argument so that it's not in the list.
+      filtered_arguments = argument_names.reject { |a| a == '@' }
+
+      push_huia_array filtered_arguments.size do |g|
+        filtered_arguments.each do |argument_name|
           g.push_huia_string argument_name
         end
       end

@@ -39,7 +39,9 @@ module Huia
 
       def __huia__call closure, _self, *args
         raise ArgumentError, "__huia__call takes a closure" unless closure.respond_to? :block
-        # Handle bootstrapped methods which are defined as procs.
+
+        # If we've been passed an actual block (not a Huia Closure) then
+        # execute it immediately.
         return _self.instance_exec(*args, &closure) unless closure.respond_to? :__huia__send
 
         # Otherwise dispatch via Huia's own method calling.

@@ -40,9 +40,11 @@ module Huia
           @privateMethods[signature] = nil
         end)
 
-        base.__huia__define_private_method('defaultResponderFor:', proc do |signature|
+        base.__huia__define_private_method('defaultResponderFor:', proc do |_,signature|
           signature = signature.to_ruby if signature.respond_to? :to_ruby
-          @methods.fetch(signature, @privateMethods[signature])
+          @methods.fetch signature do
+            @privateMethods[signature]
+          end
         end)
 
         base.__huia__define_method('sendMessage:withArgs:', proc do |signature, args|
@@ -60,10 +62,10 @@ module Huia
 
       def __huia__send signature, *args
         drf = @privateMethods['defaultResponderFor:']
-        closure = self.instance_exec(signature, &drf.block)
+        closure = self.instance_exec(closure, signature, &drf.block)
         signature = signature.to_ruby if signature.respond_to? :to_ruby
 
-        raise NoMethodError, "Unable to find method #{signature.inspect} on #{self.__huia__send('inspect')}" unless closure
+        raise NoMethodError, "Unable to find method #{signature.inspect} on #{self.inspect}" unless closure
 
         __huia__call closure, self, *args
       end

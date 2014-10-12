@@ -51,6 +51,12 @@ rules
                           /\=/                   { [ :EQUAL, text ] }
                           /\+/                   { [ :PLUS, text ] }
                           /,/                    { [ :COMMA, text ] }
+                          />=/                   { [ :GTE, text ] }
+                          /<=/                   { [ :LTE, text ] }
+                          />/                    { [ :GT, text ] }
+                          /</                    { [ :LT, text ] }
+                          /\|\|/                 { [ :OR, text ] }
+                          /\&\&/                 { [ :AND, text ] }
                           /\|/                   { [ :PIPE, text ] }
                           /\-/                   { [ :MINUS, text ] }
                           /\*\*/                 { [ :EXPO, text ] }
@@ -61,5 +67,6 @@ rules
                           /\)/                   { [ :CPAREN, text ] }
                           /\!/                   { [ :BANG, text ] }
                           /\~/                   { [ :TILDE, text ] }
+                          /\@/                   { [ :AT, text ] }
                           /[\n\r][\n\t\r ]*/     in_or_out_dent
                           /\s+/

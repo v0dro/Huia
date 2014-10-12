@@ -2,6 +2,8 @@ module Huia
   class CodeLoader
     LoadError = Class.new(RuntimeError)
 
+    attr_reader :file, :wd, :path
+
     HUIA_EXT  = 'huia'
     CHUIA_EXT = 'huiac'
 

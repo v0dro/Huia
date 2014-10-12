@@ -14,7 +14,7 @@ Huia, is a programming language targetting the Rubinius VM.
 
 Huia is a whitespace-aware dynamic language with a simple object model based around traditional inheritance and closures.
 EOF
-  spec.homepage      = "https://github.com/jamesotron/Huia"
+  spec.homepage      = "http://huia-lang.org/"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
@@ -27,12 +27,14 @@ EOF
   %w|
       rake pry rspec rspec-mocks oedipus_lex guard
       guard-rspec guard-rake guard-bundler racc rubinius-debugger
-      codeclimate-test-reporter turnip
+      codeclimate-test-reporter turnip rspec-its
     |.each do |gem|
     spec.add_development_dependency gem
   end
 
-  %w| rubinius-bridge rubinius-toolset rubinius-compiler rubinius-ast |.each do |gem|
+  %w| rubinius-bridge rubinius-compiler rubinius-ast |.each do |gem|
     spec.add_dependency gem
   end
+
+  spec.add_dependency 'rubinius-toolset', '>= 2.3.1'
 end

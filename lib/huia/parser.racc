@@ -5,7 +5,8 @@ class Huia::Parser
     EXPO INDENT OUTDENT OPAREN CPAREN DOT SIGNATURE NL EOF PIPE COMMA NIL TRUE
     FALSE EQUALITY CALL SELF CONSTANT CHAR DOUBLE_TICK_STRING
     DOUBLE_TICK_STRING_END INTERPOLATE_START INTERPOLATE_END BOX LSQUARE
-    RSQUARE FACES LFACE RFACE BANG TILDE RETURN NOT_EQUALITY
+    RSQUARE FACES LFACE RFACE BANG TILDE RETURN NOT_EQUALITY OR AND GT LT
+    GTE LTE AT
 
   prechigh
     left EXPO
@@ -85,9 +86,13 @@ class Huia::Parser
 
     method_call:            method_call_on_object
                           | method_call_on_self
+                          | method_call_on_closure
     method_call_on_object:  expr DOT call_signature        { return n :MethodCall, val[0], val[2] }
                           | expr DOT IDENTIFIER            { return n :MethodCall, val[0], n(:CallSignature, val[2]) }
     method_call_on_self:    call_signature                 { return n :MethodCall, scope_instance, val[0] }
+
+    method_call_on_closure: AT call_signature              { return n :MethodCall, this_closure, val[1] }
+                          | AT IDENTIFIER                  { return n :MethodCall, this_closure, n(:CallSignature, val[1]) }
 
     call_signature:         call_arguments
                           | call_simple_name
@@ -115,6 +120,12 @@ class Huia::Parser
              | modulo
              | equality
              | not_equality
+             | logical_or
+             | logical_and
+             | greater_than
+             | less_than
+             | greater_or_eq
+             | less_or_eq
 
     assignment:     IDENTIFIER EQUAL expr  { return allocate_local_assignment val[0], val[2] }
     addition:       expr PLUS expr         { return binary val[0], val[2], 'plus:' }
@@ -125,6 +136,12 @@ class Huia::Parser
     modulo:         expr PERCENT expr      { return binary val[0], val[2], 'moduloOf:' }
     equality:       expr EQUALITY expr     { return binary val[0], val[2], 'isEqualTo:' }
     not_equality:   expr NOT_EQUALITY expr { return binary val[0], val[2], 'isNotEqualTo:' }
+    logical_or:     expr OR expr           { return binary val[0], val[2], 'logicalOr:' }
+    logical_and:    expr AND expr          { return binary val[0], val[2], 'logicalAnd:' }
+    greater_than:   expr GT expr           { return binary val[0], val[2], 'isGreaterThan:' }
+    less_than:      expr LT expr           { return binary val[0], val[2], 'isLessThan:' }
+    greater_or_eq:  expr GTE expr          { return binary val[0], val[2], 'isGreaterOrEqualTo:' }
+    less_or_eq:     expr LTE expr          { return binary val[0], val[2], 'isLessOrEqualTo:' }
 
     unary_op:  unary_not
              | unary_plus
@@ -258,6 +275,10 @@ def allocate_local_assignment name, value
   node(:Assignment, name, value).tap do |n|
     scope.allocate_local n
   end
+end
+
+def this_closure
+  allocate_local('@')
 end
 
 def scope_instance

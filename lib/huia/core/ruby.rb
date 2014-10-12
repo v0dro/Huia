@@ -131,8 +131,13 @@ module Huia
       end
 
       define_method :normalize_block do |block|
-        return block.to_ruby if block.respond_to? :to_ruby
-        block
+        if block.respond_to? :__huia__send
+          proc do |*args|
+            __huia__call(block, self, *args.flatten)
+          end
+        else
+          block
+        end
       end
 
       define_method :normalize_args do |args|

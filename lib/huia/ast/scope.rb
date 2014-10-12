@@ -14,6 +14,8 @@ module Huia
         @variables = {}
         @block     = 0
         @parent    = parent
+
+        add_argument ::Huia::AST::Variable.new('@')
       end
 
       def name
@@ -69,7 +71,7 @@ module Huia
       def bytecode g
         pos g
 
-        g.name = "#{name} (file scope)".to_sym
+        g.name = file.to_sym
 
         g.push_huia_closure block_from_children(g), argument_names
 

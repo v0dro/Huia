@@ -14,7 +14,7 @@ def: 'inspect' as:
 #
 # Returns a [[String]] representation of the object.
 def: 'toString' as:
-  'nil'
+  ''
 
 # ### `Nil#truthy?` **Public**
 #
