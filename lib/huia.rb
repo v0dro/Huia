@@ -42,4 +42,12 @@ module Huia
     Huia::Script.new(cm, '(eval)')
   end
 
+  def add_package string, path
+    packages[string] = path
+  end
+
+  def packages
+    @packages ||= {}
+  end
+
 end

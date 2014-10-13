@@ -35,6 +35,28 @@ module Huia
         end
       end
 
+      # ### `Huia.requirePackage:` **Public**
+      #
+      # Evaluates and returns the named package.
+      #
+      # Arguments:
+      #  - `packageName`: a [[String]] containing the name of the package to retrieve.
+      define_method_as 'requirePackage:' do |name|
+        __huia__send('requireFile:fromPackage:', 'package', name)
+      end
+
+      # ### `Huiq.requireFile:fromPackage:` **Public**
+      #
+      # Evaluates the specificed file from within the named package.
+      #
+      # Arguments:
+      #  - `file`: the file name relative to the package's path.
+      #  - `package`: the package to look inside.
+      define_method_as 'requireFile:fromPackage:' do |file,package|
+        package_path = ::Huia.packages[package.to_s]
+
+        ::Huia.load(File.join(package_path, file.to_s)).invoke
+      end
     end)
   end
 end
