@@ -133,7 +133,7 @@ module Huia
         blk.redo.set!
 
         if empty?
-          push_huia_const blk, :Nil
+          blk.push_huia_const :Nil
           blk.send :new, 0
         else
           last = children.size - 1
