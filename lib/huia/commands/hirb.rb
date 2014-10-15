@@ -1,6 +1,5 @@
 require 'optparse'
 require 'readline'
-require 'pry'
 
 module Huia
   module Commands

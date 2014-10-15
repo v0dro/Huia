@@ -1,3 +1,4 @@
+require 'bundler/setup'
 require "huia/version"
 
 # Protect against loading Huia on incorrect Rubies.
