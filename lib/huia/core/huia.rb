@@ -16,7 +16,7 @@ module Huia
       # Arguments:
       #   - `path`: a [[String]] containing the path to the file to be evaluated.
       define_method_as 'requireFile:' do |path|
-        ::Huia.load(path.to_ruby).invoke
+        ::Huia.require_file(path.to_ruby)
       end
 
       # ### `Huia.requireCore:` **Public**
@@ -31,7 +31,7 @@ module Huia
         if ::Huia::Core.constants.member? constantized
           ::Huia::Core.const_get constantized
         else
-          ::Huia.load(path.downcase, File.expand_path('../../../../core/', __FILE__)).invoke
+          ::Huia.require_file(path.downcase, File.expand_path('../../../../core/', __FILE__))
         end
       end
 
@@ -55,7 +55,7 @@ module Huia
       define_method_as 'requireFile:fromPackage:' do |file,package|
         package_path = ::Huia.packages[package.to_s]
 
-        ::Huia.load(File.join(package_path, file.to_s)).invoke
+        ::Huia.require_file(File.join(package_path, file.to_s))
       end
     end)
   end

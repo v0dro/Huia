@@ -38,6 +38,12 @@ module Huia
     Huia::Script.new(cm, file)
   end
 
+  def require_file file, wd=Dir.getwd
+    @cache ||= {}
+    cache_key = File.absolute_path(file,wd)
+    @cache[cache_key] ||= self.load(file,wd).invoke
+  end
+
   def eval string
     cm = Huia::Compiler.eval_from string
     Huia::Script.new(cm, '(eval)')
