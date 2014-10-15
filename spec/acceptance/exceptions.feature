@@ -75,3 +75,50 @@ Feature: Closures can rescue exceptions and ensure blocks.
     When it is evaluated
     Then the result includes '<Object(Exception)#'
     And the result includes 'Explode'
+
+  Scenario: We use closure implicit calling to rescue a call further up the stack.
+    Given the following source:
+    """
+    result = nil
+    Exception = Huia.requireCore: 'exception'
+
+    TestClass = Object.extend:
+      def: 'methodOne' as:
+        @rescueFrom: Exception with: |exception|
+          result = exception
+
+        self.methodTwo
+
+      def: 'methodTwo' as:
+        raiseException: Exception withMessage: 'Explode'
+
+    TestClass.create.methodOne
+
+    result
+    """
+    When it is evaluated
+    Then the result includes '<Object(Exception)#'
+    And the result includes 'Explode'
+
+  Scenario: We can rescue subclasses of Exception.
+    Given the following source:
+    """
+    result = nil
+    Exception = Huia.requireCore: 'exception'
+    TestException = Exception.extend:
+      set: 'name' to: 'TestException'
+
+    TestClass = Object.extend:
+      def: 'methodOne' as:
+        @rescueFrom: TestException with: |exception|
+          result = exception
+
+        raiseException: TestException withMessage: 'Explode'
+
+    TestClass.create.methodOne
+
+    result
+    """
+    When it is evaluated
+    Then the result includes '<Object(TestException)#'
+    And the result includes 'Explode'
