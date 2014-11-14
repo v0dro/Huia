@@ -6,9 +6,9 @@ proc do
   begin
     raise RuntimeError, RUBY_ENGINE unless RUBY_ENGINE == 'rbx'
     version = Rubinius::VERSION.split('.').take(3).map(&:to_i)
-    raise RuntimeError, Rubinius::VERSION unless version[0] >= 2 && version[1] >= 2 && version[2] >= 10
+    raise RuntimeError, Rubinius::VERSION unless version[0] >= 2 && version[1] >= 3
   rescue RuntimeError
-    STDERR.puts "Huia only supports Rubinius >= 2.2.10"
+    STDERR.puts "Huia only supports Rubinius >= 2.3.0"
     exit(1)
   end
 end.call

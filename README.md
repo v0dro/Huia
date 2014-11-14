@@ -49,13 +49,18 @@ Further documentation is available on
 
 Huia is distributed as a Rubygem, as such you can either place `gem "huia"` in
 your `Gemfile` or run `bundle install huia`.  Huia will only run on Rubinius
-version 2.2.10 and greater.  Sorry, but if you don't have a recent Rubinius
+version 2.3.0 and greater.  Sorry, but if you don't have a recent Rubinius
 installed, it's not going to work for you.
 
 ## Usage
 
 You can run Huia scripts using the bundled `huia` binary or interactively
 using the interactive REPL, `hirb`.
+
+## Documentation
+
+Further documentation is available on
+[the GitHub Wiki](https://github.com/jamesotron/Huia/wiki).
 
 ## Extinction of the Huia
 
