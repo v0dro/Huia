@@ -32,9 +32,10 @@ EOF
     spec.add_development_dependency gem
   end
 
-  %w| rubinius-bridge rubinius-compiler rubinius-ast |.each do |gem|
+  %w| rubinius-bridge rubinius-ast |.each do |gem|
     spec.add_dependency gem
   end
 
   spec.add_dependency 'rubinius-toolset', '>= 2.3.1'
+  spec.add_dependency 'rubinius-compiler', '>= 2.3.0'
 end
