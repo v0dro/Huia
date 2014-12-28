@@ -1,6 +1,6 @@
 # Huia
 
-![Huia](https://raw.githubusercontent.com/jamesotron/Huia/master/img/Huia.png)
+![Huia](https://raw.githubusercontent.com/Huia/Huia/master/img/Huia.png)
 
 ## Welcome to Huia.
 
@@ -37,13 +37,13 @@ helloWhom.hello: "world"
 ```
 
 Further documentation is available on
-[the GitHub Wiki](https://github.com/jamesotron/Huia/wiki).
+[the GitHub Wiki](https://github.com/Huia/Huia/wiki).
 
 ## Status
 
-[ ![Codeship Status for jamesotron/Huia](https://www.codeship.io/projects/fd82fd50-30f2-0132-7402-3aec29ffe38a/status)](https://www.codeship.io/projects/39934)
-[![Code Climate](https://codeclimate.com/github/jamesotron/Huia/badges/gpa.svg)](https://codeclimate.com/github/jamesotron/Huia)
-[![Test Coverage](https://codeclimate.com/github/jamesotron/Huia/badges/coverage.svg)](https://codeclimate.com/github/jamesotron/Huia)
+[ ![Codeship Status for Huia/Huia](https://codeship.com/projects/eca92970-7116-0132-ade1-7ac1678da8ff/status?branch=master)](https://codeship.com/projects/54569)
+[![Code Climate](https://codeclimate.com/github/Huia/Huia/badges/gpa.svg)](https://codeclimate.com/github/Huia/Huia)
+[![Test Coverage](https://codeclimate.com/github/Huia/Huia/badges/coverage.svg)](https://codeclimate.com/github/Huia/Huia)
 
 ## Installation
 
@@ -60,7 +60,7 @@ using the interactive REPL, `hirb`.
 ## Documentation
 
 Further documentation is available on
-[the GitHub Wiki](https://github.com/jamesotron/Huia/wiki).
+[the GitHub Wiki](https://github.com/Huia/Huia/wiki).
 
 ## Extinction of the Huia
 
@@ -105,7 +105,7 @@ of course, a pair.
 
 ## Contributing
 
-1. Fork it ( https://github.com/jamesotron/Huia/fork )
+1. Fork it ( https://github.com/Huia/Huia/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)

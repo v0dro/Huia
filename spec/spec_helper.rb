@@ -1,5 +1,5 @@
-# require "codeclimate-test-reporter"
-# CodeClimate::TestReporter.start
+require "codeclimate-test-reporter"
+CodeClimate::TestReporter.start
 require 'rspec/its'
 require 'pry'
 require 'huia'
