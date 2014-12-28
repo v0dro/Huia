@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    huia (0.4.3)
+    huia (0.4.4)
       rubinius-ast
       rubinius-bridge
       rubinius-compiler (>= 2.3.0)
