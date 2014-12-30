@@ -14,7 +14,7 @@ module Huia
       # Evaluates a Huia file and returns its result.
       #
       # Arguments:
-      #   - `path`: a [[String]] containing the path to the file to be evaluated.
+      #   - `path`: a [[String]] containing the absolute path to the file to be evaluated.
       define_method_as 'requireFile:' do |path|
         ::Huia.require_file(path.to_ruby)
       end
