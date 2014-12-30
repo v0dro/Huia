@@ -25,9 +25,9 @@ module Huia
         privateMethods = ::Huia::Boot::HashWithSuperAccess.new @privateInstanceMethods
         klass = self
         new.tap do |o|
-          o.instance_variable_set '@methods', methods
-          o.instance_variable_set '@privateMethods', privateMethods
-          o.instance_variable_set '@class', klass
+          o.instance_variable_set :@methods, methods
+          o.instance_variable_set :@privateMethods, privateMethods
+          o.instance_variable_set :@class, klass
           o.send :__huia__init
         end
       end)
